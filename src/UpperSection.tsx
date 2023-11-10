@@ -28,23 +28,9 @@ export const Navbar: React.FC<NavBarProps> = ({
         <Link to="/" className="logoLink">
           <Logo />
         </Link>
-        <Link to="/" className="logoLink">
-          <Box />
-        </Link>
       </div>
 
       <div className="right-side">
-        <Link to="/" className="link">
-          <HomeButton />
-        </Link>
-
-        <Link to="/about" className="link">
-          <AboutButton />
-        </Link>
-
-        <Link to="/customize" className="link">
-          <CustomizationBtn />
-        </Link>
         {isAuthenticated ? (
           <ProfileButton onClick={() => setShowSidebar(!showSidebar)} />
         ) : (
