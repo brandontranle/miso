@@ -1,0 +1,81 @@
+.menu-bar {
+  position: fixed;
+  bottom: 20px; /* Adjust the value to hover above the bottom as needed */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around; /* This will create equal spacing around each widget */
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+  width: 962px; /* Adjust as needed */
+  height: 76px;
+  flex-shrink: 0;
+  background-color: rgb(255, 255, 255);
+  margin: auto; /* This centers the menu bar horizontally */
+  border-radius: 30px;
+}
+
+.menu-bar svg {
+  transition: transform 0.5s ease, cursor 0.3s ease; /* Adjust the duration and timing function as needed */
+}
+
+.menu-bar svg:hover {
+  cursor: pointer;
+  transform: translateY(-3px); /* Adjust the distance you want to move */
+}
+
+/*
+.menu-bar::after {
+    content: "";
+    flex: auto;
+  }*/
+
+.widget-container {
+  margin: 0 10px; /* Space out widgets */
+  padding: 10px;
+  background-color: transparent; /* Example background color */
+  border-radius: 5px; /* Optional: for rounded corners */
+  cursor: pointer;
+  position: relative; /* For absolute positioning of the window */
+  transition: transform 0.5s ease, cursor 0.3s ease; /* Adjust the duration and timing function as needed */
+  font-weight: bold;
+  text-align: center;
+}
+
+.widget-container:hover {
+  cursor: pointer;
+  transform: translateY(-5px); /* Adjust the distance you want to move */
+}
+
+.widget-window {
+  position: absolute; /* or absolute, depending on your layout */
+  bottom: 10%; /* Adjust as needed */
+  left: 10%; /* Adjust as needed */
+  width: 300px; /* Adjust as needed */
+  height: 200px; /* Adjust as needed */
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10; /* Higher than other content */
+  /* Add more styling as needed */
+}
+
+.widget-top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.widget-below-top-left {
+  position: absolute;
+  top: 100px; /* Adjust based on the height of the widget above */
+  left: 0;
+}
+
+.miso-widget {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 20%;
+}
