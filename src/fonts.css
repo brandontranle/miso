@@ -1,0 +1,24 @@
+@font-face {
+  font-family: "Hugmate-Regular";
+  src: url("fonts/Hugmate.ttf"), url("fonts/Hugmate.woff");
+}
+
+@font-face {
+  font-family: "Hugmate-Bold";
+  src: url("fonts/Hugmate-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Nunito-Bold";
+  src: url("fonts/Nunito-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Nunito-Regular";
+  src: url("fonts/Nunito-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Nunito-SemiBold";
+  src: url("fonts/Nunito-SemiBold.ttf");
+}
