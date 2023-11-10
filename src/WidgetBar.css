@@ -72,10 +72,72 @@
   left: 0;
 }
 
+/******* WIDGET SECTION ********/
+
+.widget-header {
+  display: flex;
+  justify-content: space-between; /* Aligns children to each end */
+  align-items: center; /* Aligns children vertically */
+  padding: 10px 5px 0 15px;
+}
+
+.widget-title {
+  color: #4e4e4e;
+  font-family: Nunito;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: normal;
+  margin-bottom: 0.5rem;
+  /* Remove any additional margins that might push the title away from the left */
+  margin-left: 0;
+}
+
+.minimize-symbol {
+  cursor: pointer;
+  background-color: #4e4e4e;
+  border-radius: 20px;
+  margin-right: 10px;
+  /* Add any specific styling you need for your minimize button */
+}
+
+.widget-line {
+  width: 100%;
+  height: 1px;
+  background: #e9e9e9;
+}
+
+.widget-content {
+  text-align: center;
+}
+
+/**** MINIMIZE FEATURE ******/
+.miso-widget.minimized {
+  display: none;
+  overflow: hidden;
+}
+
+.minimize-symbol {
+  /* Style your minimize button */
+  cursor: pointer;
+  /* ... other styles ... */
+}
+
+/***MISO WIDGET *******/
 .miso-widget {
+  height: 100%;
+  width: 100%;
+}
+
+.widget-window.miso-widget {
+  width: 349px;
+  height: 211px;
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 20%;
-  height: 20%;
+  bottom: 20%; /* Position it at the bottom of the MainContainer */
+  left: 50%; /* Start at the half-way point of the MainContainer */
+  transform: translateX(-50%); /* This will center the widget */
+  border-radius: 13px;
+}
+
+.widget-window.miso-widget.minimized {
+  display: none;
 }

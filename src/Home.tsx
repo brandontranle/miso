@@ -12,12 +12,29 @@ import SoundsWidget from "./widgets/SoundsWidget";
 import SpotifyWidget from "./widgets/SpotifyWidget";
 import CatGPTWidget from "./widgets/CatGPTWidget";
 import NotesWidget from "./widgets/NotesWidget";
+import backgroundImage from "./assets/background.png";
 
 export const Home: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeWidgets, setActiveWidgets] = useState<number[]>([]); // This now tracks multiple widgets
+  const [isMinimized, setIsMinimized] = useState(false);
 
-  const handleWidgetClick = (widgetId: number) => {
+  const toggleMinimize = () => setIsMinimized(!isMinimized);
+
+  const backgroundImageStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover", // Optional: Scale the background image to cover the entire container
+    backgroundRepeat: "no-repeat", // Optional: Prevent background image from repeating
+    backgroundPosition: "center center", // Optional: Center the background image
+  };
+
+  const handleWidgetClick = async (widgetId: number) => {
+    // Update the active widgets state
+    if (isMinimized) {
+      await toggleMinimize();
+      return;
+    }
+    /* first time click launch*/
     setActiveWidgets((prevActiveWidgets) => {
       // If already active, deactivate by filtering out, otherwise add to active widgets
       return prevActiveWidgets.includes(widgetId)
@@ -27,7 +44,7 @@ export const Home: React.FC = () => {
   };
 
   const widgetComponents: { [key: number]: JSX.Element } = {
-    1: <MisoWidget />,
+    1: <MisoWidget handleMinimize={toggleMinimize} />,
     2: <HubsWidget />,
     3: <TimerWidget />,
     4: <TasksWidget />,
@@ -74,7 +91,12 @@ export const Home: React.FC = () => {
     }
 
     return (
-      <div key={widgetId} className={`widget-window ${widgetClass}`}>
+      <div
+        key={widgetId}
+        className={`widget-window ${widgetClass} ${
+          isMinimized ? "minimized" : ""
+        }`}
+      >
         {/* Render the content based on the widgetId */}
         {contentComponent}
       </div>
@@ -82,7 +104,7 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="page">
+    <div className="page" style={backgroundImageStyle}>
       <div className="TopBarContainer">
         <div className="Nav-Bar">
           <Navbar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />

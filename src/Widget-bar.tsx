@@ -36,24 +36,6 @@ export const WidgetBar: React.FC<WidgetBarProps> = ({ onWidgetClick }) => {
     // ... other widget properties
   ];
 
-  const handleWidgetClick = (widgetId: number) => {
-    // Set the active widget id, or null if it's already active (toggle)
-    setActiveWidget(activeWidget === widgetId ? null : widgetId);
-  };
-
-  // Function to render the window based on the active widget
-  const renderWindow = (widgetId: number) => {
-    if (activeWidget === widgetId) {
-      return (
-        <div className="widget-window">
-          {/* Content of the window for the widget */}
-          Widget {widgetId} content here
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <div className="menu-bar">
       {widgets.map((widget) => (
