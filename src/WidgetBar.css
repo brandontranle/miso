@@ -6,9 +6,9 @@
   display: flex;
   justify-content: space-around; /* This will create equal spacing around each widget */
   align-items: center;
-  z-index: 1000; /* Ensure it's above other content */
+  z-index: 100; /* Ensure it's above other content */
   width: 962px; /* Adjust as needed */
-  height: 76px;
+  height: 67px;
   flex-shrink: 0;
   background-color: rgb(255, 255, 255);
   margin: auto; /* This centers the menu bar horizontally */
@@ -132,7 +132,7 @@
   width: 349px;
   height: 211px;
   position: absolute;
-  bottom: 20%; /* Position it at the bottom of the MainContainer */
+  bottom: 17%; /* Position it at the bottom of the MainContainer */
   left: 50%; /* Start at the half-way point of the MainContainer */
   transform: translateX(-50%); /* This will center the widget */
   border-radius: 13px;
@@ -140,4 +140,110 @@
 
 .widget-window.miso-widget.minimized {
   display: none;
+}
+
+/***** HUBS WIDGET ******/
+.hubs-widget {
+  height: 100%;
+  width: 100%;
+}
+
+.widget-window.hubs-widget {
+  width: 509px;
+  height: 219px;
+  position: absolute;
+  /* Position it at the top left of the MainContainer */
+  top: 2%; /* Adjust as needed */
+  left: 1%; /* Adjust as needed */
+  flex-shrink: 0;
+
+  border-radius: 13px;
+}
+
+/***** spotify widget ******/
+.spotify-widget {
+  height: 100%;
+  width: 100%;
+}
+
+.widget-window.spotify-widget {
+  width: 509px;
+  height: 211px;
+  position: absolute;
+  /* Position it at the top left of the MainContainer */
+  top: 30%; /* Adjust as needed */
+  left: 1%; /* Adjust as needed */
+  flex-shrink: 0;
+
+  border-radius: 13px;
+}
+
+/****** tasks widget ********/
+.tasks-widget {
+  height: 100%;
+  width: 100%;
+}
+
+.widget-window.tasks-widget {
+  width: 509px;
+  height: 345px;
+  position: absolute;
+  /* Position it at the bottom right of the MainContainer */
+  flex-shrink: 0;
+  top: 40%; /* Adjust as needed */
+  left: 69%; /* Adjust as needed */
+
+  border-radius: 13px;
+}
+
+/****** catgpt widget ********/
+.catgpt-widget {
+  height: 100%;
+  width: 100%;
+}
+
+.widget-window.catGPT-widget {
+  width: 509px;
+  height: 300px;
+  position: absolute;
+  /* Position it at the bottom right of the MainContainer */
+  flex-shrink: 0;
+  top: 1%; /* Adjust as needed */
+  left: 69%; /* Adjust as needed */
+
+  border-radius: 13px;
+}
+
+/****** notes widget ******/
+.notes-widget {
+  height: 100%;
+  width: 100%;
+}
+
+.widget-window.notes-widget {
+  width: 509px;
+  height: 210px;
+  position: absolute;
+  /* Position it at the bottom right of the MainContainer */
+  flex-shrink: 0;
+  top: 57%; /* Adjust as needed */
+  left: 1%; /* Adjust as needed */
+
+  border-radius: 13px;
+}
+
+/***** timer widget *****/
+.timer-widget {
+  height: 100%;
+  width: 100%;
+}
+
+.widget-window.timer-widget {
+  width: 349px;
+  height: 146px;
+  position: absolute;
+  bottom: 44%; /* Position it at the bottom of the MainContainer */
+  left: 50%; /* Start at the half-way point of the MainContainer */
+  transform: translateX(-50%); /* This will center the widget */
+  border-radius: 13px;
 }

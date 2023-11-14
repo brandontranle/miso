@@ -26,7 +26,7 @@ body {
   align-items: center; /* Ensure vertical centering */
   padding: 1%;
   background-color: #fdfbf9;
-  height: 7vh;
+  height: 5vh;
   width: 100vw;
 }
 
@@ -513,16 +513,19 @@ input[type="checkbox"] {
 }
 
 .sidebar {
-  position: absolute;
-  top: 10%;
-  right: -30vw; /* Initially hidden outside the viewport */
+  position: fixed; /* Change to fixed positioning */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the div */
   width: 30%;
-  height: 80%;
+  height: 85%;
   border-radius: 5%;
   background-color: #fff;
-  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
-  transition: right 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  opacity: 0; /* Initially hidden */
+  visibility: hidden; /* Initially hidden */
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
 .sidebar-wrapper {
@@ -537,7 +540,48 @@ input[type="checkbox"] {
 
 /* Show the sidebar when the class is added */
 .sidebar-open {
-  right: 0;
+  opacity: 1; /* Show the modal */
+  visibility: visible; /* Make it visible */
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(5px); /* Apply a blur effect */
+  -webkit-backdrop-filter: blur(5px); /* For Safari */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.7
+  ); /* Adjust the background color and opacity */
+  z-index: 999; /* Ensure this is below the modal */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.backdrop-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.exit-button {
+  position: absolute;
+  top: 25px;
+  left: 30px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: #333; /* Adjust color as needed */
+}
+
+.exit-button:hover {
+  color: #666; /* Change color on hover */
 }
 
 .message {
@@ -680,7 +724,7 @@ input[type="checkbox"] {
 }
 
 .input-field input {
-  width: 100%;
+  width: 90%;
   height: 100%;
   border: none;
   outline: none;
@@ -699,7 +743,7 @@ input[type="checkbox"] {
 .input-field .form-label {
   position: absolute;
   top: 50%;
-  left: 3%; /* Adjust the left positioning to align with the input box */
+  left: 5%; /* Adjust the left positioning to align with the input box */
   font-size: 15px;
   padding: 0 10px;
   color: #53443a;
@@ -730,7 +774,7 @@ input[type="checkbox"] {
   color: #ffffff;
   font-family: "Inter-SemiBold", Helvetica;
   font-size: 100%;
-  margin-left: 3.5%;
+  /*margin-left: 3.5%;*/
   border: none;
   outline: none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -883,11 +927,11 @@ input[type="checkbox"] {
 }
 
 .button-wrapper {
-  width: 100%;
+  width: 90%;
   height: 8%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: left;
   margin-top: 2%;
 }
 .button-wrapper-contained {
@@ -912,7 +956,7 @@ input[type="checkbox"] {
   color: #ffffff;
   font-family: "Inter-SemiBold", Helvetica;
   font-size: 100%;
-  margin-left: 3.5%;
+  /*margin-left: 3.5%;*/
   border: none;
   outline: none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

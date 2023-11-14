@@ -1,0 +1,39 @@
+.clock {
+  /* center the clock position */
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.clock h1 {
+  font-size: 4rem;
+  color: #ffffff;
+  text-shadow: 0 0 10px #423f3f;
+  font-family: Inter-Bold;
+  animation: animate 1s linear infinite;
+}
+
+.date {
+  /* center the clock position */
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.date h3 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  text-shadow: 0 0 10px #423f3f;
+  font-family: Inter-Bold;
+  animation: animate 1s linear infinite;
+}
+
+.weather {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}

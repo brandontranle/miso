@@ -1,7 +1,19 @@
-export const TasksWidget = () => {
+export const TasksWidget = ({ handleMinimize, isMinimized }) => {
   return (
     <div className="tasks-widget">
-      <p> This is the Tasks widget! </p>
+      <div className="widget-header">
+        <p className="widget-title">tasks</p>
+        <button
+          className="minimize-symbol"
+          onClick={() => handleMinimize()}
+        ></button>
+      </div>
+      <>
+        <div className="widget-line"></div>
+        <div className="widget-content">
+          <p>This is the tasks widget!</p>
+        </div>
+      </>
     </div>
   );
 };

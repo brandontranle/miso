@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import OtpInput from "./OTP-Input";
 import axios from "axios";
 import ChangeEmailForm from "./ChangeEmail";
-import { useUserContext } from "./useUserContext";
+import { useUserContext } from "../useUserContext";
 
 interface verificationProps {
   uid: string;

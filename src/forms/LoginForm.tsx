@@ -1,10 +1,10 @@
-import "./style.css";
+import "../style.css";
 import React from "react";
-import Box from "./Logo-Ext";
+import Box from "../Logo-Ext";
 import axios from "axios";
 import { useState } from "react";
 import VerificationForm from "./Verification-form";
-import { useUserContext } from "./useUserContext"; // Import the user context
+import { useUserContext } from "../useUserContext"; // Import the user context
 
 const LoginForm: React.FC<{ onLoginSuccess: () => void }> = ({
   onLoginSuccess,

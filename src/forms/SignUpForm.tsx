@@ -1,6 +1,6 @@
-import "./style.css";
+import "../style.css";
 import React, { useState } from "react";
-import Box from "./Logo-Ext";
+import Box from "../Logo-Ext";
 import axios from "axios";
 import VerificationForm from "./Verification-form";
 

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { RE_DIGIT } from "./constants";
-/*import "./OtpInput.css";*/
+import { RE_DIGIT } from "../constants";
+import "../OtpInput.css";
 
 export type Props = {
   value: string;

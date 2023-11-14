@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "./UpperSection";
-import LoginScreen from "./Log-In-Screen";
+import LoginScreen from "./forms/Log-In-Screen";
 import WidgetBar from "./Widget-bar";
 import { useState } from "react";
 import "./style.css";
@@ -13,6 +13,12 @@ import SpotifyWidget from "./widgets/SpotifyWidget";
 import CatGPTWidget from "./widgets/CatGPTWidget";
 import NotesWidget from "./widgets/NotesWidget";
 import backgroundImage from "./assets/background.png";
+import Clock from "./home-features/clock";
+import Date from "./home-features/date";
+import Weather from "./home-features/weather";
+import Quote from "./home-features/quote";
+import { useUserContext } from "./useUserContext"; // Import the user context
+import "./features.css";
 
 export const Home: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -96,31 +102,66 @@ export const Home: React.FC = () => {
         break;
       case 2: // Another widget ID
         widgetClass = "hubs-widget";
-        WidgetComponent = <HubsWidget />;
+        WidgetComponent = (
+          <HubsWidget
+            isMinimized={isMinimized}
+            handleMinimize={() => toggleMinimize(widgetId)}
+          />
+        );
         break;
       case 3:
         widgetClass = "timer-widget";
-        WidgetComponent = <TimerWidget />;
+        WidgetComponent = (
+          <TimerWidget
+            isMinimized={isMinimized}
+            handleMinimize={() => toggleMinimize(widgetId)}
+          />
+        );
         break;
       case 4:
         widgetClass = "tasks-widget";
-        WidgetComponent = <TasksWidget />;
+        WidgetComponent = (
+          <TasksWidget
+            isMinimized={isMinimized}
+            handleMinimize={() => toggleMinimize(widgetId)}
+          />
+        );
         break;
       case 5:
         widgetClass = "sounds-widget";
-        WidgetComponent = <SoundsWidget />;
+        WidgetComponent = (
+          <SoundsWidget
+            isMinimized={isMinimized}
+            handleMinimize={() => toggleMinimize(widgetId)}
+          />
+        );
         break;
       case 6:
         widgetClass = "spotify-widget";
-        WidgetComponent = <SpotifyWidget />;
+        WidgetComponent = (
+          <SpotifyWidget
+            isMinimized={isMinimized}
+            handleMinimize={() => toggleMinimize(widgetId)}
+          />
+        );
         break;
       case 7:
         widgetClass = "catGPT-widget";
-        WidgetComponent = <CatGPTWidget />;
+        WidgetComponent = (
+          <CatGPTWidget
+            isMinimized={isMinimized}
+            handleMinimize={() => toggleMinimize(widgetId)}
+          />
+        );
         break;
       case 8:
         widgetClass = "notes-widget";
-        WidgetComponent = <NotesWidget />;
+        WidgetComponent = (
+          <NotesWidget
+            isMinimized={isMinimized}
+            handleMinimize={() => toggleMinimize(widgetId)}
+          />
+        );
         break;
       // Add cases for other widgets as needed ~ these are realistically the ones we are doing for the project, but we will delete if necessary!
       default:
@@ -149,10 +190,16 @@ export const Home: React.FC = () => {
       </div>
       <div className="MainContainer">
         <div className="MainContent">
+          <Clock />
+          <Date />
+          <Weather />
           {activeWidgets.map(renderWidgetContent)}
         </div>
         <WidgetBar onWidgetClick={handleWidgetClick} />
       </div>
+      <div
+        className={`backdrop ${showSidebar ? "backdrop-visible" : ""}`}
+      ></div>
       <LoginScreen showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
     </div>
   );
