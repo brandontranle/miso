@@ -17,9 +17,21 @@ import backgroundImage from "./assets/background.png";
 export const Home: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeWidgets, setActiveWidgets] = useState<number[]>([]); // This now tracks multiple widgets
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [minimizedWidgets, setMinimizedWidgets] = useState<
+    Map<number, boolean>
+  >(new Map());
 
-  const toggleMinimize = () => setIsMinimized(!isMinimized);
+  const toggleMinimize = (widgetId: number) => {
+    setMinimizedWidgets((prev) =>
+      new Map(prev).set(widgetId, !prev.get(widgetId))
+    );
+
+    setActiveWidgets((prevActiveWidgets) =>
+      prevActiveWidgets.filter((id) => id !== widgetId)
+    );
+
+    console.log("Deactivated widget", widgetId);
+  };
 
   const backgroundImageStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -30,21 +42,31 @@ export const Home: React.FC = () => {
 
   const handleWidgetClick = async (widgetId: number) => {
     // Update the active widgets state
-    if (isMinimized) {
-      await toggleMinimize();
+    if (activeWidgets.includes(widgetId)) {
+      // If already active, deactivate by filtering out
+      await setActiveWidgets((prevActiveWidgets) =>
+        prevActiveWidgets.filter((id) => id !== widgetId)
+      );
+
+      await setMinimizedWidgets((prev) =>
+        new Map(prev).set(widgetId, !prev.get(widgetId))
+      );
+
+      console.log("Deactivated widget", widgetId);
       return;
     }
-    /* first time click launch*/
-    setActiveWidgets((prevActiveWidgets) => {
-      // If already active, deactivate by filtering out, otherwise add to active widgets
-      return prevActiveWidgets.includes(widgetId)
-        ? prevActiveWidgets.filter((id) => id !== widgetId)
-        : [...prevActiveWidgets, widgetId];
-    });
-  };
 
+    console.log("Activated widget", widgetId);
+
+    /* first time click launch*/
+
+    setActiveWidgets((prevActiveWidgets) => [...prevActiveWidgets, widgetId]);
+    setMinimizedWidgets((prev) => new Map(prev).set(widgetId, false));
+    return;
+  };
+  /*
   const widgetComponents: { [key: number]: JSX.Element } = {
-    1: <MisoWidget handleMinimize={toggleMinimize} />,
+    1: <MisoWidget handleMinimize={() => toggleMinimize(1)} />,
     2: <HubsWidget />,
     3: <TimerWidget />,
     4: <TasksWidget />,
@@ -54,36 +76,51 @@ export const Home: React.FC = () => {
     8: <NotesWidget />,
     // 2: <OtherWidgetComponent />,
     // ... add other widget components as needed
-  };
+  };*/
 
   const renderWidgetContent = (widgetId: number) => {
     let widgetClass = "";
-    let contentComponent = widgetComponents[widgetId] || null; // Default to null if no component is found
+    //let contentComponent = widgetComponents[widgetId] || null; // Default to null if no component is found
+    let WidgetComponent: JSX.Element | null = null;
+    const isMinimized = minimizedWidgets.get(widgetId) || false;
 
     switch (widgetId) {
       case 1: // Assuming 1 is the ID for the Notes widget
         widgetClass = "miso-widget";
+        WidgetComponent = (
+          <MisoWidget
+            isMinimized={isMinimized}
+            handleMinimize={() => toggleMinimize(widgetId)}
+          />
+        );
         break;
       case 2: // Another widget ID
         widgetClass = "hubs-widget";
+        WidgetComponent = <HubsWidget />;
         break;
       case 3:
         widgetClass = "timer-widget";
+        WidgetComponent = <TimerWidget />;
         break;
       case 4:
         widgetClass = "tasks-widget";
+        WidgetComponent = <TasksWidget />;
         break;
       case 5:
         widgetClass = "sounds-widget";
+        WidgetComponent = <SoundsWidget />;
         break;
       case 6:
         widgetClass = "spotify-widget";
+        WidgetComponent = <SpotifyWidget />;
         break;
       case 7:
         widgetClass = "catGPT-widget";
+        WidgetComponent = <CatGPTWidget />;
         break;
       case 8:
         widgetClass = "notes-widget";
+        WidgetComponent = <NotesWidget />;
         break;
       // Add cases for other widgets as needed ~ these are realistically the ones we are doing for the project, but we will delete if necessary!
       default:
@@ -98,7 +135,7 @@ export const Home: React.FC = () => {
         }`}
       >
         {/* Render the content based on the widgetId */}
-        {contentComponent}
+        {WidgetComponent}
       </div>
     );
   };

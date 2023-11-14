@@ -1,0 +1,661 @@
+export {};
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const cors = require('cors');
+require('dotenv').config({ path: './auth.env' });
+const cron = require('node-cron');
+
+const jwt = require('jsonwebtoken');
+const session = require('express-session');
+
+cron.schedule('* * * * *', async () => {
+  try {
+    const currentTime = Date.now();
+
+    // Find and delete OTP verification records that have expired
+    await UserOTPVerification.deleteMany({ expiresAt: { $lt: currentTime } });
+
+    console.log('Expired OTP verification records deleted.');
+  } catch (error) {
+    console.error('Error deleting expired OTP verification records:', error);
+  }
+});
+
+
+//email handler
+const nodemailer = require('nodemailer');
+
+console.log('AUTH_EMAIL:', process.env.AUTH_EMAIL);
+console.log('AUTH_PASS:', process.env.AUTH_PASS);
+console.log('JWT_SECRET:', process.env.JWT_SECRET)
+
+
+const jwtSecret = process.env.JWT_SECRET;
+
+
+const app = express();
+const port = process.env.PORT || 5000;
+
+//email transporter
+
+var transporter = nodemailer.createTransport({
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "34b585de5a86ea",
+    pass: "12a2b0193b9faa"
+  }
+});
+
+transporter.verify((error, success)=>{
+  if(error){
+console.log(error);
+console.log("error occured at 193");
+  }
+  else{
+      console.log("Ready for message");
+      console.log(success);
+  }
+
+});
+
+
+app.use(bodyParser.json());
+const corsOptions = {
+  origin: 'http://localhost:5173', // Replace with your React app's URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+/* Authentication token to check if a user is logged in at a given moment */
+app.use(
+  session({
+    secret: jwtSecret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {secure: false},
+  })
+);
+
+
+
+
+
+app.use(cors(corsOptions));
+
+// Connect to MongoDB
+//Mongo Version: 6.0.1: mongodb://127.0.0.1:27017/auth ~ use this command make sure to install node.js 18.18.10 (LTS)
+mongoose.connect('mongodb://127.0.0.1:27017/auth', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log('Connected to MongoDB');
+})
+.catch(error => {
+  console.error('MongoDB connection error:', error);
+});
+
+// Define User model
+const User = mongoose.model('User', {
+  firstName: String,
+  lastName: String,
+  email: String,
+  password: String,
+  verified: Boolean,
+});
+
+const UserData = mongoose.model('UserData', {
+  userId: String,
+  todos: [{ text: String, complete: Boolean, id: String, }], // Add this field
+  todosHistory: [{ text: String, complete: Boolean, id: String, }], // Add this field
+})
+
+
+//Define UserOTPVerification model
+const UserOTPVerification = mongoose.model('UserOTPVerification', {
+  userId: String,
+  otp: String,
+  createdAt: Date,
+  expiresAt: Date,
+});
+
+// Handle sign-up request
+app.post('/signup', async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
+
+  /* Email Validation */
+  let re =
+  /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
+/*Validate email and password here*/
+  const isEmailValid = re.test(email);
+
+  if (!isEmailValid) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
+
+
+  // Check if email already exists
+  const existingUser = await User.findOne({ email: email.toLowerCase() });
+  if (existingUser) {
+    console.error('Sign-up error:', 'Email already exists')
+    return res.status(400).json({ error: 'Email already exists' });
+  }
+
+  //verify first before hashing the password and inserting into database. 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    const newUser = new User({firstName, lastName, email, password: hashedPassword, verified: false// Add this field
+  });
+    const savedUser = await newUser.save();
+    //Handle account verification
+  //sendVerificationEmail(result, res);
+
+  // Create UserData document for the user
+  const userData = new UserData({
+    _id: savedUser._id, // Use the same ID as the user's ID
+    userId: savedUser._id.toString(), // Use the user's ID as the userId
+    todos: [{ text: "Create your first task!", complete: false, id: "12345" }],
+    // Add other user-specific data if needed
+  });
+
+  await userData.save();
+
+    sendVerificationEmail(savedUser, res);
+    res.status(201).json({ message: 'User registered successfully', userId: savedUser._id.toString()});
+  } catch (error) {
+    console.error('Sign-up error:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+
+
+
+app.post('/getTodos', async (req, res) => {
+  try {
+    const { userId, page } = req.body; // Include 'page' parameter for pagination
+    console.log("User ID: " + userId);
+    console.log("Page: " + page);
+
+    // Define the number of tasks to return per page
+    const pageSize = 6;
+
+    // Fetch the user's todos based on the userId
+    const user = await UserData.findOne({ userId });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const todos = user.todos || []; // Ensure there are todos
+    console.log("All Todos Count: " + todos.length);
+
+    // Calculate the start and end indices for pagination
+    const startIndex = page * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    // Get the subset of todos for the current page
+    const paginatedTodos = todos.slice(startIndex, endIndex);
+
+    console.log("Retrieved!");
+    console.log("Paginated Todos Count: " + paginatedTodos.length);
+
+    res.status(200).json({ todos: paginatedTodos });
+  } catch (error) {
+    console.error('Error fetching todos:', error);
+    res.status(500).json({ error: 'An error occurred while fetching todos' });
+  }
+});
+
+
+
+
+
+const sendVerificationEmail = async ({_id, email}, res) => {
+  try{
+    //generate an OTP (One-time-password verification code)
+    const otp = Math.floor(1000 + Math.random() * 9000);
+ 
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      to: email,
+      subject: 'Miso - Email Verification (OTP)',
+      html: '<p> Please enter the OTP: ' + otp + ' to verify your email address and complete your regristration for Miso!</p>',
+
+    };
+    
+      const saltRounds = 10;
+    const hashedOTP = await bcrypt.hash(otp.toString(), saltRounds);
+    console.log('Generated OTP:', hashedOTP);
+
+
+    const newOTPVerification = await new UserOTPVerification({
+      userId: _id,
+      otp: hashedOTP,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 600000, //expires in 10 minutes
+    });
+
+    //save otp record
+    await newOTPVerification.save();
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+    
+  
+  } catch (error){
+    console.error('Email verification error:', error);
+  }
+
+}
+
+app.post('/sendOTP', async(req, res) => {
+
+  try{
+    let {email, userId} = req.body;
+
+    if (!userId || !email){
+      throw Error('User ID and email are required');
+
+    } else {
+      await  UserOTPVerification.deleteMany({userId});
+      sendVerificationEmail({_id:userId, email}, res);
+      res.status(200).json({ message: 'Email successfully resent' }); // Add this line
+
+    }
+
+  } catch (error){
+    console.error('Resend OTP verification error:', error);
+    res.status(500).json({ error: 'An error occurred while resending OTP' });
+
+  }
+
+
+});
+
+
+
+app.post('/verifyOTP', async(req, res) => {
+try{
+  let { userId, otp } = req.body;
+
+  if (!userId || !otp) {
+    console.log('Verify ID:', userId);
+    console.log('Verify Status:', otp);
+    
+    throw Error('User ID and OTP are required');
+  } else{
+
+    //const objectIdUserId = mongoose.Types.ObjectId(userId); // Convert to ObjectId
+
+    const UserOTPVerificationRecords = await UserOTPVerification.find({
+      userId,
+    })
+    if (UserOTPVerificationRecords.length === 0) {
+      throw new Error('Invalid user ID');
+    } else {
+      const {expiresAt} = UserOTPVerificationRecords[0];
+      const hashedOTP = UserOTPVerificationRecords[0].otp;
+
+      if (expiresAt < Date.now()){
+        //user otp record has expired
+        await UserOTPVerification.deleteMany({userId});
+        return res.status(400).json({ error: 'OTP has expired, please request again' });
+      } else{
+       const validOTP = await bcrypt.compare(otp, hashedOTP);
+
+        if (!validOTP){
+          return res.status(400).json({ error: 'Invalid code passed, Check your inbox.' });
+        } else {
+          await User.updateOne({_id: userId}, {verified: true});
+          await UserOTPVerification.deleteMany({userId: userId});
+
+          //fetch the name of the user to be returned later
+          const response = await User.findOne({_id: userId});
+
+          console.log('User has been verified');
+          return res.status(200).json({ message: 'User email has been verified', userId: userId, name: response.firstName });
+        }
+
+      }
+    }
+
+  }
+  } catch (error) {
+    console.error('OTP verification error:', error);
+        res.status(500).json({ error: 'An error occurred during OTP verification' });
+
+}
+
+})
+
+
+app.post('/resendOTPVerification', async(req, res) => {
+
+  try{
+    let {userId, email} = req.body;
+
+    if (!userId || !email){
+      throw Error('User ID and email are required');
+
+    } else {
+      await  UserOTPVerification.deleteMany({userId});
+      sendVerificationEmail({_id:userId, email}, res);
+      res.status(200).json({ message: 'Email successfully resent' }); // Add this line
+
+    }
+
+  } catch (error){
+    console.error('Resend OTP verification error:', error);
+    res.status(500).json({ error: 'An error occurred while resending OTP' });
+
+  }
+
+
+});
+
+
+
+const requireAuth = (req, res, next) => {
+  const token = req.session.token;
+
+  if (token) {
+    jwt.verify(token, jwtSecret, (err, decodedToken) => {
+      if (err) {
+        console.error('JWT verification error:', err);
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      req.userId = decodedToken.userId;
+      next();
+    });
+  } else {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+
+
+app.post('/login', async (req, res) => {
+
+  const { email, password } = req.body;
+
+  const existingUser = await User.findOne({ email: email.toLowerCase() });
+  if (!existingUser) {
+    console.error('Login error:', 'Email does not exist')
+    return res.status(400).json({ error: 'Email does not exist' });
+  }
+
+  const validPassword = await bcrypt.compare(password, existingUser.password);
+  if (!validPassword) {
+    console.error('Login error:', 'Password is incorrect')
+    return res.status(400).json({ error: 'Password is incorrect' });
+  }
+
+
+  /*if the user successfully logins, generate a token and store it in the session*/
+  const token = jwt.sign({ userId: existingUser._id }, jwtSecret, { expiresIn: '1h' });
+ 
+
+  req.session.token = token;
+  
+  req.session.userId = existingUser._id.toString(); // Set userId in the session 
+
+  console.log('Your token is: ', token);
+  //retrieve first name from logged in user
+  const { firstName } = existingUser;
+  console.log('First name is: ', firstName);
+
+  console.log('Your id is:', existingUser._id.toString());
+
+  res.status(200).json({ message: 'Login successful', name: firstName, userId: existingUser._id.toString() });
+
+})
+
+
+app.get('/verifyStatus', async (req, res) => {
+  const { email } = req.query; // Assuming you pass the email as a query parameter
+
+  try {
+    const user = await User.findOne({ email: email.toLowerCase() });
+    
+    if (!user) {
+      console.error('Verify Status error:', 'User not found');
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    console.log('Verify Status:', user.verified);
+    console.log('Verify ID from /verifyStatus:', user._id.toString());
+    res.status(200).json({ isVerified: user.verified, userId: user._id.toString() });
+  } catch (error) {
+    console.error('Verify Status error:', (error as any).message);
+    res.status(500).json({ error: 'An error occurred while checking verification status' });
+  }
+});
+
+app.post('/changeEmail', async (req, res) => {
+  
+  try {
+    const { userId, newEmail } = req.body;
+
+
+  //check for duplicate email, not allowed to change email to already existing email
+  const existingUser = await User.findOne({ email: newEmail.toLowerCase() });
+  if (existingUser) {
+    console.error('Change Email Error:', 'Email already exists')
+    return res.status(400).json({ error: 'You cannot change your email to one that does not belong to you!' });
+  }
+
+    let re =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  /*Validate email and password here*/
+  const isEmailValid = re.test(newEmail);
+
+  if (!isEmailValid) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
+
+  console.log("id:" + userId);
+
+  const updatedUser = await User.findByIdAndUpdate(userId, { email: newEmail.toLowerCase() }, { new: true } // This option returns the updated document
+  );
+
+
+  if (!updatedUser) {
+    console.error('Change email error:', 'User not found');
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  console.log('User email updated:', updatedUser.email);
+
+  await UserOTPVerification.deleteOne(
+    { userId: userId },
+    { sort: { createdAt: 1 } } // Sort in ascending order (oldest first)
+  );
+
+
+
+
+  sendVerificationEmail(updatedUser, res);
+  console.log(updatedUser.email);
+  res.status(200).json({ message: 'Email changed successfully' });
+} catch (error) {
+  console.error('Change email error:', (error as any).message);
+  res.status(500).json({ error: 'An error occurred while changing the email' });
+}
+});
+
+
+
+
+app.post('/addTodo', async (req, res) => {
+  try {
+    const { userId, todo } = req.body;
+
+    console.log("User ID: " + userId);
+    console.log("New Todo: " + todo);
+
+
+    // Fetch the user's existing todos from the database
+    const user = await UserData.findOne({userId});
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Update the user's todos with the new todo
+    user.todos.push(todo);
+    await user.save();
+    console.log("Updated with task: " + user.todos)
+
+    // Return the updated todos list
+    res.status(200).json({ todos: user.todos });
+  } catch (error) {
+    console.error("Error adding todo:", error);
+    res.status(500).json({ error: "An error occurred while adding the todo" });
+  }
+});
+
+app.post('/deleteTodo', async (req, res) => {
+console.log("inside of todo request!");
+  try{
+    const {userId, todoId} = req.body;
+
+    console.log("User ID: " + userId);
+    console.log("Todo to delete: " + todoId);
+
+    const user = await UserData.findOne({userId});
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ error: "User not found" });
+    }
+
+
+    //grab the todo by id
+    const todo = user.todos.find((todo) => todo.id === todoId);
+    if (!todo) {
+      console.log("Todo not found");
+      return res.status(404).json({ error: "Todo not found" });
+    }
+
+    //add the todo to the user history table
+    user.todosHistory.push(todo);
+
+    // Delete task
+    //user.todos.pull(todoId);
+    user.todos = user.todos.filter((todo) => todo.id !== todoId);
+    await user.save();
+
+    console.log("Updated with task: " + user.todos)
+    
+
+    //save the deleted task into the history table
+    console.log("History updated!");
+
+  //console log the updated array size
+  /* fill this in */
+
+  // Return the updated todos list
+  res.status(200).json({ todos: user.todos });
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    res.status(500).json({ error: "An error occurred while deleting the todo" });
+  }
+  });
+
+
+  app.post('/updateTodo', async (req, res) => {
+
+    try{
+      const {userId, todoId, todoStatus} = req.body;
+      const user = await UserData.findOne({userId});
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      //grab the todo by id
+      const todo = user.todos.find((todo) => todo.id === todoId);
+      if (!todo) {
+        console.log("Todo not found");
+        return res.status(404).json({ error: "Todo not found" });
+      }
+
+      //update the todo status
+      todo.complete = todoStatus;
+      console.log("updated todo status from the backend!");
+      await user.save();
+      return res.status(200).json({ todos: user.todos });
+    }
+    catch (error){
+      console.error("Error updating todo:", error);
+      res.status(500).json({ error: "An error occurred while updating the todo" });
+
+    }
+
+  });
+
+
+
+
+
+  // Add this route to your Express app
+
+app.post('/loadMoreTasks', async (req, res) => {
+  try {
+    const { userId, currentPage, itemsPerPage } = req.body;
+
+    // Fetch the user's todos based on the userId
+    const user = await UserData.findOne({ userId });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Calculate the start and end indices for pagination
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    // Retrieve the tasks for the current page
+    const tasksForPage = user.todos.slice(startIndex, endIndex);
+
+    // Check if there are more tasks
+    const hasMoreTasks = endIndex < user.todos.length;
+
+    res.status(200).json({ tasks: tasksForPage, hasMore: hasMoreTasks });
+  } catch (error) {
+    console.error('Error loading more tasks:', error);
+    res.status(500).json({ error: 'An error occurred while loading more tasks' });
+  }
+});
+
+
+app.post('/getTotalTodos', async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    // Fetch the user's todos based on the userId
+    const user = await UserData.findOne({ userId });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const totalTodos = user.todos.length; // Get the total count of todos
+    console.log("Total Todos:", totalTodos);
+
+    res.status(200).json({ total: totalTodos });
+  } catch (error) {
+    console.error('Error fetching total todos:', error);
+    res.status(500).json({ error: 'An error occurred while fetching total todos' });
+  }
+});

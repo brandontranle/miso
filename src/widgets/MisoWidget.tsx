@@ -7,7 +7,7 @@ Pass a function from the home component that makes thee widget window display to
 
 */
 
-export const MisoWidget = ({ handleMinimize }) => {
+export const MisoWidget = ({ handleMinimize, isMinimized }) => {
   return (
     <div className="miso-widget">
       <div className="widget-header">
