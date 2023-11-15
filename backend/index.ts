@@ -184,12 +184,10 @@ app.listen(port, () => {
 
 app.post('/getTodos', async (req, res) => {
   try {
-    const { userId, page } = req.body; // Include 'page' parameter for pagination
+    const { userId } = req.body; // Include 'page' parameter for pagination
     console.log("User ID: " + userId);
-    console.log("Page: " + page);
 
     // Define the number of tasks to return per page
-    const pageSize = 6;
 
     // Fetch the user's todos based on the userId
     const user = await UserData.findOne({ userId });
@@ -197,20 +195,16 @@ app.post('/getTodos', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const todos = user.todos || []; // Ensure there are todos
+    const todos = user.todos; // Ensure there are todos
     console.log("All Todos Count: " + todos.length);
 
     // Calculate the start and end indices for pagination
-    const startIndex = page * pageSize;
-    const endIndex = startIndex + pageSize;
 
     // Get the subset of todos for the current page
-    const paginatedTodos = todos.slice(startIndex, endIndex);
 
     console.log("Retrieved!");
-    console.log("Paginated Todos Count: " + paginatedTodos.length);
 
-    res.status(200).json({ todos: paginatedTodos });
+    res.status(200).json({ todos: todos });
   } catch (error) {
     console.error('Error fetching todos:', error);
     res.status(500).json({ error: 'An error occurred while fetching todos' });
@@ -659,3 +653,121 @@ app.post('/getTotalTodos', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching total todos' });
   }
 });
+
+app.post('/editTodo', async (req, res) => {
+  const { userId, todoId, newText } = req.body;
+
+  try {
+      // Assuming the Todo model has a userId and an id field
+      // and you are updating the 'text' field of the todo
+      const user = await UserData.findOne({userId});
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const todo = await user.todos.find(todo => todo.id === todoId) 
+      if (!todo) {
+        console.log("Todo not found");
+        return res.status(404).json({ error: "Todo not found" });
+      }
+
+      todo.text = newText;
+      await user.save();
+
+      res.status(200).json({ message: 'Todo updated successfully', todo: todo.text });
+      }
+   catch (error) {
+      console.error('Error updating todo:', error);
+      res.status(500).json({ message: 'Error updating todo' });
+  }
+});
+
+
+app.post('/getDeletedTodos', async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const user = await UserData.findById(userId);
+    if (user) {
+      res.status(200).json({ deletedTodos: user.todosHistory });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching deleted todos" });
+  }
+});
+
+
+
+app.post('/deleteTodoInHistory', async (req, res) => {
+
+    try{
+      const {userId, todoId} = req.body;
+  
+      console.log("User ID: " + userId);
+      console.log("Todo to delete: " + todoId);
+  
+      const user = await UserData.findOne({userId});
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+  
+      //grab the todo by id
+      const todo = user.todosHistory.find((todo) => todo.id === todoId);
+      if (!todo) {
+        console.log("Todo not found");
+        return res.status(404).json({ error: "Todo not found" });
+      }
+  
+      //add the todo to the user history table
+      user.todosHistory = user.todosHistory.filter((todo) => todo.id !== todoId)
+  
+      // Delete task
+      //user.todos.pull(todoId);
+      await user.save();      
+  
+      //save the deleted task into the history table
+      console.log("History updated!");
+  
+    //console log the updated array size
+    /* fill this in */
+  
+    // Return the updated todos list
+    res.status(200).json({ history: user.todosHistory });
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+      res.status(500).json({ error: "An error occurred while deleting the todo" });
+    }
+    });
+
+
+  app.post('/restoreTodo', async (req, res) => {
+
+    try {
+      const { userId, todoId } = req.body;
+      /* switch the todo from todosHistory to todos*/
+      const user = await UserData.findOne({userId});
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const todo = user.todosHistory.find((todo) => todo.id === todoId);
+
+      user.todos.push(todo);
+      user.todosHistory = user.todosHistory.filter((todo) => todo.id !== todoId)
+      await user.save();
+
+      console.log("Todos and history updated!");
+      res.status(200).json({ todos: user.todos, history: user.todosHistory });
+    } catch (error) {
+
+      console.log("error restoring a todo: ", error);
+      res.status(500).json({ error: "An error occurred while restoring the todo" });
+
+    }
+
+  });

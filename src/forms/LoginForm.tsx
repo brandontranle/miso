@@ -76,7 +76,7 @@ const LoginForm: React.FC<{ onLoginSuccess: () => void }> = ({
         setMessage("Invalid credentials");
       }
     } catch (error) {
-      setMessage("An error occurred during login");
+      setMessage("Invalid Credentials");
     }
   };
 

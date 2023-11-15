@@ -8,7 +8,7 @@
   align-items: center;
   z-index: 100; /* Ensure it's above other content */
   width: 962px; /* Adjust as needed */
-  height: 67px;
+  height: 57px;
   flex-shrink: 0;
   background-color: rgb(255, 255, 255);
   margin: auto; /* This centers the menu bar horizontally */
@@ -42,9 +42,15 @@
   text-align: center;
 }
 
+.widget__name {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0;
+}
 .widget-container:hover {
   cursor: pointer;
-  transform: translateY(-5px); /* Adjust the distance you want to move */
+  transform: translateY(-2px); /* Adjust the distance you want to move */
 }
 
 .widget-window {
@@ -94,10 +100,14 @@
 
 .minimize-symbol {
   cursor: pointer;
-  background-color: #4e4e4e;
-  border-radius: 20px;
   margin-right: 10px;
-  /* Add any specific styling you need for your minimize button */
+  border: none; /* Remove the border */
+  background: none; /* Remove the background */
+  padding: 0; /* Remove padding */
+  display: inline-flex; /* Use inline-flex to align SVG inside the button */
+  align-items: center; /* Align items center to vertically center the SVG */
+  justify-content: center; /* Center content horizontally */
+  outline: none; /* Remove outline to prevent focus outline */
 }
 
 .widget-line {
@@ -108,6 +118,8 @@
 
 .widget-content {
   text-align: center;
+  overflow-y: auto;
+  max-height: 250px; /* Set a maximum height */
 }
 
 /**** MINIMIZE FEATURE ******/
@@ -196,6 +208,42 @@
   border-radius: 13px;
 }
 
+.history-or-add {
+  display: flex;
+  position: absolute;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2%;
+  right: 60px;
+  background: transparent; /* Make the background transparent */
+  border: none; /* Remove the border */
+  padding: 0; /* Remove padding, adjust as necessary for your design */
+  -webkit-appearance: none; /* Remove default browser styling for WebKit browsers */
+  -moz-appearance: none; /* Remove default browser styling for Mozilla browsers */
+  cursor: pointer; /* Optional */
+}
+
+.form-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.deleted-tasks-container {
+  width: 100%;
+  text-align: center;
+}
+
+.search {
+  width: 100%;
+  height: 5%;
+  font-size: 130%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3%;
+}
+
 /****** catgpt widget ********/
 .catgpt-widget {
   height: 100%;
@@ -246,4 +294,26 @@
   left: 50%; /* Start at the half-way point of the MainContainer */
   transform: translateX(-50%); /* This will center the widget */
   border-radius: 13px;
+}
+
+/**** scroll bar ******/
+.widget-content::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Light grey track */
+}
+
+/* This styles the scrollbar thumb (the part that you drag) */
+.widget-content::-webkit-scrollbar-thumb {
+  background-color: #cdcccc; /* Dark grey thumb */
+  border-radius: 10px; /* Rounded corners on the thumb */
+  border: 2px solid #ffffff; /* Adds a white border around the thumb */
+}
+
+/* This styles the scrollbar itself (including the thumb, track, and buttons) */
+.widget-content::-webkit-scrollbar {
+  width: 12px; /* Width of the entire scrollbar */
+}
+
+/* Optional: style the scrollbar corner */
+.widget-content::-webkit-scrollbar-corner {
+  background-color: black;
 }

@@ -45,7 +45,7 @@ export const WidgetBar: React.FC<WidgetBarProps> = ({ onWidgetClick }) => {
           onClick={() => onWidgetClick(widget.id)} // Use the prop here
         >
           {widget.icon}
-          {widget.name}
+          <p className="widget__name"> {widget.name} </p>
         </div>
       ))}
     </div>
