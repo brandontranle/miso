@@ -476,6 +476,7 @@ body {
   display: flex; /* Use flexbox to align form elements */
   justify-content: center; /* Center form elements horizontally */
   align-items: center; /* Center form elements vertically*/
+  margin-top: 2%;
   margin-bottom: 3%;
 }
 
@@ -974,4 +975,9 @@ input[type="checkbox"] {
   height: 100%;
   position: relative;
   display: flex;
+}
+
+input::placeholder {
+  color: #53443a;
+  font-size: 1rem;
 }

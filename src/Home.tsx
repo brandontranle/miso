@@ -13,6 +13,8 @@ import SpotifyWidget from "./widgets/SpotifyWidget";
 import CatGPTWidget from "./widgets/CatGPTWidget";
 import NotesWidget from "./widgets/NotesWidget";
 import backgroundImage from "./assets/background.png";
+import backgroundGif from "./assets/ghibli.gif";
+import backgroundGif2 from "./assets/ghibli2.gif";
 import Clock from "./home-features/clock";
 import Date from "./home-features/date";
 import Weather from "./home-features/weather";
@@ -40,7 +42,7 @@ export const Home: React.FC = () => {
   };
 
   const backgroundImageStyle = {
-    backgroundImage: `url(${backgroundImage})`,
+    backgroundImage: `url(${backgroundGif2})`,
     backgroundSize: "cover", // Optional: Scale the background image to cover the entire container
     backgroundRepeat: "no-repeat", // Optional: Prevent background image from repeating
     backgroundPosition: "center center", // Optional: Center the background image

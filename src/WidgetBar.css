@@ -317,3 +317,14 @@
 .widget-content::-webkit-scrollbar-corner {
   background-color: black;
 }
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .menu-bar {
+    width: 962px;
+  }
+
+  .widget-window {
+    width: 300px;
+    height: 200px;
+  }
+}
