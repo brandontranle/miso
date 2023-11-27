@@ -46,7 +46,10 @@ var transporter = nodemailer.createTransport({
   auth: {
     user: "34b585de5a86ea",
     pass: "12a2b0193b9faa"
-  }
+  },
+  tls: {
+    rejectUnauthorized: false,
+},
 });
 
 transporter.verify((error, success)=>{
@@ -771,3 +774,14 @@ app.post('/deleteTodoInHistory', async (req, res) => {
     }
 
   });
+
+
+
+  app.post('/getWeather', async (req, res) => {
+
+    const { userId } = req.body;
+
+
+
+
+  })
