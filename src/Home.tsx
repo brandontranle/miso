@@ -57,9 +57,9 @@ export const Home: React.FC = () => {
     // Update the active widgets state
     if (activeWidgets.includes(widgetId)) {
       // If already active, deactivate by filtering out
-      await setActiveWidgets((prevActiveWidgets) =>
+      /*await setActiveWidgets((prevActiveWidgets) =>
         prevActiveWidgets.filter((id) => id !== widgetId)
-      );
+      );*/
 
       await setMinimizedWidgets((prev) =>
         new Map(prev).set(widgetId, !prev.get(widgetId))

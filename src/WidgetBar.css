@@ -296,6 +296,8 @@
   width: 509px;
   height: 210px;
   position: absolute;
+  min-width: 250px;
+  min-height: 150px;
   /* Position it at the bottom right of the MainContainer */
   flex-shrink: 0;
   top: 57%; /* Adjust as needed */
@@ -307,20 +309,55 @@
   left: 0;
 }
 
-notebook-wrapper {
+.notebook {
   width: 100%;
+  height: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
 }
-notebook-content {
+
+.notes-widget .widget-content {
+  height: 100%;
+  width: 100%;
+  padding-left: 15px;
+  margin: 0;
+  border: 0;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+.notebook-content {
   width: 100%;
   height: 100%; /* Full height */
-  padding: 10px; /* Add some padding */
   border: none; /* Remove border */
   margin: 0; /* Remove margin */
-  resize: vertical; /* Allow only vertical resizing */
+  resize: none; /* Allow only vertical resizing */
+  z-index: 100;
+}
 
-  box-sizing: border-box; /* Include padding in total width and height */
+.notebook-content::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Light grey track */
+}
+
+/* This styles the scrollbar thumb (the part that you drag) */
+.notebook-content::-webkit-scrollbar-thumb {
+  background-color: #cdcccc; /* Dark grey thumb */
+  border-radius: 10px; /* Rounded corners on the thumb */
+  border: 2px solid #ffffff; /* Adds a white border around the thumb */
+  padding: 0px;
+}
+
+/* This styles the scrollbar itself (including the thumb, track, and buttons) */
+.notebook-content::-webkit-scrollbar {
+  width: 8px; /* Width of the entire scrollbar */
+}
+
+select {
+  outline: none;
+  border: none;
+  color: #4e4e4e;
 }
 
 /***** timer widget *****/
