@@ -22,6 +22,11 @@ import Quote from "./home-features/quote";
 import { useUserContext } from "./useUserContext"; // Import the user context
 import "./features.css";
 
+import Draggable, { DraggableCore } from "react-draggable";
+import { Resizable, ResizableBox } from "react-resizable";
+import "react-resizable/css/styles.css"; // Import the CSS for resizable
+import "./resizable.css";
+
 export const Home: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeWidgets, setActiveWidgets] = useState<number[]>([]); // This now tracks multiple widgets
@@ -42,7 +47,7 @@ export const Home: React.FC = () => {
   };
 
   const backgroundImageStyle = {
-    backgroundImage: `url(${backgroundGif2})`,
+    backgroundImage: `url(${backgroundGif})`,
     backgroundSize: "cover", // Optional: Scale the background image to cover the entire container
     backgroundRepeat: "no-repeat", // Optional: Prevent background image from repeating
     backgroundPosition: "center center", // Optional: Center the background image
@@ -171,15 +176,19 @@ export const Home: React.FC = () => {
     }
 
     return (
-      <div
-        key={widgetId}
-        className={`widget-window ${widgetClass} ${
-          isMinimized ? "minimized" : ""
-        }`}
-      >
-        {/* Render the content based on the widgetId */}
-        {WidgetComponent}
-      </div>
+      <Draggable handle=".widget-drag-handle">
+        <div
+          key={widgetId}
+          className={`widget-window ${widgetClass} ${
+            isMinimized ? "minimized" : ""
+          }`}
+        >
+          <div className="widget-drag-handle">
+            {/* Render the content based on the widgetId */}
+            {WidgetComponent}
+          </div>
+        </div>
+      </Draggable>
     );
   };
 
