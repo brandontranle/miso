@@ -80,10 +80,10 @@ export const ToDoListItem: React.FC<ToDoListItemProps> = ({
       )}{" "}
       {/* Only show the edit and delete buttons if the task is not deleted */}
       {isDeleted && (
-        <>
+        <div className="item-button-container">
           <ItemRetrieveButton onClick={() => retrieveTodo(todo.id)} />
           <ItemDeleteButton onClick={() => deleteTodo(todo.id)} />
-        </>
+        </div>
       )}
     </div>
   );
