@@ -44,6 +44,7 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
           "http://localhost:5000/createNotebook",
           {
             userId,
+            notebookId,
           }
         );
       } catch (error) {}
@@ -109,7 +110,11 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
           +{" "}
         </button>
 
-        <select value={currentNotebookId} onChange={handleNotebookChange}>
+        <select
+          value={currentNotebookId}
+          onChange={handleNotebookChange}
+          placeholder=""
+        >
           {notebooks.map((notebook) => (
             <option key={notebook.id} value={notebook.id}>
               {notebook.title}

@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect } from "react";
+import react from "react";
 import Navbar from "./UpperSection";
 import LoginScreen from "./forms/Log-In-Screen";
 import WidgetBar from "./Widget-bar";
@@ -33,6 +34,8 @@ export const Home: React.FC = () => {
   const [minimizedWidgets, setMinimizedWidgets] = useState<
     Map<number, boolean>
   >(new Map());
+
+  const [timeSpentOnPage, setTimeSpentOnPage] = useState(0);
 
   const toggleMinimize = (widgetId: number) => {
     setMinimizedWidgets((prev) =>
