@@ -32,3 +32,8 @@
   font-family: "Inter-Black";
   src: url("fonts/Inter-Black.ttf");
 }
+
+@font-face {
+  font-family: "CircularStd-Bold";
+  src: url("fonts/CircularStd-Bold.ttf");
+}

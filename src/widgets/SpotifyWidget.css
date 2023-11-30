@@ -6,13 +6,12 @@
     background-color: #1db954;
     color: white;
     padding: 10px 20px;
-    font-size: 16px;
-    font-family: "Times New Roman";
+    font-size: 20px;
+    font-family: "CircularStd-Bold";
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-
     display: block;
     margin: 0 auto;
   }
@@ -20,7 +19,7 @@
   .button-container {
     text-align: center;
   }
-  
+
   .spotify-login-button:hover {
     background-color: #168f49;
   }
@@ -28,5 +27,9 @@
   .widget-content{
     background-color: white;
     overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 

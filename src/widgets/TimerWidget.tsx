@@ -1,6 +1,14 @@
 import "./TimerWidget.css";
+import { useState, useEffect, useRef } from 'react';
 
 export const TimerWidget = ({ handleMinimize, isMinimized }) => {
+  let refInstance = useRef(null);
+  const [timerOption, setTimerOption] = useState('pomodoro');
+
+  const handleTimerOption = (option) => {
+    setTimerOption(option);
+  };
+
   return (
     <div className="timer-widget">
       <div className="widget-header">
@@ -25,7 +33,11 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
       <>
         <div className="widget-line"></div>
         <div className="widget-content">
-          <p>This is the timer widget!</p>
+          <div className = "timer-options">
+             <button onClick={() => handleTimerOption('pomodoro')} className="timer-button">Pomodoro</button>
+             <button onClick={() => handleTimerOption('short break')} className="timer-button">Short Break</button>
+             <button onClick={() => handleTimerOption('long break')} className="timer-button">Long Break</button>
+          </div>
         </div>
       </>
     </div>
