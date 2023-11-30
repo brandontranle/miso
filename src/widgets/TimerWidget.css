@@ -1,8 +1,87 @@
-.timer-button{
-    background-color: aliceblue;
-    color:black;
-    border-style: solid;
-    border: 4px black;
-    border-radius: 5px;
-    margin: 5px 5px 7px 10px;
+.timer-button {
+  background-color: aliceblue;
+  color: black;
+  border-style: solid;
+  border: 4px black;
+  border-radius: 5px;
+  margin: 5px 5px 7px 10px;
+  text-align: center;
+}
+
+.timer-status-button {
+  color: transparent;
+  border: none;
+  outline: none;
+  position: relative;
+  left: 20%;
+  background-color: transparent;
+  text-align: center;
+  border-style: none;
+  width: 30%;
+  align-self: center;
+}
+
+.widget-window.timer-widget {
+  resize: none;
+}
+
+.reset-button {
+  outline: none;
+  border: none;
+  text-align: center;
+  align-self: center;
+}
+
+.paw {
+  color: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  margin-top: 4%;
+  left: 46%;
+  background-color: transparent;
+  text-align: center;
+  border-style: none;
+  align-self: center;
+}
+
+.timer {
+  font-size: 3rem;
+  align-self: center;
+  margin-top: 10px;
+  margin-right: 4rem;
+  color: #4e4e4e;
+}
+
+.timer-options {
+  margin-top: 8%;
+  width: 100%;
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: row;
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5%;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 0%;
+}
+
+.timer-widget .widget-content {
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  justify-content: space-evenly;
+}
+
+.status-configuration-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 5px;
+  width: 100%;
+  height: 100%;
 }
