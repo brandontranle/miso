@@ -1,11 +1,13 @@
 .timer-button {
   background-color: aliceblue;
-  color: black;
   border-style: solid;
+  color: #4e4e4e;
+
   border: 4px black;
   border-radius: 5px;
   margin: 5px 5px 7px 10px;
   text-align: center;
+  font-family: Nunito-Bold;
 }
 
 .timer-status-button {

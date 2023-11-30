@@ -43,9 +43,15 @@
   text-align: center;
 }
 
+.widget-title {
+  font-family: Nunito-Bold !important;
+}
+
 .widget__name {
   font-size: 12px;
   font-weight: bold;
+  font-family: Nunito-Bold;
+
   text-align: center;
   margin-bottom: 0;
 }
@@ -215,6 +221,10 @@
 .tasks-widget {
   height: 100%;
   width: 100%;
+}
+
+.tasks-widget .widget-content {
+  display: block;
 }
 
 .widget-window.tasks-widget {
