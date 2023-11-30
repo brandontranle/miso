@@ -12,8 +12,21 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .button-container {
+    text-align: center;
   }
   
   .spotify-login-button:hover {
     background-color: #168f49;
   }
+
+  .widget-content{
+    background-color: white;
+    overflow: auto;
+  }
+

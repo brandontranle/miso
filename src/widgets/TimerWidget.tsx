@@ -1,3 +1,5 @@
+import "./TimerWidget.css";
+
 export const TimerWidget = ({ handleMinimize, isMinimized }) => {
   return (
     <div className="timer-widget">
