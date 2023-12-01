@@ -115,6 +115,8 @@ const UserData = mongoose.model('UserData', {
   userId: String,
   todos: [{ text: String, complete: Boolean, id: String, }], // Add this field
   todosHistory: [{ text: String, complete: Boolean, id: String, }], // Add this field
+  time: Number,
+  kibbles: Number,
 })
 
 
@@ -783,5 +785,63 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
 
 
+
+  })
+
+
+
+  app.post('/storeTimeAndKibbles', async (req, res) => {
+    try {
+    const {userId, time} = req.body;
+    const user = await UserData.findOne({userId});
+
+    user.time = time;
+    user.kibbles = user.kibbles + time;
+    await user.save();
+
+    console.log("Time and Kibbles updated!");
+    res.status(200).json();
+    } catch (error) {
+
+      console.log("error updating time");
+      res.status(500).json({ error: "An error occurred while storing the time spent studying" });
+
+    }
+
+  })
+
+  app.post('/getTime', async (req, res) => {
+    try {
+    const {userId} = req.body;
+    const user = await UserData.findOne({userId});
+
+    const study_time = user.time;
+
+    console.log("Time updated!");
+    res.status(200).json({time: study_time});
+    } catch (error) {
+
+      console.log("error fetching time");
+      res.status(500).json({ error: "An error occurred while fetching the time spent studying" });
+
+    }
+
+  })
+
+  app.post('/getKibbles', async (req, res) => {
+    try {
+    const {userId} = req.body;
+    const user = await UserData.findOne({userId});
+
+    const kibbles = user.kibbles;
+
+    console.log("Time updated!");
+    res.status(200).json({kibbles: kibbles});
+    } catch (error) {
+
+      console.log("error fetching kibbles");
+      res.status(500).json({ error: "An error occurred while fetching the kibbles" });
+
+    }
 
   })
