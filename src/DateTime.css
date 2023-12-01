@@ -1,0 +1,13 @@
+/*Date and Time styling*/
+.clock-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh; /*adjustable*/
+  padding-top: 2px; /*adjustable*/
+}
+.time, .date {
+  font-size: 24px;
+  text-align: center;
+}
