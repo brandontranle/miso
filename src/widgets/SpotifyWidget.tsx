@@ -1,11 +1,12 @@
 import "./SpotifyWidget.css";
-import { useState, useEffect } from 'react';
+import "../spotify/player";
+import * as $ from 'jquery';
+import Player from "../spotify/player";
+import WebPlaybackSDK from "react-spotify-web-playback-sdk";
+import React,{ useState, useEffect, Component } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
-import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
 
-export const SpotifyWidget = ({ handleMinimize, isMinimized }) => {
-  var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
-  var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+export const SpotifyWidget = ({ handleMinimize }) => {
 
   const [spotifyApi, setSpotifyApi] = useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
   const [isSpotifyAuthenticated, setIsSpotifyAuthenticated] = useState(false)
@@ -16,12 +17,15 @@ export const SpotifyWidget = ({ handleMinimize, isMinimized }) => {
     access_token?: string;
   }
 
+  Component.constructor();
+
   useEffect(() => {
     const params = getHashParams();
     const token = params.access_token;
     if(token) {
       const spotifyApiInstance = new SpotifyWebApi();
       spotifyApiInstance.setAccessToken(token);
+      this.setState({ token: token});
       setSpotifyApi(spotifyApiInstance);
       setIsSpotifyAuthenticated(true);
     }
@@ -42,7 +46,7 @@ export const SpotifyWidget = ({ handleMinimize, isMinimized }) => {
     const clientID = "40c81832f8b34ebd8a20d172147b3dbe";
     const redirectURI = 'http://localhost:5173';
     const authEndpoint = 'https://accounts.spotify.com/authorize';
-    const scopes = ['user-read-private', 'user-read-email']; // Add scopes as needed
+    const scopes = ['user-read-private', 'user-read-email', 'user-read-currently-playing', 'user-read-playback-state']; // Add scopes as needed
     const authUrl = `${authEndpoint}?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scopes.join('%20')}&response_type=token` || "";
 
     window.location.href = authUrl;
