@@ -1,9 +1,10 @@
 .timer-button {
-  background-color: aliceblue;
+  background-color: white;
   border-style: solid;
   color: #4e4e4e;
 
-  border: 4px black;
+  border-color: #4e4e4e;
+  border-width: 2px;
   border-radius: 5px;
   margin: 5px 5px 7px 10px;
   text-align: center;
@@ -45,6 +46,16 @@
   text-align: center;
   border-style: none;
   align-self: center;
+}
+
+.timer-button.selected {
+  border-top: rgb(243, 180, 64);
+  border-radius: 2px;
+  border-left: transparent;
+  border-right: transparent;
+  border-bottom: transparent;
+
+  border-style: solid;
 }
 
 .timer {

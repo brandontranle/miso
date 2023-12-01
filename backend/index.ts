@@ -1,5 +1,7 @@
 export {};
 const express = require('express');
+const dotenv = require('dotenv');
+const request = require('request');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -37,6 +39,87 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+//spotify authentication
+global.access_token = ''
+dotenv.config()
+
+var spotify_redirect_uri = 'http://localhost:5173/auth/callback'
+var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
+var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
+
+app.get('/auth/login', (req, res) => {
+});
+
+app.get('/auth/callback', (req, res) => {
+});
+
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`)
+})
+
+//generates a random string for security 
+var randomString = function (length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for(var i = 0; i < length; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
+
+// token authorization (spotify)
+app.get('/auth/login', (req, res) => {
+
+  var scope = "streaming user-read-email user-read-private"
+  var state = randomString(16);
+
+  var auth_query_parameters = new URLSearchParams({
+    response_type: "code",
+    client_id: spotify_client_id || '',
+    scope: scope,
+    redirect_uri: spotify_redirect_uri || '',
+    state: state
+  })
+
+  res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
+})
+
+app.get('/auth/callback', (req, res) => {
+
+  var code = req.query.code;
+
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    form: {
+      code: code,
+      redirect_uri: spotify_redirect_uri,
+      grant_type: 'authorization_code'
+    },
+    headers: {
+      'Authorization': 'Basic ' + (Buffer.from(spotify_client_id + ':' + spotify_client_secret).toString('base64')),
+      'Content-Type' : 'application/x-www-form-urlencoded'
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      global.access_token = body.access_token;
+      res.redirect('/')
+    }
+  });
+
+})
+
+app.get('/auth/token', (req, res) => {
+  res.json({ access_token: global.access_token})
+})
+
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`)
+})
 
 //email transporter
 
@@ -115,6 +198,8 @@ const UserData = mongoose.model('UserData', {
   userId: String,
   todos: [{ text: String, complete: Boolean, id: String, }], // Add this field
   todosHistory: [{ text: String, complete: Boolean, id: String, }], // Add this field
+  time: Number,
+  kibbles: Number,
 })
 
 
@@ -783,5 +868,63 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
 
 
+
+  })
+
+
+
+  app.post('/storeTimeAndKibbles', async (req, res) => {
+    try {
+    const {userId, time} = req.body;
+    const user = await UserData.findOne({userId});
+
+    user.time = time;
+    user.kibbles = user.kibbles + time;
+    await user.save();
+
+    console.log("Time and Kibbles updated!");
+    res.status(200).json();
+    } catch (error) {
+
+      console.log("error updating time");
+      res.status(500).json({ error: "An error occurred while storing the time spent studying" });
+
+    }
+
+  })
+
+  app.post('/getTime', async (req, res) => {
+    try {
+    const {userId} = req.body;
+    const user = await UserData.findOne({userId});
+
+    const study_time = user.time;
+
+    console.log("Time updated!");
+    res.status(200).json({time: study_time});
+    } catch (error) {
+
+      console.log("error fetching time");
+      res.status(500).json({ error: "An error occurred while fetching the time spent studying" });
+
+    }
+
+  })
+
+  app.post('/getKibbles', async (req, res) => {
+    try {
+    const {userId} = req.body;
+    const user = await UserData.findOne({userId});
+
+    const kibbles = user.kibbles;
+
+    console.log("Time updated!");
+    res.status(200).json({kibbles: kibbles});
+    } catch (error) {
+
+      console.log("error fetching kibbles");
+      res.status(500).json({ error: "An error occurred while fetching the kibbles" });
+
+    }
 
   })
