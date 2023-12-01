@@ -25,7 +25,7 @@ body {
   justify-content: space-between;
   align-items: center; /* Ensure vertical centering */
   padding: 1%;
-  background-color: #fdfbf9;
+  background-color: transparent;
   height: 5vh;
   width: 100vw;
 }
@@ -44,7 +44,7 @@ body {
 }
 
 .logo .text-wrapper {
-  color: #53443a;
+  color: #ffffff;
   font-family: "Hugmate-Regular";
   font-size: 20px;
   font-weight: 400;
@@ -171,13 +171,22 @@ body {
 .LOGIN-BUTTON {
   align-items: center;
   display: flex;
-  height: 6vh;
+  height: 4vh;
   justify-content: center;
   position: relative;
-  width: 7vw;
-  color: #88db74;
+  width: 5vw;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+
   outline: none;
+  border-radius: 5px;
   text-decoration: none;
+}
+
+.LOGIN-BUTTON:before {
+  filter: blur(10px);
+  box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
+  background: inherit;
 }
 
 .LOGIN-BUTTON .button {
@@ -193,7 +202,7 @@ body {
 }
 
 .LOGIN-BUTTON .login {
-  color: #53443a;
+  color: #ffffff;
   font-family: "Inter-SemiBold", Helvetica;
   font-size: 100%;
   width: 100%;
@@ -430,7 +439,7 @@ body {
 .item-wrapper {
   background-color: #ffffffb0;
   box-shadow: 0px 4px 20px #725e5136;
-  height: 50px;
+  height: 10%;
   position: relative;
   align-items: center;
   width: 95%;
@@ -438,6 +447,8 @@ body {
   margin-bottom: 2%;
   display: flex;
   overflow: hidden; /* Hide overflow content */
+  justify-content: space-between; /* This will push buttons to the edge */
+  flex-grow: 1;
 
   border-bottom: 4px solid #ccc; /* Add a bottom border to separate items */
 }
@@ -453,9 +464,9 @@ body {
   font-family: "Nunito-Bold", Helvetica;
   width: 80%;
   display: flex;
+  flex-grow: 1;
   height: 100%;
-  white-space: nowrap; /* Prevent text from wrapping */
-  overflow: hidden; /* Hide overflow text */
+  white-space: pre-line; /* Prevent text from wrapping */
   text-overflow: ellipsis; /* Add ellipsis (...) to indicate overflow */
 }
 .delete-button {
@@ -467,7 +478,21 @@ body {
 }
 
 .text-content {
-  white-space: pre-line; /* Allow text to break lines */
+  white-space: normal; /* Allow text to break lines */
+  font-size: 0.91rem;
+  text-overflow: clip;
+  word-break: break-word;
+  max-width: calc(
+    100% - 60px
+  ); /* Adjust the pixel value based on the size of your buttons */
+
+  text-overflow: ellipsis; /* Show ellipsis (...) when text overflows */
+  margin-right: 10px; /* Add some right margin to prevent text touching the buttons */
+}
+.item-button-container {
+  margin-left: auto; /* Pushes the button container to the right */
+  display: flex; /* Align buttons in a row */
+  align-items: center;
 }
 .to-do-list-form {
   width: 100%;
@@ -583,6 +608,14 @@ input[type="checkbox"] {
 
 .exit-button:hover {
   color: #666; /* Change color on hover */
+}
+
+.edit-button {
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+.delete-button {
+  flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 
 .message {
