@@ -3,10 +3,10 @@ import { useState, useEffect, useRef } from "react";
 import { useUserContext } from "../useUserContext";
 import axios from "axios";
 
-const pomodoroTime = 5; // 25 minutes
+const pomodoroTime = 25; // 25 minutes
 
 const longBreakTime = 10; // 20 minutes
-const shortBreakTime = 17; //5 minutes
+const shortBreakTime = 5; //5 minutes
 //const breakTime = 2 * 60; // 2 minutes for 120/20 break
 const totalCycles = 7;
 
@@ -111,6 +111,7 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
         console.log("here!");
         const elapsedTime = (Date.now() - sessionStartTime) / 3600000; // Convert to hours
         storeTime(elapsedTime); // Store the elapsed time
+        console.log(elapsedTime);
       }
 
       setCurrentCycle((prevCycle) => prevCycle + 1);
@@ -176,6 +177,7 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
     setTimerActive(false);
     const elapsedTime = (Date.now() - sessionStartTime) / 3600000; // Convert to hours
     storeTime(elapsedTime); // Store the elapsed time
+    console.log(elapsedTime);
   };
 
   const resetTimer = () => {
