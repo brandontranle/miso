@@ -1,7 +1,7 @@
 export {};
 const express = require('express');
 const dotenv = require('dotenv');
-const request = require('request');
+//const request = require('request');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -29,9 +29,9 @@ cron.schedule('* * * * *', async () => {
 //email handler
 const nodemailer = require('nodemailer');
 
-console.log('AUTH_EMAIL:', process.env.AUTH_EMAIL);
-console.log('AUTH_PASS:', process.env.AUTH_PASS);
-console.log('JWT_SECRET:', process.env.JWT_SECRET)
+//console.log('AUTH_EMAIL:', process.env.AUTH_EMAIL);
+//console.log('AUTH_PASS:', process.env.AUTH_PASS);
+//console.log('JWT_SECRET:', process.env.JWT_SECRET)
 
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -54,9 +54,10 @@ app.get('/auth/login', (req, res) => {
 app.get('/auth/callback', (req, res) => {
 });
 
+/*
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
-})
+})*/
 
 //generates a random string for security 
 var randomString = function (length) {
@@ -104,7 +105,7 @@ app.get('/auth/callback', (req, res) => {
     json: true
   };
 
-  request.post(authOptions, function(error, response, body) {
+  app.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       global.access_token = body.access_token;
       res.redirect('/')
@@ -117,9 +118,10 @@ app.get('/auth/token', (req, res) => {
   res.json({ access_token: global.access_token})
 })
 
+/*
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
-})
+})*/
 
 //email transporter
 
