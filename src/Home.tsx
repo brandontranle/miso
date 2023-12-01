@@ -106,7 +106,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <MisoWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -115,7 +115,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <HubsWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -124,7 +124,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <TimerWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -133,7 +133,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <TasksWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -142,7 +142,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <SoundsWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -151,7 +151,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <SpotifyWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -160,7 +160,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <CatGPTWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -169,7 +169,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <NotesWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
