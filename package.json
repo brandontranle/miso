@@ -28,6 +28,7 @@
     "react-draggable": "^4.4.6",
     "react-resizable": "^3.0.5",
     "react-router-dom": "^6.15.0",
+    "react-spotify-web-playback-sdk": "^3.0.2",
     "react-window": "^1.8.9",
     "spotify-web-api-js": "^1.5.2",
     "uuid": "^9.0.0"

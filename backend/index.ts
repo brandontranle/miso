@@ -1,5 +1,6 @@
 export {};
 const express = require('express');
+const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -37,6 +38,22 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+//spotify authentication
+dotenv.config()
+
+var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
+var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
+
+app.get('/auth/login', (req, res) => {
+});
+
+app.get('/auth/callback', (req, res) => {
+});
+
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`)
+})
 
 //email transporter
 
