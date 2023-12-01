@@ -1,9 +1,14 @@
 .timer-button {
+<<<<<<< HEAD
   background-color: white;
+=======
+  background-color: rgb(230, 245, 230);
+>>>>>>> 90ad37927810839c1c92349633f840949146d32e
   border-style: solid;
   color: #4e4e4e;
 
-  border: 4px black;
+  border-color: #4e4e4e;
+  border-width: 2px;
   border-radius: 5px;
   margin: 5px 5px 7px 10px;
   text-align: center;
