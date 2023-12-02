@@ -195,6 +195,7 @@ export const Home: React.FC = () => {
           <Clock />
           <Date />
           <Weather />
+          <Quote/>
           {activeWidgets.map(renderWidgetContent)}
         </div>
         <WidgetBar onWidgetClick={handleWidgetClick} />
