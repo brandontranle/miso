@@ -1,0 +1,41 @@
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+.flex-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.flex-container::-webkit-scrollbar-thumb {
+  color: grey;
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+}
+
+.nav-bar-form {
+  height: 100%;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  height: 40%;
+  margin-bottom: 20px;
+}
+
+.profile-label {
+  font-weight: 0;
+}
+
+.profile-row-label {
+  width: 100%;
+  font-size: 20px;
+  font-weight: 0;
+}
+
+#username {
+  font-weight: bold;
+}
