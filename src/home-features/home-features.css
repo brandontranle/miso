@@ -11,5 +11,7 @@
 .quote-content{
     color: white;
     position: center;
+    font-family: "Nunito-Bold";
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
 }
 
