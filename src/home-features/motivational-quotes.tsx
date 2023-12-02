@@ -54,6 +54,9 @@ const motivationalQuotes = [
     "There are no traffic jams along the extra mile. - Roger Staubach",
     "The secret of getting ahead is getting started. - Mark Twain",
     "Success is not just about making money. It's about making a difference. - Unknown",
+    "Run fast, still last. - Brandon Le",
+    "Don't be afraid of failure, because at the end of the day, it's night - Alicia Filomeno",
+    "Fishing is awesome! - Ivan Lin"
   ];
   
 export default motivationalQuotes;
