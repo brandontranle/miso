@@ -1,99 +1,98 @@
 import "./TimerWidget.css";
 import { useState, useEffect, useRef } from "react";
+import { useUserContext } from "../useUserContext";
+import axios from "axios";
 
-const pomodoroTime = 25 * 60; // 25 minutes
-const one_hundred_twenty_twenty = 5; // 120 seconds / 2 minutes
+const pomodoroTime = 25; // 25 minutes
 
-const longBreakTime = 10 * 60; // 20 minutes
-const shortBreakTime = 5 * 60; //5 minutes
+const longBreakTime = 10; // 20 minutes
+const shortBreakTime = 5; //5 minutes
 //const breakTime = 2 * 60; // 2 minutes for 120/20 break
-const breakTime = 5;
-const totalCycles = 11;
+const totalCycles = 7;
 
 const study_or_break = "Time to work!";
 
 export const TimerWidget = ({ handleMinimize, isMinimized }) => {
-  let refInstance = useRef(null);
-  const [timerOption, setTimerOption] = useState("pomodoro");
-  const [timer, setTimer] = useState(0);
-  const [status, setStatus] = useState("Start");
-
   const [timeLeft, setTimeLeft] = useState(pomodoroTime);
   const [timerActive, setTimerActive] = useState(false);
   const [timerMode, setTimerMode] = useState("pomodoro");
   const [customTime, setCustomTime] = useState(5 * 60); // default 5 minutes
   const [currentCycle, setCurrentCycle] = useState(0);
+  const { user, isAuthenticated } = useUserContext();
+  const [startClicked, setStartClicked] = useState(false);
+  const [cycleCompleted, setCycleCompleted] = useState(false);
+  const [sessionStartTime, setSessionStartTime] = useState(Date.now());
+  const [selected, setSelected] = useState("");
 
-  /*
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-
-    if (timerActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1); // Use functional update
-      }, 1000);
-    } else if (!timerActive && timeLeft === 0 && interval) {
-      clearInterval(interval);
-      interval = null;
-
-      if (currentCycle % 2 === 0) {
-        // If it's an even cycle, switch to a long break
-        setTimerMode("long break");
-        setTimeLeft(longBreakTime);
-      } else {
-        // If it's an odd cycle, switch to 120/20
-        setTimerMode("120/20");
-        setTimeLeft(one_hundred_twenty_twenty);
+  const storeTime = async (time) => {
+    if (isAuthenticated) {
+      try {
+        const id = sessionStorage.getItem("userId");
+        const response = await axios.post(
+          "http://localhost:5000/storeTimeAndKibbles",
+          {
+            userId: id,
+            time: time,
+          }
+        );
+      } catch (error) {
+        console.error("Error storing time:", error);
       }
     }
-    return () => {
-      if (interval !== null) {
-        clearInterval(interval);
-      }
-    };
-  }, [timerActive, timeLeft]);*/
+  };
 
   useEffect(() => {
-    let interval: number | NodeJS.Timeout | undefined;
+    let interval;
+
+    if (startClicked && currentCycle === 0 && timeLeft === pomodoroTime) {
+      setTimeLeft(0);
+      setStartClicked(false);
+      setCycleCompleted(false);
+      return;
+    }
 
     if (timerActive && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
-    } else if (timeLeft === 0 && currentCycle < totalCycles) {
-      clearInterval(interval); // Asserting as number
-      // Switch between study and break sessions based on the cycle
-
-      if (currentCycle === totalCycles) {
-        resetTimer();
-        pauseTimer();
-      }
-
-      if (currentCycle % 2 === 0) {
-        // Even cycle: Start a study session
-        console.log("study: " + currentCycle);
-
-        switch (timerMode) {
-          case "120/20":
-            setTimeLeft(one_hundred_twenty_twenty);
-            break;
-          case "pomodoro":
-            setTimeLeft(pomodoroTime);
-            break;
-        }
-
-        setTimeLeft(one_hundred_twenty_twenty);
-      } else {
-        // Odd cycle: Start a break
-        console.log("break: " + currentCycle);
-        setTimeLeft(breakTime);
-      }
-      console.log(currentCycle);
-      setCurrentCycle((prevCycle) => prevCycle + 1); // Increment cycle
+      storeTime(1);
+    } else if (timerActive && timeLeft === 0 && !cycleCompleted) {
+      setCycleCompleted(true); // Indicate that a cycle has completed
+      /*
+      const elapsedTime = (Date.now() - sessionStartTime) / 1000; // Convert to seconds
+      storeTime(elapsedTime); // Store the elapsed time
+      console.log("bro what");
+      console.log(elapsedTime);*/
     }
 
-    return () => clearInterval(interval); // Asserting as number
-  }, [timerActive, timeLeft, currentCycle]);
+    if (cycleCompleted) {
+      setCurrentCycle((prevCycle) => prevCycle + 1);
+
+      setCycleCompleted(false); // Reset for the next cycle
+
+      // Logic to determine the next cycle's state
+      // (This can be refactored into a separate function for clarity)
+
+      if (currentCycle + 1 < totalCycles) {
+        if ((currentCycle + 1) % 2 !== 0) {
+          console.log("study time: " + (currentCycle + 1));
+          setTimeLeft(pomodoroTime);
+        } else {
+          if (currentCycle + 1 === 6) {
+            console.log("long break: " + (currentCycle + 1));
+            setTimeLeft(longBreakTime);
+          } else {
+            console.log("short break: " + (currentCycle + 1));
+            setTimeLeft(shortBreakTime);
+          }
+        }
+      } else if (currentCycle + 1 >= totalCycles) {
+        resetTimer(); // Reset the timer at the end of all cycles
+      }
+    }
+
+    return () => clearInterval(interval);
+  }, [timerActive, timeLeft, cycleCompleted, currentCycle, startClicked]);
 
   const handleTimerOption = (option) => {
     setTimerMode(option); // Set the timer mode
@@ -115,17 +114,35 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
     setTimerActive(false); // Stop the timer when changing mode
   };
 
-  const startTimer = () => {
-    setTimerActive(true);
+  const calculateElapsedTime = () => {
+    const elapsedTime = (Date.now() - sessionStartTime) / 1000; // Convert to seconds
+    return elapsedTime;
+  };
+
+  const startTimer = async () => {
+    await setTimerActive(true);
+    await setStartClicked(true); // Toggle to trigger useEffect
+    await setSessionStartTime(Date.now()); // Set the start time for the session
+
+    console.log(startClicked);
+
+    console.log("currentCycle: " + currentCycle);
+    console.log(timeLeft);
   };
 
   const pauseTimer = () => {
     setTimerActive(false);
+    const elapsedTime = (Date.now() - sessionStartTime) / 1000; // Convert to hours
+    storeTime(elapsedTime); // Store the elapsed time
+    console.log("here @ pauseTimer");
+    console.log(elapsedTime);
   };
 
   const resetTimer = () => {
     setTimerActive(false); // Stop the timer
     setCurrentCycle(0);
+    setStartClicked(false); // Toggle to trigger useEffect and
+    setSessionStartTime(Date.now()); // Set the session start time for the sessions
 
     switch (timerMode) {
       case "pomodoro":
@@ -136,9 +153,6 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
         break;
       case "long break":
         setTimeLeft(longBreakTime);
-        break;
-      case "custom":
-        setTimeLeft(customTime);
         break;
       default:
         setTimeLeft(pomodoroTime);
@@ -319,19 +333,25 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
           <div className="timer-options">
             <button
               onClick={() => handleTimerOption("pomodoro")}
-              className="timer-button"
+              className={`timer-button ${
+                timerMode === "pomodoro" ? "selected" : ""
+              }`}
             >
               Pomodoro
             </button>
             <button
               onClick={() => handleTimerOption("shortbreak")}
-              className="timer-button"
+              className={`timer-button ${
+                timerMode === "shortbreak" ? "selected" : ""
+              }`}
             >
               Short Break
             </button>
             <button
               onClick={() => handleTimerOption("longbreak")}
-              className="timer-button"
+              className={`timer-button ${
+                timerMode === "longbreak" ? "selected" : ""
+              }`}
             >
               Long Break
             </button>

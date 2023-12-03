@@ -2,6 +2,7 @@ export {};
 const express = require('express');
 const dotenv = require('dotenv');
 const request = require('request');
+//const request = require('request');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -29,9 +30,9 @@ cron.schedule('* * * * *', async () => {
 //email handler
 const nodemailer = require('nodemailer');
 
-console.log('AUTH_EMAIL:', process.env.AUTH_EMAIL);
-console.log('AUTH_PASS:', process.env.AUTH_PASS);
-console.log('JWT_SECRET:', process.env.JWT_SECRET)
+//console.log('AUTH_EMAIL:', process.env.AUTH_EMAIL);
+//console.log('AUTH_PASS:', process.env.AUTH_PASS);
+//console.log('JWT_SECRET:', process.env.JWT_SECRET)
 
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -45,6 +46,7 @@ global.access_token = ''
 dotenv.config()
 
 var spotify_redirect_uri = 'http://localhost:5000/auth/callback'
+
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
 
@@ -74,6 +76,41 @@ app.get('/auth/login', (req, res) => {
     state: state
   })
 
+
+  res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
+})
+
+app.get('/auth/callback', (req, res) => {
+
+/*
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`)
+})*/
+
+//generates a random string for security 
+var randomString = function (length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for(var i = 0; i < length; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
+
+// token authorization (spotify)
+app.get('/auth/login', (req, res) => {
+
+  var scope = "streaming user-read-email user-read-private"
+  var state = randomString(16);
+
+  var auth_query_parameters = new URLSearchParams({
+    response_type: "code",
+    client_id: spotify_client_id || '',
+    scope: scope,
+    redirect_uri: spotify_redirect_uri || '',
+    state: state
+  })
 
   res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
 })
@@ -123,6 +160,24 @@ module.exports = function (app) {
   }));
 };
 
+=======
+  app.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      global.access_token = body.access_token;
+      res.redirect('/')
+    }
+  });
+
+})
+
+app.get('/auth/token', (req, res) => {
+  res.json({ access_token: global.access_token})
+})
+
+/*
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`)
+})*/
 
 //email transporter
 
@@ -197,6 +252,8 @@ const UserData = mongoose.model('UserData', {
   userId: String,
   todos: [{ text: String, complete: Boolean, id: String, }], // Add this field
   todosHistory: [{ text: String, complete: Boolean, id: String, }], // Add this field
+  time: Number,
+  kibbles: Number,
 })
 
 
@@ -245,6 +302,9 @@ app.post('/signup', async (req, res) => {
     _id: savedUser._id, // Use the same ID as the user's ID
     userId: savedUser._id.toString(), // Use the user's ID as the userId
     todos: [{ text: "Create your first task!", complete: false, id: "12345" }],
+    todosHistory: [],
+    time: 0,
+    kibbles: 0,
     // Add other user-specific data if needed
   });
 
@@ -866,4 +926,77 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
 
 
-  })
+  });
+
+
+
+  app.post('/storeTimeAndKibbles', async (req, res) => {
+    try {
+      const {userId, time} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      // Update user data
+      const updatedUser = await UserData.findByIdAndUpdate(
+        userId,
+        {
+          $inc: { time: time, kibbles: time }, // Increment the time and kibbles fields
+        },
+        { new: true } // Return the updated document
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }      
+      
+      await user.save();
+
+      console.log("Time and Kibbles updated!");
+      res.status(200).json();
+    } catch (error) {
+        console.log("error updating time");
+        res.status(500).json({ error: "An error occurred while storing the time spent studying" });
+    }
+
+  });
+
+  
+  app.post('/getTime', async (req, res) => {
+    try {
+    const {userId} = req.body;
+    const user = await UserData.findOne({userId});
+
+    const study_time = user.time;
+
+    console.log("Time updated!");
+    res.status(200).json({time: study_time});
+    } catch (error) {
+      console.log("error fetching time");
+      res.status(500).json({ error: "An error occurred while fetching the time spent studying" });
+
+    }
+
+  });
+
+  app.post('/getKibbles', async (req, res) => {
+    try {
+    const {userId} = req.body;
+    const user = await UserData.findOne({userId});
+
+
+    const kibbles = user.kibbles;
+
+    console.log("kibbles updated!");
+    res.status(200).json({kibbles: kibbles});
+    } catch (error) {
+
+      console.log("error fetching kibbles");
+      res.status(500).json({ error: "An error occurred while fetching the kibbles" });
+
+    }
+
+  });

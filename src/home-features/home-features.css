@@ -1,0 +1,17 @@
+.quote {
+    position: absolute; 
+    left: 50%;
+    top: 40%;
+    text-align: center;
+    transform: translate(-50%,-50%);
+    text-align: center;
+
+}
+
+.quote-content{
+    color: white;
+    position: center;
+    font-family: "Nunito-Bold";
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+

@@ -1,8 +1,10 @@
 import "./SpotifyWidget.css";
-import * as $ from 'jquery';
-import Player from "../spotify/player";
 import WebPlayback from '../spotify/webplayback';
 import Login from '../spotify/login';
+import "../spotify/player";
+import * as $ from 'jquery';
+import Player from "../spotify/player";
+import WebPlaybackSDK from "react-spotify-web-playback-sdk";
 import React,{ useState, useEffect, Component } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
 
@@ -60,12 +62,15 @@ export const SpotifyWidget = ({ handleMinimize }) => {
     access_token?: string;
   }
 
+  Component.constructor();
+
   useEffect(() => {
     const params = getHashParams();
     const token = params.access_token;
     if(token) {
       const spotifyApiInstance = new SpotifyWebApi();
       spotifyApiInstance.setAccessToken(token);
+      this.setState({ token: token});
       setSpotifyApi(spotifyApiInstance);
       setIsSpotifyAuthenticated(true);
     }

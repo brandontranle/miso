@@ -106,7 +106,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <MisoWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -115,7 +115,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <HubsWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -124,7 +124,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <TimerWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -133,7 +133,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <TasksWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -142,17 +142,14 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <SoundsWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
       case 6:
         widgetClass = "spotify-widget";
         WidgetComponent = (
-          <SpotifyWidget
-            isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
-          />
+          <SpotifyWidget handleMinimize={() => handleWidgetClick(widgetId)} />
         );
         break;
       case 7:
@@ -160,7 +157,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <CatGPTWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -169,7 +166,7 @@ export const Home: React.FC = () => {
         WidgetComponent = (
           <NotesWidget
             isMinimized={isMinimized}
-            handleMinimize={() => toggleMinimize(widgetId)}
+            handleMinimize={() => handleWidgetClick(widgetId)}
           />
         );
         break;
@@ -205,8 +202,8 @@ export const Home: React.FC = () => {
       <div className="MainContainer">
         <div className="MainContent">
           <Clock />
-          <Date />
           <Weather />
+          <Quote/>
           {activeWidgets.map(renderWidgetContent)}
         </div>
         <WidgetBar onWidgetClick={handleWidgetClick} />

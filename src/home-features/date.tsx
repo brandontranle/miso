@@ -1,7 +1,12 @@
-const Date = () => {
+
+interface dateProps {
+  date: String,
+}
+
+const Date: React.FC<dateProps> = ({date}) => {
   return (
     <div className="date">
-      <h3> Sunday, November 12, 2023 </h3>
+      <h3> {date} </h3>
     </div>
   );
 };
