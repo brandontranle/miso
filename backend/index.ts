@@ -1,6 +1,7 @@
 export {};
 const express = require('express');
 const dotenv = require('dotenv');
+const request = require('request');
 //const request = require('request');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -44,15 +45,42 @@ const port = process.env.PORT || 5000;
 global.access_token = ''
 dotenv.config()
 
-var spotify_redirect_uri = 'http://localhost:5173/auth/callback'
+var spotify_redirect_uri = 'http://localhost:5000/auth/callback'
+
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
 
+
+//generates a random string for security 
+var randomString = function (length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for(var i = 0; i < length; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
+
+// token authorization (spotify)
 app.get('/auth/login', (req, res) => {
-});
+
+  var scope = "streaming user-read-email user-read-private"
+  var state = randomString(16);
+
+  var auth_query_parameters = new URLSearchParams({
+    response_type: "code",
+    client_id: spotify_client_id || '',
+    scope: scope,
+    redirect_uri: spotify_redirect_uri || '',
+    state: state
+  })
+
+
+  res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
+})
 
 app.get('/auth/callback', (req, res) => {
-});
 
 /*
 app.listen(port, () => {
@@ -105,6 +133,34 @@ app.get('/auth/callback', (req, res) => {
     json: true
   };
 
+  request.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      global.access_token = body.access_token;
+      res.redirect('http://localhost:5173')
+    }
+  });
+
+})
+
+app.get('/auth/token', (req, res) => {
+  res.json(
+    { access_token: global.access_token
+    })
+})
+
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function (app) {
+  app.use('/auth', createProxyMiddleware({ 
+    target: 'http://localhost:5000',
+    changeOrigin: true,
+    pathRewrite: {
+      '^/auth': '', 
+    },
+  }));
+};
+
+=======
   app.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       global.access_token = body.access_token;
@@ -167,10 +223,6 @@ app.use(
     cookie: {secure: false},
   })
 );
-
-
-
-
 
 app.use(cors(corsOptions));
 
