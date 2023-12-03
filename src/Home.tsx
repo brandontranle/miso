@@ -202,7 +202,6 @@ export const Home: React.FC = () => {
       <div className="MainContainer">
         <div className="MainContent">
           <Clock />
-          <Date />
           <Weather />
           <Quote/>
           {activeWidgets.map(renderWidgetContent)}
