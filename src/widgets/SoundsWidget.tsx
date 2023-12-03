@@ -1,31 +1,29 @@
-export const SoundsWidget = ({ handleMinimize, isMinimized }) => {
+import React,{useState} from "react";
+
+const SoundsWidget = ({ handleMinimize, isMinimized }) => {
+  const playSound = (soundSrc) => {
+    const audio = new Audio(soundSrc);
+    audio.loop = true
+    audio.play();
+  };
+
   return (
     <div className="sounds-widget">
-      <div className="widget-header">
-        <p className="widget-title">sounds</p>
-        <button className="minimize-symbol" onClick={() => handleMinimize()}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="2"
-            viewBox="0 0 15 2"
-            fill="none"
-          >
-            <path
-              d="M1.83081 1L14 1"
-              stroke="#4E4E4E"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
-      </div>
-      <>
-        <div className="widget-line"></div>
-        <div className="widget-content">
-          <p>This is the sounds widget!</p>
+      {/* ... rest of your component */}
+      <div className="widget-content">
+        <div>
+          <p>Select Sounds:</p>
+          <button onClick={() => playSound("src/widgets/sounds/campfire.mp3")}>
+            Campfire
+          </button>
+          <button onClick={() => playSound("src/widgets/sounds/rain.mp3")}>
+            Rain
+          </button>
+          <button onClick={() => playSound("src/widgets/sounds/waterfall.mp3")}>
+            Waterfall
+          </button>
         </div>
-      </>
+      </div>
     </div>
   );
 };
