@@ -386,10 +386,27 @@ select {
   border-radius: 13px;
 }
 
+.sounds-widget .widget-content{ 
+  display: flex;
+  flex-direction: column;
+  justify-content:left;
+
+
+}
+
+.sounds-widget .container{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: left;
+}
+
 .volume-slider{
   z-index: 100;
   cursor: pointer;
+  justify-content: left;
 }
+
 
 
 
