@@ -44,19 +44,10 @@ const port = process.env.PORT || 5000;
 global.access_token = ''
 dotenv.config()
 
-var spotify_redirect_uri = 'http://localhost:5173/auth/callback'
+var spotify_redirect_uri = 'http://localhost:5000/auth/callback'
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
 
-app.get('/auth/login', (req, res) => {
-});
-
-app.get('/auth/callback', (req, res) => {
-});
-
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
-})
 
 //generates a random string for security 
 var randomString = function (length) {
@@ -83,6 +74,7 @@ app.get('/auth/login', (req, res) => {
     state: state
   })
 
+
   res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
 })
 
@@ -107,19 +99,30 @@ app.get('/auth/callback', (req, res) => {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       global.access_token = body.access_token;
-      res.redirect('/')
+      res.redirect('http://localhost:5173')
     }
   });
 
 })
 
 app.get('/auth/token', (req, res) => {
-  res.json({ access_token: global.access_token})
+  res.json(
+    { access_token: global.access_token
+    })
 })
 
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
-})
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function (app) {
+  app.use('/auth', createProxyMiddleware({ 
+    target: 'http://localhost:5000',
+    changeOrigin: true,
+    pathRewrite: {
+      '^/auth': '', 
+    },
+  }));
+};
+
 
 //email transporter
 
@@ -165,10 +168,6 @@ app.use(
     cookie: {secure: false},
   })
 );
-
-
-
-
 
 app.use(cors(corsOptions));
 
