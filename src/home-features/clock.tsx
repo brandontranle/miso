@@ -7,14 +7,20 @@
 //to timezone information through the host system's time zone database.  So, the Intl object uses timezones info
 //avaiable in the user's OS or browser.
 
-import React, {useEffect, useState} from 'react';
-import "../DateTime.css"
+import React, { useEffect, useState } from "react";
+import "../DateTime.css";
 
-const Clock: React.FC = () => {
-  const [selectedTimezone, setSelectedTimezone] = useState("America/Los_Angeles"); //we have set Los Angeles as default timezone;
+interface ClockProps {
+  timezone: string;
+}
+
+const Clock: React.FC<ClockProps> = ({ timezone }) => {
+  const [selectedTimezone, setSelectedTimezone] = useState(
+    "America/Los_Angeles"
+  ); //we have set Los Angeles as default timezone;
   //const [userDateTime, setUserDateTime] = useState(""); //before seperating date and time
-  const [time, setTime] = useState('');
-  const [date, setDate] = useState('');
+  const [time, setTime] = useState("");
+  const [date, setDate] = useState("");
 
   useEffect(() => {
     //Intl.DateTimeFormatOptions is an interface in JS to specfic formatting options for date/time
@@ -36,30 +42,28 @@ const Clock: React.FC = () => {
     */
 
     //We are seperating date and time
-    const timeOptions: Intl.DateTimeFormatOptions =
-    {
-      timeZone: selectedTimezone,
-      hour: 'numeric',
-      minute: '2-digit',
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      timeZone: timezone,
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true,
     };
-    const dateOptions: Intl.DateTimeFormatOptions =
-    {
-      timeZone: selectedTimezone,
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      timeZone: timezone,
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
 
     const updateUserDateTime = () => {
       //creates a new Date object and formats it as string using 'toLocaleString' method
-      
+
       //const dateTime = new Date().toLocaleString("en-US", options); //before seperating date and time
       //setUserDateTime(dateTime);
-      
-      const currentTime = new Date().toLocaleString('en-US', timeOptions);
-      const currentDate = new Date().toLocaleString('en-US', dateOptions);
+
+      const currentTime = new Date().toLocaleString("en-US", timeOptions);
+      const currentDate = new Date().toLocaleString("en-US", dateOptions);
 
       setTime(currentTime);
       setDate(currentDate);
@@ -71,42 +75,17 @@ const Clock: React.FC = () => {
     const interval = setInterval(updateUserDateTime, 1000); //update every second
 
     return () => clearInterval(interval);
-  }, [selectedTimezone]);
-
-  const handleTimezoneChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSelectedTimezone(event.target.value);
-  };
+  }, [timezone]);
 
   return (
-   
-    <div className = "clock-container">   {/*using DateTime.css*/}
+    <div className="clock-container">
+      {" "}
+      {/*using DateTime.css*/}
       <div className="clock">
-          <div className="time">{time}</div>
-          <div className="date">{date}</div>
+        <div className="time">{time}</div>
+        <div className="date">{date}</div>
       </div>
       {/* creates a dropdown using select elemnt with this ID, to allow users to choose */}
-      <div className="timezone-dropdown">
-        <select id="timezone-selector" onChange={handleTimezoneChange} value={selectedTimezone}>
-          <option value="America/New_York">New York, North America</option>
-          <option value="America/Los_Angeles">Los Angeles, North America</option>
-          <option value="America/Mexico_City">Mexico City, North America</option>
-          <option value="America/Sao_Paulo">Sau Paulo, South America</option>
-          <option value="America/Argentina/Buenos_Aires">Buenos Aires, South America</option>
-          <option value="Europe/London">London, Europe</option>
-          <option value="Europe/Paris">Paris, Europe</option>
-          <option value="Asia/Tokyo">Tokyo, Asia</option>
-          <option value="Asia/Shanghai">Shanghai, Asia</option>
-          <option value="Asia/Singapore">Singapore, Asia</option>
-          <option value="Africa/Lagos">Lagos, Africa</option>
-          <option value="Africa/Cairo">Cairo, Africa</option>
-          <option value="Australia/Sydney">Sydney, Oceania</option>
-          <option value="Pacific/Auckland">Auckland, Oceania</option>
-          <option value="Pacific/Honolulu">Honolulu, Oceania</option>
-        </select>
-      </div>
-
       {/* creates empty element with the ID  */}
       {/* first attempt: <div id="date-time">{userDateTime}</div> */}
     </div>
