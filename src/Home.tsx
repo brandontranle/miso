@@ -149,10 +149,7 @@ export const Home: React.FC = () => {
       case 6:
         widgetClass = "spotify-widget";
         WidgetComponent = (
-          <SpotifyWidget
-            isMinimized={isMinimized}
-            handleMinimize={() => handleWidgetClick(widgetId)}
-          />
+          <SpotifyWidget handleMinimize={() => handleWidgetClick(widgetId)} />
         );
         break;
       case 7:

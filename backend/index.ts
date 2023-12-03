@@ -250,6 +250,9 @@ app.post('/signup', async (req, res) => {
     _id: savedUser._id, // Use the same ID as the user's ID
     userId: savedUser._id.toString(), // Use the user's ID as the userId
     todos: [{ text: "Create your first task!", complete: false, id: "12345" }],
+    todosHistory: [],
+    time: 0,
+    kibbles: 0,
     // Add other user-specific data if needed
   });
 
@@ -871,30 +874,45 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
 
 
-  })
+  });
 
 
 
   app.post('/storeTimeAndKibbles', async (req, res) => {
     try {
-    const {userId, time} = req.body;
-    const user = await UserData.findOne({userId});
+      const {userId, time} = req.body;
+      const user = await UserData.findOne({userId});
 
-    user.time = time;
-    user.kibbles = user.kibbles + time;
-    await user.save();
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      // Update user data
+      const updatedUser = await UserData.findByIdAndUpdate(
+        userId,
+        {
+          $inc: { time: time, kibbles: time }, // Increment the time and kibbles fields
+        },
+        { new: true } // Return the updated document
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }      
+      
+      await user.save();
 
-    console.log("Time and Kibbles updated!");
-    res.status(200).json();
+      console.log("Time and Kibbles updated!");
+      res.status(200).json();
     } catch (error) {
-
-      console.log("error updating time");
-      res.status(500).json({ error: "An error occurred while storing the time spent studying" });
-
+        console.log("error updating time");
+        res.status(500).json({ error: "An error occurred while storing the time spent studying" });
     }
 
-  })
+  });
 
+  
   app.post('/getTime', async (req, res) => {
     try {
     const {userId} = req.body;
@@ -905,22 +923,22 @@ app.post('/deleteTodoInHistory', async (req, res) => {
     console.log("Time updated!");
     res.status(200).json({time: study_time});
     } catch (error) {
-
       console.log("error fetching time");
       res.status(500).json({ error: "An error occurred while fetching the time spent studying" });
 
     }
 
-  })
+  });
 
   app.post('/getKibbles', async (req, res) => {
     try {
     const {userId} = req.body;
     const user = await UserData.findOne({userId});
 
+
     const kibbles = user.kibbles;
 
-    console.log("Time updated!");
+    console.log("kibbles updated!");
     res.status(200).json({kibbles: kibbles});
     } catch (error) {
 
@@ -929,4 +947,4 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
     }
 
-  })
+  });

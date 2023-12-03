@@ -370,6 +370,21 @@ select {
   color: #4e4e4e;
 }
 
+/***** sound widget ******/
+.sounds-widget {
+  height: 100%;
+  width: 100%;
+}
+
+.widget-window.sounds-widget {
+  width: 349px;
+  height: 146px;
+  position: absolute;
+  left: 40%; /* Start at the half-way point of the MainContainer */
+  top: 50%;
+  border-radius: 13px;
+}
+
 /***** timer widget *****/
 .timer-widget {
   height: 100%;

@@ -22,7 +22,7 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
   const [startClicked, setStartClicked] = useState(false);
   const [cycleCompleted, setCycleCompleted] = useState(false);
   const [sessionStartTime, setSessionStartTime] = useState(Date.now());
-  const [pastFirstCycle, setPastFirstCycle] = useState(false);
+  const [selected, setSelected] = useState("");
 
   const storeTime = async (time) => {
     if (isAuthenticated) {
@@ -40,58 +40,11 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
       }
     }
   };
-  /*
-  useEffect(() => {
-    let interval;
-
-    if (startClicked && currentCycle === 0) {
-      setTimeLeft(0);
-      setStartClicked(false);
-      return;
-    }
-
-    if (timerActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-      }, 1000);
-    } else if (timerActive && timeLeft === 0) {
-      setStartClicked(false);
-      clearInterval(interval); // Clear interval when timer ends
-
-      const elapsedTime = (Date.now() - sessionStartTime) / 3600000; // Convert to hours
-      storeTime(elapsedTime); // Store the elapsed time
-
-      setCurrentCycle((prevCycle) => prevCycle + 1); // Increment cycle here
-
-      if (currentCycle + 1 < totalCycles) {
-        // Check next cycle
-        if ((currentCycle + 1) % 2 !== 0) {
-          console.log("study time: " + currentCycle);
-          setTimeLeft(pomodoroTime); // Set next study session
-        } else {
-          if (currentCycle + 1 === 5) {
-            console.log("long break: " + currentCycle);
-            setTimeLeft(longBreakTime);
-          } else {
-            console.log("short break: " + currentCycle);
-            setTimeLeft(shortBreakTime);
-          }
-        }
-      } else if (currentCycle + 1 === totalCycles) {
-        console.log("reset");
-        resetTimer();
-        pauseTimer();
-      }
-    }
-
-    return () => clearInterval(interval);
-  }, [timerActive, timeLeft, currentCycle, startClicked]);
-*/
 
   useEffect(() => {
     let interval;
 
-    if (startClicked && currentCycle === 0) {
+    if (startClicked && currentCycle === 0 && timeLeft === pomodoroTime) {
       setTimeLeft(0);
       setStartClicked(false);
       setCycleCompleted(false);
@@ -102,18 +55,17 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
       interval = setInterval(() => {
         setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
-    } else if (timerActive && timeLeft === 0) {
+      storeTime(1);
+    } else if (timerActive && timeLeft === 0 && !cycleCompleted) {
       setCycleCompleted(true); // Indicate that a cycle has completed
+      /*
+      const elapsedTime = (Date.now() - sessionStartTime) / 1000; // Convert to seconds
+      storeTime(elapsedTime); // Store the elapsed time
+      console.log("bro what");
+      console.log(elapsedTime);*/
     }
 
     if (cycleCompleted) {
-      if (currentCycle !== 0) {
-        console.log("here!");
-        const elapsedTime = (Date.now() - sessionStartTime) / 3600000; // Convert to hours
-        storeTime(elapsedTime); // Store the elapsed time
-        console.log(elapsedTime);
-      }
-
       setCurrentCycle((prevCycle) => prevCycle + 1);
 
       setCycleCompleted(false); // Reset for the next cycle
@@ -126,7 +78,7 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
           console.log("study time: " + (currentCycle + 1));
           setTimeLeft(pomodoroTime);
         } else {
-          if (currentCycle + 1 === 9) {
+          if (currentCycle + 1 === 6) {
             console.log("long break: " + (currentCycle + 1));
             setTimeLeft(longBreakTime);
           } else {
@@ -162,10 +114,15 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
     setTimerActive(false); // Stop the timer when changing mode
   };
 
+  const calculateElapsedTime = () => {
+    const elapsedTime = (Date.now() - sessionStartTime) / 1000; // Convert to seconds
+    return elapsedTime;
+  };
+
   const startTimer = async () => {
-    setTimerActive(true);
+    await setTimerActive(true);
     await setStartClicked(true); // Toggle to trigger useEffect
-    setSessionStartTime(Date.now()); // Set the start time for the session
+    await setSessionStartTime(Date.now()); // Set the start time for the session
 
     console.log(startClicked);
 
@@ -175,8 +132,9 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
 
   const pauseTimer = () => {
     setTimerActive(false);
-    const elapsedTime = (Date.now() - sessionStartTime) / 3600000; // Convert to hours
+    const elapsedTime = (Date.now() - sessionStartTime) / 1000; // Convert to hours
     storeTime(elapsedTime); // Store the elapsed time
+    console.log("here @ pauseTimer");
     console.log(elapsedTime);
   };
 
@@ -184,6 +142,7 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
     setTimerActive(false); // Stop the timer
     setCurrentCycle(0);
     setStartClicked(false); // Toggle to trigger useEffect and
+    setSessionStartTime(Date.now()); // Set the session start time for the sessions
 
     switch (timerMode) {
       case "pomodoro":
@@ -194,9 +153,6 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
         break;
       case "long break":
         setTimeLeft(longBreakTime);
-        break;
-      case "custom":
-        setTimeLeft(customTime);
         break;
       default:
         setTimeLeft(pomodoroTime);
