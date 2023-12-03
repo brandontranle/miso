@@ -20,11 +20,15 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
   const [hasFetchedData, setHasFetchedData] = useState(false); // New state variable
 
   useEffect(() => {
+    if (isAuthenticated) {
+      fetchNotebooks();
+    }
+
     if (!hasFetchedData) {
       fetchNotebooks();
       setHasFetchedData(true); // Set the flag to true to prevent further fetching
     }
-  }, [isMinimized, hasFetchedData]);
+  }, [isMinimized, hasFetchedData, isAuthenticated]);
 
   const createNotebook = async () => {
     const notebookId = uuidv4();
@@ -47,13 +51,14 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
             notebookId,
           }
         );
-      } catch (error) {}
-    } else {
-      //local storage implementation
-      const updatedNotebooks = [...notebooks, newNotebook];
-      setNotebooks(updatedNotebooks);
-      localStorage.setItem("notebooks", JSON.stringify(updatedNotebooks));
+      } catch (error) {
+        console.log("failed to create notebook: " + error);
+      }
     }
+    //local storage implementation
+    const updatedNotebooks = [...notebooks, newNotebook];
+    setNotebooks(updatedNotebooks);
+    localStorage.setItem("notebooks", JSON.stringify(updatedNotebooks));
   };
 
   const fetchNotebooks = async () => {
@@ -66,19 +71,32 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
             userId,
           }
         );
+        console.log("fetching notebooks:" + response.data.notebooks);
         setNotebooks(response.data.notebooks);
+
+        localStorage.setItem(
+          "notebooks",
+          JSON.stringify(response.data.notebooks)
+        );
+
+        console.log(response.data.notebooks[0].id);
       } catch (error) {
         console.error("Error fetching notebooks:", error);
       }
-    } else {
-      const notebooks = JSON.parse(localStorage.getItem("notebooks") || "[]");
-      setNotebooks(notebooks);
-      setCurrentNotebookId(notebooks[0].id);
-      setNotebookContent(notebooks[0].content);
-      console.log(notebookContent);
-      console.log("i just fetched!");
-      setNotebookTitle(notebooks[0].title);
     }
+
+    const notebooks = JSON.parse(localStorage.getItem("notebooks") || "[]");
+    setNotebooks(notebooks);
+
+    setCurrentNotebookId(notebooks[0].id);
+    console.log("i just fetched!");
+    setNotebookContent(notebooks[0].text);
+    console.log(notebookContent);
+    setNotebookTitle(notebooks[0].title);
+
+    console.log("notebooks id: " + currentNotebookId);
+    console.log("notebooks content:" + notebookContent);
+    console.log("notebooks title:" + notebookTitle);
   };
 
   const handleNotebookChange = (event) => {

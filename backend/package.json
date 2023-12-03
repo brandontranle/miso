@@ -15,9 +15,12 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.17.1",
+    "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^9.0.1",
+    "moment-timezone": "^0.5.43",
     "mongoose": "^6.0.10",
-    "node-cron": "^3.0.2"
+    "node-cron": "^3.0.2",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",

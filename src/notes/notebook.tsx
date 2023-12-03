@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useUserContext } from "../useUserContext";
 
 const NoteBook = ({
   notebookId,
@@ -8,6 +10,7 @@ const NoteBook = ({
   notebookContent: string;
 }) => {
   const [noteBookContent, setNoteBookContent] = useState(initialContent);
+  const { user, isAuthenticated } = useUserContext();
 
   const saveNotebookContent = (event) => {
     setNoteBookContent(event);
@@ -20,7 +23,24 @@ const NoteBook = ({
       }
       return notebook;
     });
+
     localStorage.setItem("notebooks", JSON.stringify(updatedNotebooks));
+
+    if (isAuthenticated) {
+      //database implemenetation
+      try {
+        const userId = sessionStorage.getItem("userId");
+        const response = axios.post("http://localhost:5000/updateNotebook", {
+          userId,
+          notebookId,
+          event,
+        });
+
+        console.log("notebook updated!");
+      } catch (error) {
+        console.log("failed to create notebook: " + error);
+      }
+    }
   };
 
   // Effect for handling initial notebook content

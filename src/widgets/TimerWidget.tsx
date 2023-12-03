@@ -10,8 +10,6 @@ const shortBreakTime = 5; //5 minutes
 //const breakTime = 2 * 60; // 2 minutes for 120/20 break
 const totalCycles = 7;
 
-const study_or_break = "Time to work!";
-
 export const TimerWidget = ({ handleMinimize, isMinimized }) => {
   const [timeLeft, setTimeLeft] = useState(pomodoroTime);
   const [timerActive, setTimerActive] = useState(false);
@@ -24,7 +22,14 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
   const [sessionStartTime, setSessionStartTime] = useState(Date.now());
   const [selected, setSelected] = useState("");
 
+  const getTimeZone = () => {
+    const timezone = localStorage.getItem("timezone");
+    return timezone;
+  };
+
   const storeTime = async (time) => {
+    const timezone = getTimeZone();
+
     if (isAuthenticated) {
       try {
         const id = sessionStorage.getItem("userId");
@@ -33,6 +38,7 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
           {
             userId: id,
             time: time,
+            timezone: timezone,
           }
         );
       } catch (error) {
@@ -132,10 +138,10 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
 
   const pauseTimer = () => {
     setTimerActive(false);
-    const elapsedTime = (Date.now() - sessionStartTime) / 1000; // Convert to hours
-    storeTime(elapsedTime); // Store the elapsed time
+    //const elapsedTime = (Date.now() - sessionStartTime) / 1000; // Convert to hours
+    //storeTime(elapsedTime); // Store the elapsed time
     console.log("here @ pauseTimer");
-    console.log(elapsedTime);
+    //console.log(elapsedTime);
   };
 
   const resetTimer = () => {
