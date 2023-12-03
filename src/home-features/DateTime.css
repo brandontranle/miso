@@ -6,45 +6,47 @@
   justify-content: flex-start;
   height: 50vh; /*adjustable*/
   width: 50vh;
+  position: absolute;
+  left: 38%;
 }
 
-.clock { /*this section holds the time and date elements together */
+.clock {
+  /*this section holds the time and date elements together*/
   display: flex; /*used to create a flex container*/
   flex-direction: column; /* Update to display the time and date horizontally */
   align-items: center;
   position: relative;
-  height: 0%;
-  width: 50%;
+  height: 0;
+  width: 100%;
   font-family: Nunito-Regular;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  
 }
 
 .time {
-  font-size: 40px;
+  font-size: 50px;
   display: flex;
   text-align: center;
+  position: center;
   color: white;
-  
- /*margin between time and date */
+
+  /*margin between time and date */
 }
+
 .date {
-  font-size: 20px;
-  display: flex;
+  font-size: 23px;
   text-align: center;
   color: white;
   position: absolute;
   margin-top: 45px;
   font-weight: bold;
-
+  width: 100%;
 }
 
-/*dropdown*/
+/*dropdown menu for time zones*/
 .timezone-dropdown {
   display: flex;
   justify-content: center;
   align-items: center;
-  
   margin-top: 50px; /*spacing for clock and dropdown */
 }
 
@@ -54,9 +56,7 @@
   align-items: center;
   border-radius: 5px;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 50px;
   right: 100;
-  border: .5px solid grey;
-
-
+  border: 0.5px solid grey;
 }

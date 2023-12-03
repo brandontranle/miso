@@ -8,7 +8,7 @@
 //avaiable in the user's OS or browser.
 
 import React, { useEffect, useState } from "react";
-import "../DateTime.css";
+import "./DateTime.css";
 
 const Clock: React.FC = () => {
   const [selectedTimezone, setSelectedTimezone] = useState("America/Los_Angeles"); //we have set Los Angeles as default timezone;
@@ -89,8 +89,8 @@ const Clock: React.FC = () => {
       {/* creates a dropdown using select elemnt with this ID, to allow users to choose */}
       <div className="timezone-dropdown">
         <select id="timezone-selector" onChange={handleTimezoneChange} value={selectedTimezone}>
+        <option value="America/Los_Angeles">Los Angeles, North America</option>
           <option value="America/New_York">New York, North America</option>
-          <option value="America/Los_Angeles">Los Angeles, North America</option>
           <option value="America/Mexico_City">Mexico City, North America</option>
           <option value="America/Sao_Paulo">Sau Paulo, South America</option>
           <option value="America/Argentina/Buenos_Aires">Buenos Aires, South America</option>
