@@ -86,8 +86,6 @@ const Clock: React.FC<ClockProps> = ({ timezone }) => {
         <div className="date">{date}</div>
       </div>
       {/* creates a dropdown using select elemnt with this ID, to allow users to choose */}
-      {/* creates empty element with the ID  */}
-      {/* first attempt: <div id="date-time">{userDateTime}</div> */}
     </div>
   );
 };
