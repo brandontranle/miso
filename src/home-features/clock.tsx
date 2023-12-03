@@ -7,7 +7,7 @@
 //to timezone information through the host system's time zone database.  So, the Intl object uses timezones info
 //avaiable in the user's OS or browser.
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import "./DateTime.css";
 
 const Clock: React.FC = () => {
