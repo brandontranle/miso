@@ -5,40 +5,55 @@ import { useUserContext } from "../useUserContext";
 import { v4 as uuidv4 } from "uuid";
 
 interface notebook {
-  id: number;
+  notebookId: string;
   title: string;
-  content: string;
+  text: string;
   // Add other properties that a notebook might have
 }
 
 export const NotesWidget = ({ handleMinimize, isMinimized }) => {
   const [notebooks, setNotebooks] = useState<notebook[]>([]);
-  const [currentNotebookId, setCurrentNotebookId] = useState(100);
+  const [currentNotebookId, setCurrentNotebookId] = useState("w0w");
   const [notebookTitle, setNotebookTitle] = useState("Notes");
   const [notebookContent, setNotebookContent] = useState("");
   const { user, isAuthenticated } = useUserContext();
   const [hasFetchedData, setHasFetchedData] = useState(false); // New state variable
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !hasFetchedData) {
+      setHasFetchedData(true);
       fetchNotebooks();
+      console.log("notebooks:" + JSON.stringify(notebooks));
     }
+  }, [isAuthenticated, handleMinimize]);
 
-    if (!hasFetchedData) {
-      fetchNotebooks();
-      setHasFetchedData(true); // Set the flag to true to prevent further fetching
-    }
-  }, [isMinimized, hasFetchedData, isAuthenticated]);
-
+  /*
   const createNotebook = async () => {
     const notebookId = uuidv4();
     const newNotebook = {
-      content: "",
-      id: notebookId,
+      notebookId: notebookId, // Make sure this is being set
       title: "my notebook " + notebookId,
+      text: "",
     };
 
     setCurrentNotebookId(notebookId);
+    setNotebookContent(newNotebook.text); // Update
+    setNotebookTitle(newNotebook.title); // Update
+
+    console.log("notebook created with id: " + notebookId);
+
+    //local storage implementation
+    const updatedNotebooks = [...notebooks, newNotebook];
+    console.log("creating new notebook!");
+    setNotebooks((prevNotebooks) => [...prevNotebooks, newNotebook]);
+
+    if (!currentNotebookId) {
+      setCurrentNotebookId(notebookId);
+      setNotebookContent("");
+      setNotebookTitle("my notebook " + notebookId);
+    }
+
+    localStorage.setItem("notebooks", JSON.stringify(updatedNotebooks));
 
     if (isAuthenticated) {
       //database implemenetation
@@ -48,19 +63,16 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
           "http://localhost:5000/createNotebook",
           {
             userId,
-            notebookId,
+            notebook: newNotebook,
           }
         );
       } catch (error) {
         console.log("failed to create notebook: " + error);
       }
     }
-    //local storage implementation
-    const updatedNotebooks = [...notebooks, newNotebook];
-    setNotebooks(updatedNotebooks);
-    localStorage.setItem("notebooks", JSON.stringify(updatedNotebooks));
-  };
+  };*/
 
+  /*
   const fetchNotebooks = async () => {
     if (isAuthenticated) {
       try {
@@ -71,6 +83,13 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
             userId,
           }
         );
+
+        if (response.data.notebooks.length == 0) {
+          console.log("its empty!");
+          await createNotebook();
+          return;
+        }
+
         console.log("fetching notebooks:" + response.data.notebooks);
         setNotebooks(response.data.notebooks);
 
@@ -78,8 +97,6 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
           "notebooks",
           JSON.stringify(response.data.notebooks)
         );
-
-        console.log(response.data.notebooks[0].id);
       } catch (error) {
         console.error("Error fetching notebooks:", error);
       }
@@ -97,26 +114,121 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
     console.log("notebooks id: " + currentNotebookId);
     console.log("notebooks content:" + notebookContent);
     console.log("notebooks title:" + notebookTitle);
+  };*/
+
+  useEffect(() => {
+    // Whenever notebooks change, update localStorage
+    if (!isAuthenticated) {
+      localStorage.setItem("notebooks", JSON.stringify(notebooks));
+    }
+  }, [notebooks]);
+
+  const createNotebook = async () => {
+    const notebookId = uuidv4();
+    const newNotebook = {
+      notebookId: notebookId,
+      title: "my notebook " + notebookId,
+      text: "",
+    };
+
+    // Add the new notebook to the list
+    setNotebooks((prevNotebooks) => [...prevNotebooks, newNotebook]);
+
+    // If there is no current notebook selected or you want to edit the new one right away
+    if (!currentNotebookId || notebooks.length === 0) {
+      console.log("ISSUE IS HERE!");
+      setCurrentNotebookId(notebookId);
+      setNotebookContent("");
+      setNotebookTitle("my notebook " + notebookId);
+    }
+
+    // If authenticated, save to the database
+    if (isAuthenticated) {
+      try {
+        const userId = sessionStorage.getItem("userId");
+        await axios.post("http://localhost:5000/createNotebook", {
+          userId,
+          notebook: newNotebook,
+        });
+      } catch (error) {
+        console.log("failed to create notebook: " + error);
+      }
+    }
   };
 
+  const fetchNotebooks = async () => {
+    if (isAuthenticated) {
+      try {
+        const userId = sessionStorage.getItem("userId");
+        const response = await axios.post(
+          "http://localhost:5000/getNotebooks",
+          { userId }
+        );
+
+        if (response.data.notebooks.length === 0) {
+          await createNotebook(); // This should be an await call
+        }
+
+        if (response.data.notebooks.length > 0) {
+          console.log("done!");
+          setNotebooks(response.data.notebooks);
+          /*localStorage.setItem(
+            "notebooks",
+            JSON.stringify(response.data.notebooks)
+          );*/
+          response.data.notebooks.forEach((notebook) => {
+            console.log(
+              `from fetch: ID: ${notebook.id}, Title: ${notebook.title}`
+            );
+          });
+        }
+
+        // Set content and title for the first notebook or the selected notebook
+        const firstNotebook = response.data.notebooks[0];
+        await setNotebooks(response.data.notebooks);
+        console.log("first notebook id:" + firstNotebook.notebookId);
+        await setCurrentNotebookId(firstNotebook.notebookId);
+        console.log("from fetch: " + firstNotebook.notebookId);
+        await setNotebookContent(firstNotebook.text);
+        await setNotebookTitle(firstNotebook.title);
+      } catch (error) {
+        console.error("Error fetching notebooks:", error);
+      }
+    } else {
+      const notebooks = JSON.parse(localStorage.getItem("notebooks") || "[]");
+      setNotebooks(notebooks);
+    }
+  };
+
+  /*
   const handleNotebookChange = (event) => {
-    const selectedNotebookId = event.target.value;
+    const selectedNotebookId = event.target.value; // This must be the notebook's ID
     setCurrentNotebookId(selectedNotebookId);
 
-    console.log("selected: " + selectedNotebookId);
+    console.log("selected: " + event.target.value);
 
     const retrieved_notebook = notebooks.find(
       (notebook) => notebook.id === selectedNotebookId
     );
-
     if (retrieved_notebook) {
-      console.log("notebook retrieved: " + retrieved_notebook.id);
-
+      setNotebookContent(retrieved_notebook.text);
+      console.log("from the hande change: " + retrieved_notebook.text);
       setNotebookTitle(retrieved_notebook.title);
-      setNotebookContent(retrieved_notebook.content);
-    } else {
-      setNotebookTitle("Notes");
-      setNotebookContent("");
+    }
+  };*/
+  const handleNotebookChange = async (event) => {
+    const selectedNotebookId = event.target.value; // This must be the notebook's ID
+    setCurrentNotebookId(selectedNotebookId);
+
+    console.log("selected: " + event.target.value);
+
+    const retrieved_notebook = notebooks.find(
+      (notebook) => notebook.notebookId === selectedNotebookId
+    );
+    if (retrieved_notebook) {
+      setNotebookContent(retrieved_notebook.text);
+      console.log("from the handle change: " + retrieved_notebook.text);
+      setNotebookTitle(retrieved_notebook.title);
     }
   };
 
@@ -128,16 +240,17 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
           +{" "}
         </button>
 
-        <select
-          value={currentNotebookId}
-          onChange={handleNotebookChange}
-          placeholder=""
-        >
-          {notebooks.map((notebook) => (
-            <option key={notebook.id} value={notebook.id}>
-              {notebook.title}
-            </option>
-          ))}
+        <select value={currentNotebookId} onChange={handleNotebookChange}>
+          {notebooks.map((notebook) => {
+            console.log(
+              `ID: ${notebook.notebookId}, Title: ${notebook.title}, Text: ${notebook.text}`
+            );
+            return (
+              <option key={notebook.notebookId} value={notebook.notebookId}>
+                {notebook.title}
+              </option>
+            );
+          })}
         </select>
         <button className="minimize-symbol" onClick={() => handleMinimize()}>
           <svg
@@ -159,6 +272,7 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
       <div className="widget-content">
         {currentNotebookId && (
           <NoteBook
+            key={currentNotebookId}
             notebookId={currentNotebookId}
             notebookContent={notebookContent}
           />

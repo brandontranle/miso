@@ -265,7 +265,7 @@ const UserData = mongoose.model('UserData', {
     saturday: Number,
   },
   timezone: String,
-  notebooks: [{text: String, id: Number, title: String}]
+  notebooks: [{text: String, notebookId: String, title: String}]
 })
 
 
@@ -1058,7 +1058,7 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
   app.post('/createNotebook', async (req, res) => {
     try {
-      const {userId, id} = req.body;
+      const {userId, notebook} = req.body;
       const user = await UserData.findOne({userId});
 
       if (!user) {
@@ -1070,9 +1070,10 @@ app.post('/deleteTodoInHistory', async (req, res) => {
         user.notebooks = [];
       }
 
-      const notebook = {text: "type here!",id: id, title: "my notebook"};
-      user.notebooks.push(notebook);
-      user.save();
+      console.log('notebook being created:' + notebook)
+
+      await user.notebooks.push(notebook);
+      await user.save();
       console.log('notebook created in the db!')
 
 
@@ -1085,7 +1086,7 @@ app.post('/deleteTodoInHistory', async (req, res) => {
   app.post('/getNotebooks', async (req, res) => {
 
     try {
-      const {userId, id} = req.body;
+      const {userId} = req.body;
       const user = await UserData.findOne({userId});
 
       if (!user) {
@@ -1093,8 +1094,19 @@ app.post('/deleteTodoInHistory', async (req, res) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const notebooks = user.notebooks;
+
+      const notebooks = user.notebooks.map(notebook => ({
+        notebookId: notebook.notebookId, // Convert _id to id
+        title: notebook.title,
+        text: notebook.text,
+        // ... other fields ...
+      }));
+      
+      console.log("notebooks" + JSON.stringify(notebooks));
+
       console.log('notebook retrieved from the db!')
+
+
 
       res.status(200).json({notebooks: notebooks});
     } catch (error) {
@@ -1108,7 +1120,9 @@ app.post('/deleteTodoInHistory', async (req, res) => {
   app.post('/updateNotebook', async (req, res) => {
 
     try {
-      const {userId, id, content} = req.body;
+      const {userId, notebookId, content} = req.body;
+      console.log(`UserID: ${userId}, NotebookID: ${notebookId}, Content: ${content}`);
+
       const user = await UserData.findOne({userId});
 
       if (!user) {
@@ -1116,20 +1130,28 @@ app.post('/deleteTodoInHistory', async (req, res) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const notebook = user.notebooks.find((notebook) => notebook.id === id);
+      const notebook = await user.notebooks.find((notebook) => notebook.notebookId === notebookId); 
+
+
+
+      console.log(notebook);
+      
       if (!notebook) {
         console.log("Notebook not found");
         return res.status(404).json({ error: "Notebook not found" });
       }
 
+      console.log("from the backend: " + content);
+
       notebook.text = content;
-      user.save();
+      user.markModified('notebooks');
+      await user.save();
       console.log('notebook updated in the db!')
       res.status(200).json({notebooks: user.notebooks});
 
 
     } catch (error) {
-      console.log("error updating notebook");
+      console.log("error updating notebook: " + error);
       res.status(500).json({ error: "An error occurred while updating the notebook" });
 
     }
