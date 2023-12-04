@@ -27,6 +27,7 @@ import Draggable, { DraggableCore } from "react-draggable";
 import { Resizable, ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css"; // Import the CSS for resizable
 import "./resizable.css";
+import axios from "axios";
 
 export const Home: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -34,8 +35,58 @@ export const Home: React.FC = () => {
   const [minimizedWidgets, setMinimizedWidgets] = useState<
     Map<number, boolean>
   >(new Map());
+  const { user, isAuthenticated } = useUserContext(); // Get the user context
 
-  const [timeSpentOnPage, setTimeSpentOnPage] = useState(0);
+  const [timezone, setTimezone] = useState("America/Los_Angeles");
+
+  // Call getTimeZone to initialize the timezone state
+  useEffect(() => {
+    getTimeZone();
+  }, [timezone, showSidebar]);
+
+  const handleTimezoneChange = async () => {
+    const newTimezone = getTimeZone();
+    if (newTimezone && newTimezone !== timezone) {
+      // Update the timezone state when it changes
+      setTimezone(newTimezone);
+      if (isAuthenticated) {
+        //database implemenetation
+        try {
+          const userId = sessionStorage.getItem("userId");
+          const response = await axios.post(
+            "http://localhost:5000/changeTimezone",
+            {
+              userId,
+              newTimezone,
+            }
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      localStorage.setItem("timezone", newTimezone);
+    }
+  };
+
+  useEffect(() => {
+    // Listen for changes to the "timezone" state
+    console.log("timezone from handletimzone!");
+    window.addEventListener("storage", handleTimezoneChange);
+
+    return () => {
+      window.removeEventListener("storage", handleTimezoneChange);
+    };
+  }, [timezone]);
+
+  const getTimeZone = () => {
+    //retrieve the timezone from local storage
+    const timezone = localStorage.getItem("timezone");
+    console.log("timezone!");
+    if (timezone) {
+      setTimezone(timezone);
+    }
+    return timezone;
+  };
 
   const toggleMinimize = (widgetId: number) => {
     setMinimizedWidgets((prev) =>
@@ -201,9 +252,9 @@ export const Home: React.FC = () => {
       </div>
       <div className="MainContainer">
         <div className="MainContent">
-          <Clock />
+          <Clock timezone={timezone} />
           <Weather />
-          <Quote/>
+          <Quote />
           {activeWidgets.map(renderWidgetContent)}
         </div>
         <WidgetBar onWidgetClick={handleWidgetClick} />

@@ -1,8 +1,10 @@
 export {};
 const express = require('express');
 const dotenv = require('dotenv');
+const moment = require('moment-timezone');
 const request = require('request');
-//const request = require('request');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -80,7 +82,7 @@ app.get('/auth/login', (req, res) => {
   res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
 })
 
-app.get('/auth/callback', (req, res) => {
+//app.get('/auth/callback', (req, res) => {
 
 /*
 app.listen(port, () => {
@@ -133,7 +135,7 @@ app.get('/auth/callback', (req, res) => {
     json: true
   };
 
-  request.post(authOptions, function(error, response, body) {
+  app.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       global.access_token = body.access_token;
       res.redirect('http://localhost:5173')
@@ -148,7 +150,6 @@ app.get('/auth/token', (req, res) => {
     })
 })
 
-const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function (app) {
   app.use('/auth', createProxyMiddleware({ 
@@ -160,15 +161,15 @@ module.exports = function (app) {
   }));
 };
 
-=======
-  app.post(authOptions, function(error, response, body) {
+/*
+app.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       global.access_token = body.access_token;
       res.redirect('/')
     }
   });
 
-})
+})*/
 
 app.get('/auth/token', (req, res) => {
   res.json({ access_token: global.access_token})
@@ -254,6 +255,17 @@ const UserData = mongoose.model('UserData', {
   todosHistory: [{ text: String, complete: Boolean, id: String, }], // Add this field
   time: Number,
   kibbles: Number,
+  weeklyTime: {
+    sunday: Number,
+    monday: Number,
+    tuesday: Number,
+    wednesday: Number,
+    thursday: Number,
+    friday: Number,
+    saturday: Number,
+  },
+  timezone: String,
+  notebooks: [{text: String, id: Number, title: String}]
 })
 
 
@@ -932,14 +944,32 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
   app.post('/storeTimeAndKibbles', async (req, res) => {
     try {
-      const {userId, time} = req.body;
+      const {userId, time, timezone} = req.body;
       const user = await UserData.findOne({userId});
+      const currentDay = moment.tz(timezone).format('dddd').toLowerCase();
+
 
       if (!user) {
         console.log("User not found");
         return res.status(404).json({ error: "User not found" });
       }
   
+
+      if (!user.weeklyTime) {
+        user.weeklyTime = {
+          sunday: 0,
+          monday: 0,
+          tuesday: 0,
+          wednesday: 0,
+          thursday: 0,
+          friday: 0,
+          saturday: 0,
+        };
+      }
+
+      user.weeklyTime[currentDay] = (user.weeklyTime[currentDay] || 0) + time;
+
+
       // Update user data
       const updatedUser = await UserData.findByIdAndUpdate(
         userId,
@@ -996,6 +1026,111 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
       console.log("error fetching kibbles");
       res.status(500).json({ error: "An error occurred while fetching the kibbles" });
+
+    }
+
+  });
+
+
+  app.post('/changeTimezone', async (req, res) => {
+    try {
+      const {userId, timezone} = req.body;
+      const user = await UserData.findByIdAndUpdate(userId, {timezone: timezone},  { new: true })
+
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      user.save()
+      console.log('timezone changed in the db!')
+
+      res.status(200).json()
+    } catch (error) {
+        console.log("error changing timezone");
+        res.status(500).json({ error: "An error occurred while changing the timezone" });
+    }
+
+
+
+
+  });
+
+  app.post('/createNotebook', async (req, res) => {
+    try {
+      const {userId, id} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      if (!user.notebooks) {
+        user.notebooks = [];
+      }
+
+      const notebook = {text: "type here!",id: id, title: "my notebook"};
+      user.notebooks.push(notebook);
+      user.save();
+      console.log('notebook created in the db!')
+
+
+    } catch (error) {
+      console.log("error creating notebook");
+      res.status(500).json({ error: "An error occurred while creating the notebook" });
+    }
+  });
+
+  app.post('/getNotebooks', async (req, res) => {
+
+    try {
+      const {userId, id} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const notebooks = user.notebooks;
+      console.log('notebook retrieved from the db!')
+
+      res.status(200).json({notebooks: notebooks});
+    } catch (error) {
+      console.log("error fetching notebook");
+      res.status(500).json({ error: "An error occurred while fetching the notebook(s)" });
+    }
+
+
+  });
+
+  app.post('/updateNotebook', async (req, res) => {
+
+    try {
+      const {userId, id, content} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const notebook = user.notebooks.find((notebook) => notebook.id === id);
+      if (!notebook) {
+        console.log("Notebook not found");
+        return res.status(404).json({ error: "Notebook not found" });
+      }
+
+      notebook.text = content;
+      user.save();
+      console.log('notebook updated in the db!')
+      res.status(200).json({notebooks: user.notebooks});
+
+
+    } catch (error) {
+      console.log("error updating notebook");
+      res.status(500).json({ error: "An error occurred while updating the notebook" });
 
     }
 
