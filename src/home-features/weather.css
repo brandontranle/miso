@@ -12,8 +12,8 @@
     border-radius: 5%;
     padding: 10px;
     align-items: center;
-    backdrop-filter: blur(2px); /* Adjust the blur radius */
-    background-color: rgba(255, 255, 255, 0.2); /* Adjust the alpha value for transparency */
+    backdrop-filter: blur(3px); /* Adjust the blur radius */
+    background-color: rgba(166, 178, 166, 0.904); /* Adjust the alpha value for transparency */
 }
 .main-weather
 {
