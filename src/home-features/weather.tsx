@@ -2,24 +2,25 @@ import React, { useEffect, useState } from 'react';
 import './weather.css';
 import WeatherCard from './weatherCard';
 import {apiUrl, apiKey} from './config';
+
 //import WeatherComponent from './weatherComponent';
 //require('dotenv').config({path: '../../openWeatherMapAPI/.env'});
   //this allows us to use process.env.REACT_APP...
 
-interface WeatherData {
+  //WeatherData represnts the sturcture of the data fetched from the weather API,
+  //it includes properties like main, weaether, name, and others.  We will be only using these.
+interface WeatherData { 
   main: {
     temp: number;
   };
-  weather: 
-  {
+  weather: {
     description: string;
     icon: string;
   }[];
+  name: string;
 }
 
 const Weather: React.FC = () => {
-  
-
 
   const [lat, setLat] = useState<number | null>(null); //lat for latitutde, when initailized can be a number or  null
   const [long, setLong] = useState<number | null>(null); //long for longitude
@@ -34,11 +35,10 @@ const Weather: React.FC = () => {
       navigator.geolocation.getCurrentPosition(function(position) {
         setLat(position.coords.latitude);
         setLong(position.coords.longitude);
-    });
-  
+      });
+    };
+    fetchData();
 
-      if (lat !== null && long !== null)
-      {
       //await fetch(`${apiUrl}/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${apiKey}`)
           /*we are inputing into fetch the API call, using user's own lat, long, and our API key*/
       //.then(res => res.json())  /*once we fetched data, then...*/
@@ -54,40 +54,35 @@ const Weather: React.FC = () => {
           console.error("Error fetching weather data: ", error);
         }
         */
-        await fetch(`${apiUrl}/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${apiKey}`)
-        .then(res => res.json())
-        .then(result => {
-          setData(result)
+    const fetchWeatherData = async () => {
+      if (lat !== null && long !== null && apiUrl && apiKey) {
+        try {
+          const response = await fetch(
+            `${apiUrl}/weather/?lat=${lat}&lon=${long}&units=metric&appid=${apiKey}`
+          );
+          const result: WeatherData = await response.json();
+          setData(result);
           console.log(result);
-        });
+        } catch (error) {
+          console.error("Error fetching weather data: ", error);
+        }
       }
     };
     console.log("Latitude is: ", lat)
     console.log("Longitude is: ", long )
 
-    fetchData();
+    const intervalId = setInterval(fetchWeatherData, 600000); //fetch data every 10 minutes
+    fetchWeatherData(); //intial fetch
     
-  }, [lat, long, apiUrl, apiKey])
 
+  }, [lat, long, apiUrl, apiKey]);
 
   return (
-    <div className="weather">
 
-      {/*   {(typeof data.main != 'undefined') ? (
-        <WeatherComponent weatherData = {data}/>
-      ): (
-        <div></div>
-      )}
-      <div> Insert Weather componet stuff here! */}
-
-      {/*data?.main !== undefined ? (<Weather weatherData = {data}/>)
-      : ( <div></div>
-    )*/}
-      <h1 className = "temp">weather </h1>
-      <img src ="" alt="" className="icon"/>  {/*icon image*/}
-      <div className="description">Cloudy</div>
-
+    <div className="weather-container">
+      {data ? <WeatherCard weatherData={data}/> : <div>Loading weather...</div>}
     </div>
+    
   );
 };
 

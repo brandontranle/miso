@@ -1,11 +1,21 @@
-.weather
+.weather-container
 {
-    text-align: center;
+    color: white;
+    display: flex;
+    
+    
 }
 .temp {
     text-align: center;
 }
-
 .description {
     text-align: center;
+}
+.weather-loading
+{
+    color: white;
+}
+.location
+{
+    text-align: center;   
 }
