@@ -8,7 +8,7 @@
 //avaiable in the user's OS or browser.
 
 import React, { useEffect, useState } from "react";
-import "../DateTime.css";
+import "./DateTime.css";
 
 interface ClockProps {
   timezone: string;
