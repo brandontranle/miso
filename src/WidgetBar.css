@@ -347,7 +347,6 @@ textarea:focus {
   z-index: 100;
 }
 
-
 .notebook-content::-webkit-scrollbar-track {
   background-color: #f0f0f0; /* Light grey track */
 }
@@ -386,29 +385,24 @@ select {
   border-radius: 13px;
 }
 
-.sounds-widget .widget-content{ 
+.sounds-widget .widget-content {
   display: flex;
   flex-direction: column;
-  justify-content:left;
-
-
+  justify-content: left;
 }
 
-.sounds-widget .container{
+.sounds-widget .container {
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: left;
 }
 
-.volume-slider{
+.volume-slider {
   z-index: 100;
   cursor: pointer;
   justify-content: left;
 }
-
-
-
 
 /***** timer widget *****/
 .timer-widget {
@@ -472,4 +466,8 @@ select {
     width: 300px;
     height: 200px;
   }
+}
+
+.svg-button {
+  border: transparent;
 }
