@@ -35,7 +35,7 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
     const newNotebook = {
       content: "",
       id: notebookId,
-      title: "my notebook " + notebookId,
+      title: "My Notebook " + notebookId,
     };
 
     setCurrentNotebookId(notebookId);

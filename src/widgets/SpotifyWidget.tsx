@@ -30,7 +30,7 @@ export const SpotifyWidget = ({ handleMinimize }) => {
   return (
     <><div className="spotify-widget">
     <div className="widget-header">
-      <p className="widget-title">spotify</p>
+      <p className="widget-title">Spotify</p>
       <button className="minimize-symbol" onClick={() => handleMinimize()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
