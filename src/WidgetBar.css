@@ -378,7 +378,7 @@ select {
 }
 
 .widget-window.sounds-widget {
-  width: 349px;
+  width: 200px;
   height: 146px;
   position: absolute;
   left: 40%; /* Start at the half-way point of the MainContainer */
