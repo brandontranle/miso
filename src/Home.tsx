@@ -11,7 +11,7 @@ import TimerWidget from "./widgets/TimerWidget";
 import TasksWidget from "./widgets/TasksWidget";
 import SoundsWidget from "./widgets/SoundsWidget";
 import SpotifyWidget from "./widgets/SpotifyWidget";
-import CatGPTWidget from "./widgets/CatGPTWidget";
+import MessagesWidget from "./widgets/MessagesWidget";
 import NotesWidget from "./widgets/NotesWidget";
 import backgroundImage from "./assets/background.png";
 import backgroundGif from "./assets/ghibli.gif";
@@ -206,7 +206,7 @@ export const Home: React.FC = () => {
       case 7:
         widgetClass = "catGPT-widget";
         WidgetComponent = (
-          <CatGPTWidget
+          <MessagesWidget
             isMinimized={isMinimized}
             handleMinimize={() => handleWidgetClick(widgetId)}
           />

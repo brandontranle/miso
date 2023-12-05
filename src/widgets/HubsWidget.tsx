@@ -2,7 +2,7 @@ export const HubsWidget = ({ handleMinimize, isMinimized }) => {
   return (
     <div className="hubs-widget">
       <div className="widget-header">
-        <p className="widget-title">hubs</p>
+        <p className="widget-title">Hubs</p>
         <button className="minimize-symbol" onClick={() => handleMinimize()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
