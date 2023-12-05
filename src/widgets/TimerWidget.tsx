@@ -176,7 +176,7 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
   return (
     <div className="timer-widget">
       <div className="widget-header">
-        <p className="widget-title">timer</p>
+        <p className="widget-title">Timer</p>
         <button className="minimize-symbol" onClick={() => handleMinimize()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
