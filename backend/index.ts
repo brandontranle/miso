@@ -48,7 +48,6 @@ global.access_token = ''
 dotenv.config()
 
 var spotify_redirect_uri = 'http://localhost:5000/auth/callback'
-
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
 
@@ -135,7 +134,7 @@ app.get('/auth/callback', (req, res) => {
     json: true
   };
 
-  app.post(authOptions, function(error, response, body) {
+  request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       global.access_token = body.access_token;
       res.redirect('http://localhost:5173')
@@ -317,6 +316,7 @@ app.post('/signup', async (req, res) => {
     todosHistory: [],
     time: 0,
     kibbles: 0,
+    notebooks: [{text: "", notebookId: "1", title: "my notebook"}]
     // Add other user-specific data if needed
   });
 
@@ -1157,3 +1157,105 @@ app.post('/deleteTodoInHistory', async (req, res) => {
     }
 
   });
+
+
+  app.post('/fetchNotebook', async (req, res) => {
+
+    try {
+      const {userId, notebookId} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      //find the notebook that matches the id
+      const notebook = await user.notebooks.find((notebook) => notebook.notebookId === notebookId); 
+      
+      console.log("notebooks" + JSON.stringify(notebook));
+
+
+      console.log('notebook retrieved from the db!')
+
+
+
+      res.status(200).json({notebook: notebook});
+    } catch (error) {
+      console.log("error fetching notebook");
+      res.status(500).json({ error: "An error occurred while fetching the notebook(s)" });
+    }
+
+
+  });
+
+  app.post('/deleteNotebook', async (req, res) => {
+    
+    try {
+      const {userId, notebookId} = req.body;
+
+      console.log("attempting to delete notebook: " + notebookId);
+
+      const user = await UserData.findById(userId);
+
+      if (!user) {
+        console.log("user not found while deleting notebook");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const notebook = user.notebooks.find((notebook) => notebook.notebookId === notebookId);
+
+      if (!notebook) {
+        console.log("notebook not found while deleting");
+        return res.status(404).json({ error: "Notebook not found" });
+      }
+
+      user.notebooks = user.notebooks.filter((notebook) => notebook.notebookId !== notebookId);
+
+      await user.save();
+
+      console.log("notebook deleted: " + notebookId);
+      res.status(200).json({notebooks: user.notebooks});
+    } catch (error) {
+      console.error("Error deleting notebook:", error);
+      res.status(500).json({ error: "An error occurred while deleting the notebook" });
+    }
+    
+    
+  });
+
+
+
+  app.post('/updateNotebookTitle', async (req, res) => {
+    try {
+      const {userId, notebookId, title} = req.body;
+
+      const user = await UserData.findById(userId);
+
+      if (!user) {
+        console.log("user not found while deleting notebook");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const notebook = user.notebooks.find((notebook) => notebook.notebookId === notebookId);
+
+      if (!notebook) {
+        console.log("notebook not found while deleting");
+        return res.status(404).json({ error: "Notebook not found" });
+      }
+
+      notebook.title = title;
+      user.markModified('notebooks');
+      user.save();
+
+      console.log("notebook " + notebookId + " updated with title: " + title);
+      res.status(200).json({notebooks: user.notebooks});
+    } catch (error) {
+      console.error("Error editing notebook title:", error);
+      res.status(500).json({ error: "An error occurred while editing the notebook title" });
+    }
+
+
+
+  });
+

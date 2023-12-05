@@ -5,13 +5,24 @@ import { useUserContext } from "../useUserContext";
 interface NotebookProps {
   notebookId: string;
   notebookContent: string;
+  fetchNotebook: () => Promise<void>; // Assuming fetchNotebook is an async function
 }
 
-const NoteBook: React.FC<NotebookProps> = ({ notebookId, notebookContent }) => {
+const NoteBook: React.FC<NotebookProps> = ({
+  notebookId,
+  notebookContent,
+  fetchNotebook,
+}) => {
   const [noteBookContent, setNoteBookContent] = useState(notebookContent);
   const { user, isAuthenticated } = useUserContext();
 
   console.log("from the notebook component" + notebookId);
+
+  useEffect(() => {
+    if (notebookId) {
+      fetchNotebook();
+    }
+  }, [notebookId, fetchNotebook]);
 
   const saveNotebookContent = async (event) => {
     console.log("saving notebook content: " + event);
