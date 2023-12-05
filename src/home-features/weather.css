@@ -1,50 +1,53 @@
-.weather-container
-{
-    color: white;
-    display: flex;
-    align-items: center;
-   
+.weather-container {
+  color: white;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 38%;
+  height: 25vh; /*adjustable*/
+  width: 50vh;
 }
-.flex
-{
+.flex {
+  width: 200px;
+  height: 120px;
+  position: absolute;
+  top: 65%;
+  left: 25%;
 
-    width: 200px;
-    height: 150px;
-    position: fixed;
-    bottom: 10px; /* Adjust as needed */
-    left: 10px; /* Adjust as needed */
-
-    border: 1px solid transparent; /* Remove the border if not needed */
-    border-radius: 5%;
-    padding: 10px;
-    align-items: center;
-    backdrop-filter: blur(1px); /* Adjust the blur radius */
-    background-color: rgba(134, 141, 134, 0.904); /* Adjust the alpha value for transparency */
+  border: 1px solid transparent; /* Remove the border if not needed */
+  border-radius: 5%;
+  padding: 10px;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  outline: none;
+  border-radius: 5px;
+  text-decoration: none;
 }
-.main-weather
-{
-    align-items: center;   
+.main-weather {
+  align-items: center;
 }
-.icon img 
-{
-    align-items: center;
-    width: 50px; /* Adjust icon size as needed */
-    height: 50px; /* Adjust icon size as needed */
-    margin-right: 10px; /* Space between icon and temperature */
+.icon img {
+  align-items: center;
+  width: 50px; /* Adjust icon size as needed */
+  height: 50px; /* Adjust icon size as needed */
+  margin-right: 10px; /* Space between icon and temperature */
 }
 
 .temp {
-    font-weight: bold;
-    font-size: 110%;
+  font-weight: bold;
+  font-size: 100%;
+  position: relative;
+  font-family: "Nunito-Regular";
 }
 .description {
-    text-align: left;
+  text-align: left;
 }
-.weather-loading
-{
-    color: white;
+.weather-loading {
+  color: white;
 }
-.location
-{
-    text-align: left;   
+.location {
+  margin-left: 10%;
+  text-align: left;
+  font-family: "Nunito-Regular";
 }
