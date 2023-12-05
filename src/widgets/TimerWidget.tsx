@@ -3,10 +3,10 @@ import { useState, useEffect, useRef } from "react";
 import { useUserContext } from "../useUserContext";
 import axios from "axios";
 
-const pomodoroTime = 25; // 25 minutes
+const pomodoroTime = 60 * 25; // 25 minutes
 
-const longBreakTime = 10; // 20 minutes
-const shortBreakTime = 5; //5 minutes
+const longBreakTime = 60 * 10; // 20 minutes
+const shortBreakTime = 60 * 5; //5 minutes
 //const breakTime = 2 * 60; // 2 minutes for 120/20 break
 const totalCycles = 7;
 
