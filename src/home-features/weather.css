@@ -4,16 +4,22 @@
     display: flex;
     align-items: center;
    
-  
 }
 .flex
 {
+
+    width: 200px;
+    height: 150px;
+    position: fixed;
+    bottom: 10px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+
     border: 1px solid transparent; /* Remove the border if not needed */
     border-radius: 5%;
     padding: 10px;
     align-items: center;
-    backdrop-filter: blur(2px); /* Adjust the blur radius */
-    background-color: rgba(255, 255, 255, 0.2); /* Adjust the alpha value for transparency */
+    backdrop-filter: blur(1px); /* Adjust the blur radius */
+    background-color: rgba(134, 141, 134, 0.904); /* Adjust the alpha value for transparency */
 }
 .main-weather
 {
@@ -21,6 +27,7 @@
 }
 .icon img 
 {
+    align-items: center;
     width: 50px; /* Adjust icon size as needed */
     height: 50px; /* Adjust icon size as needed */
     margin-right: 10px; /* Space between icon and temperature */
@@ -28,6 +35,7 @@
 
 .temp {
     font-weight: bold;
+    font-size: 110%;
 }
 .description {
     text-align: left;

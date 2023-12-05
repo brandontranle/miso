@@ -7,6 +7,7 @@ import SoundsIcon from "./widget-icons/Sounds-Icon";
 import SpotifyIcon from "./widget-icons/Spotify-Icon";
 import NotesIcon from "./widget-icons/Notes-Icon";
 import "./WidgetBar.css"; // Ensure you have the CSS file named WidgetBar.css
+import MessagesIcon from "./widget-icons/Messages-Icon";
 
 // Define a type for your widget if you have specific properties
 type WidgetType = {
@@ -31,7 +32,7 @@ export const WidgetBar: React.FC<WidgetBarProps> = ({ onWidgetClick }) => {
     { id: 4, icon: <TasksIcon />, name: "Tasks" },
     { id: 5, icon: <SoundsIcon />, name: "Sounds" },
     { id: 6, icon: <SpotifyIcon />, name: "Spotify" },
-    { id: 7, icon: <MisoIcon />, name: "CatGPT" },
+    { id: 7, icon: <MessagesIcon />, name: "Messages" },
     { id: 8, icon: <NotesIcon />, name: "Notes" },
     // ... other widget properties
   ];
