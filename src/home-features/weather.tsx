@@ -80,7 +80,7 @@ const Weather: React.FC = () => {
   return (
 
     <div className="weather-container">
-      {data ? <WeatherCard weatherData={data}/> : <div>Loading weather...</div>}
+      {data ? <WeatherCard weatherData={data}/> : <div></div>} {/*shows nothing if location is not allowed*/}
     </div>
     
   );

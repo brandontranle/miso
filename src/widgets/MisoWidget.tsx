@@ -11,7 +11,7 @@ export const MisoWidget = ({ handleMinimize, isMinimized }) => {
   return (
     <div className="miso-widget">
       <div className="widget-header">
-        <p className="widget-title">miso</p>
+        <p className="widget-title">Miso</p>
         <button className="minimize-symbol" onClick={() => handleMinimize()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

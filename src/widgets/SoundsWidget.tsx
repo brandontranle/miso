@@ -48,7 +48,7 @@ const SoundsWidget = ({ handleMinimize, isMinimized }) => {
   return (
     <div className="sounds-widget">
        <div className="widget-header">
-        <p className="widget-title">sounds</p>
+        <p className="widget-title">Sounds</p>
         <button className="minimize-symbol" onClick={() => handleMinimize()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
