@@ -121,6 +121,8 @@ app.get('/auth/callback', (req, res) => {
       global.access_token = body.access_token;
       console.log(global.access_token)
       res.redirect('http://localhost:5173')
+     
+
     }
   });
 

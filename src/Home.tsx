@@ -29,6 +29,10 @@ import "react-resizable/css/styles.css"; // Import the CSS for resizable
 import "./resizable.css";
 import axios from "axios";
 
+import brownCatWalkGif from "./miso/brown_cat/cat01_walk_8fps.gif";
+import brownCatSitGif from "./miso/brown_cat/cat01_sit_8fps.gif";
+import brownCatAttackGif from "./miso/brown_cat/cat01_attack_12fps.gif";
+
 export const Home: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeWidgets, setActiveWidgets] = useState<number[]>([]); // This now tracks multiple widgets
@@ -38,6 +42,30 @@ export const Home: React.FC = () => {
   const { user, isAuthenticated } = useUserContext(); // Get the user context
 
   const [timezone, setTimezone] = useState("America/Los_Angeles");
+  const [backgroundImage, setBackgroundImage] = useState(backgroundGif);
+
+  const [misoTexture, setMisoTexture] = useState({
+    walk: brownCatWalkGif,
+    sit: brownCatSitGif,
+    attack: brownCatAttackGif,
+  });
+
+  // Function to change the Miso texture
+  const changeAllMisoTextures = (newTextures) => {
+    setMisoTexture(newTextures);
+  };
+
+  const handleBackgroundChange = (newBackgroundImage) => {
+    setBackgroundImage(newBackgroundImage);
+    console.log("image changed!");
+  };
+
+  const [currentContent, setCurrentContent] = useState("userProfile"); // New state for current content
+
+  const handleContentChange = (content: string) => {
+    setCurrentContent(content);
+    setShowSidebar(true); // Open the sidebar if not already open
+  };
 
   // Call getTimeZone to initialize the timezone state
   useEffect(() => {
@@ -101,7 +129,7 @@ export const Home: React.FC = () => {
   };
 
   const backgroundImageStyle = {
-    backgroundImage: `url(${backgroundGif})`,
+    backgroundImage: `url(${backgroundImage})`,
     backgroundSize: "cover", // Optional: Scale the background image to cover the entire container
     backgroundRepeat: "no-repeat", // Optional: Prevent background image from repeating
     backgroundPosition: "center center", // Optional: Center the background image
@@ -158,6 +186,7 @@ export const Home: React.FC = () => {
           <MisoWidget
             isMinimized={isMinimized}
             handleMinimize={() => handleWidgetClick(widgetId)}
+            misoTexture={misoTexture}
           />
         );
         break;
@@ -167,6 +196,8 @@ export const Home: React.FC = () => {
           <HubsWidget
             isMinimized={isMinimized}
             handleMinimize={() => handleWidgetClick(widgetId)}
+            setBackgroundImage={handleBackgroundChange}
+            setMiso={changeAllMisoTextures}
           />
         );
         break;
@@ -247,7 +278,11 @@ export const Home: React.FC = () => {
     <div className="page" style={backgroundImageStyle}>
       <div className="TopBarContainer">
         <div className="Nav-Bar">
-          <Navbar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+          <Navbar
+            showSidebar={showSidebar}
+            setShowSidebar={setShowSidebar}
+            onContentChange={handleContentChange}
+          />
         </div>
       </div>
       <div className="MainContainer">
@@ -262,7 +297,11 @@ export const Home: React.FC = () => {
       <div
         className={`backdrop ${showSidebar ? "backdrop-visible" : ""}`}
       ></div>
-      <LoginScreen showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+      <LoginScreen
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
+        currentContent={currentContent}
+      />{" "}
     </div>
   );
 };

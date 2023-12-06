@@ -1,76 +1,74 @@
-.hubs-widget .widget-content{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between
-
+.hubs-widget .widget-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-
-.hubs-bg-container{
-    display: flex;
-    width: 50%;
-    height: 100%;
-    position: relative;
-    flex-direction: column;
-    align-items: left;
-    padding-left: 20px;
-    padding-top: 10px;
-    padding-right: 20px
+.hubs-bg-container {
+  display: flex;
+  width: 50%;
+  height: 100%;
+  position: relative;
+  flex-direction: column;
+  align-items: left;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-right: 20px;
 }
 
-.hubs-miso-container{
-        display: flex;
-        width: 50%;
-        height: 100%;
-        position: relative;
-        flex-direction: column;
-        align-items: left;
-        padding-left: 20px;
-        padding-top: 10px;
-        padding-right: 20px
-    
+.hubs-miso-container {
+  display: flex;
+  width: 50%;
+  height: 100%;
+  position: relative;
+  flex-direction: column;
+  align-items: left;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-right: 20px;
 }
 
-.left-container{
-    text-align: left;
-
+.left-container {
+  text-align: left;
 }
 
-.row-selections{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    flex-direction: row;
-    margin-top: 10px;
-
+.row-selections {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: 10px;
 }
 
-.hubs-widget label{
-    font-family: "Nunito-Bold";
-
+.hubs-widget label {
+  font-family: "Nunito-Bold";
 }
 
-.widget-window.hubs-widget{
-    resize: none;
+.widget-window.hubs-widget {
+  resize: none;
 }
 
-.bottom-button{
-    margin-top: 20px;
+.bottom-button {
+  margin-top: 20px;
 }
 
-.image-button{
-    border-radius: 10px;
-    height: 50px;
-    width: 50px;
+.image-button {
+  border-radius: 10px;
+  height: 50px; /* Adjust size as necessary */
+  width: 50px; /* Adjust size as necessary */
+  padding: 0; /* Remove padding */
+  border: none; /* Remove border */
+  overflow: hidden; /* Prevents any part of the image from overflowing outside the button */
 }
 
-.hubs-img{
-    width: 100%;
-    height: 100%;
+.hubs-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.vertical-line{
-    height: 80%;
-    width: 2px;
-    margin-bottom: 20px;
-    background: #e9e9e9;
+.vertical-line {
+  height: 80%;
+  width: 2px;
+  margin-bottom: 20px;
+  background: #e9e9e9;
 }
