@@ -37,8 +37,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
         <label className="temp">{weatherData.main.temp} &deg;C</label>
       </div>
       <div className="location">
-        {capitalizedDescription} in <br />
-        {weatherData.name}
+        {capitalizedDescription} in {weatherData.name}
       </div>
       {/*div className = "description">{weatherData.weather[0].description}</div>
             <p className="location">in {weatherData.name}</p> */}

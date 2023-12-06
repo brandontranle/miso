@@ -175,8 +175,14 @@
   left: 40%; /* Start at the half-way point of the MainContainer */
   top: 58%;
   border-radius: 13px;
+  min-width: 349px;
+  min-height: 211px;
+
 }
 
+.miso{
+  z-index: 1000;
+}
 .widget-window.miso-widget.minimized {
   display: none;
 }
