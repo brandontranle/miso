@@ -20,11 +20,6 @@ export const SpotifyWidget = ({ handleMinimize }) => {
   const [spotifyApi, setSpotifyApi] =
     useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
   const [token, setToken] = useState("");
-<<<<<<< HEAD
-  const authToken =
-    "BQAePqQGcKeKp0NxH_6L-h-IbsQPpWkcERo7YRlxuFiKaQ2ggVRAUQ2-UAyNA4aDof9Bw-CdrQUjcjFJdc0m2SMAzAs0vXES-cDgBdmUt752JpnxklqobTAJX2D-f6MeDh0gXJuluY8NIceG7IbJ9bECbN0dpBQW04Bcf2JcrI0AWCFPmVWx86woAKtPkxR9V_xCBz7-EfYjJ1cDeeTzpYLk8-L9rhHg";
-=======
->>>>>>> master
 
   useEffect(() => {
     // Inside your component or Axios interceptor
@@ -100,7 +95,7 @@ export const SpotifyWidget = ({ handleMinimize }) => {
     <>
       <div className="spotify-widget">
         <div className="widget-header">
-          <p className="widget-title">Spotify</p>
+          <p className="widget-title">spotify</p>
           <button className="minimize-symbol" onClick={() => handleMinimize()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
