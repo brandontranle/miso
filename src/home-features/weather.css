@@ -9,9 +9,9 @@
 }
 .flex {
   width: 200px;
-  height: 120px;
+  height: 140px;
   position: absolute;
-  top: 65%;
+  top: 60%;
   left: 25%;
 
   border: 1px solid transparent; /* Remove the border if not needed */

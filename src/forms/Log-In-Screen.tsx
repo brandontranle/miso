@@ -8,6 +8,7 @@ import UserProfile from "../UserProfile";
 interface LoginScreenProps {
   showSidebar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>; // Add this line
+  currentContent: string;
 }
 
 enum FormType {
@@ -18,6 +19,7 @@ enum FormType {
 export const LoginScreen: React.FC<LoginScreenProps> = ({
   showSidebar,
   setShowSidebar,
+  currentContent,
 }) => {
   const [currentForm, setCurrentForm] = useState(FormType.Login);
   const [loggedIn, setLoggedIn] = useState(false); // Add this state
@@ -26,6 +28,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   const handleFormChange = (formType: FormType) => {
     setCurrentForm(formType);
   };
+
+
+  
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true); // Update the user context
@@ -70,9 +75,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           {/* This is a simple text 'X', you can use an icon or SVG instead */}
         </button>
         <div className="sidebar-content">
-          {isAuthenticated ? (
-            // Render user profile information
+        {isAuthenticated && currentContent === 'userProfile' ? (
             <UserProfile />
+          ) : currentContent === 'content1' ? (
+            
+            <> balls 1 </>
+          ) : currentContent === 'content2' ? (
+            // Render Content 2
+            <> balls 2 </>
           ) : (
             <>
               <div className="form-switcher">

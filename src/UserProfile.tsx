@@ -22,7 +22,6 @@ export const UserProfile: React.FC = () => {
 
   return (
     <div className="side-bar-container">
-      <button className="row-button-right"> Settings </button>
       <div className="nav-bar-form">
         <div className="profile-container">
           <img className="profile-picture" src={profilePicture}></img>
