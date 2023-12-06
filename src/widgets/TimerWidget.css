@@ -81,6 +81,7 @@
   justify-content: space-evenly;
   width: 100%;
   height: 0%;
+  background-color: transparent;
 }
 
 .timer-widget .widget-content {
