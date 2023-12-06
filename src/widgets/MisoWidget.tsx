@@ -27,7 +27,12 @@ const actions = {
   ATTACK: brownCatAttackGif,
 };*/
 
-export const MisoWidget = ({ misoTexture, handleMinimize, isMinimized }) => {
+export const MisoWidget = ({
+  misoTexture,
+  handleMinimize,
+  isMinimized,
+  misoBackground,
+}) => {
   const [misoPosition, setMisoPosition] = useState(0);
   const [direction, setDirection] = useState(1); // 1 for right, -1 for left
   const [attacking, setAttacking] = useState(false);
@@ -145,7 +150,7 @@ export const MisoWidget = ({ misoTexture, handleMinimize, isMinimized }) => {
         <div
           className="widget-content"
           style={{
-            backgroundImage: `url(${pixelbackground2})`,
+            backgroundImage: `url(${misoBackground})`,
             backgroundPosition: "bottom",
             backgroundRepeat: "no-repeat",
           }}

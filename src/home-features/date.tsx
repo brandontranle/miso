@@ -1,9 +1,8 @@
-
 interface dateProps {
-  date: String,
+  date: String;
 }
 
-const Date: React.FC<dateProps> = ({date}) => {
+const Date: React.FC<dateProps> = ({ date }) => {
   return (
     <div className="date">
       <h3> {date} </h3>
