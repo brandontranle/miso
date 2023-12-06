@@ -33,6 +33,8 @@ import brownCatWalkGif from "./miso/brown_cat/cat01_walk_8fps.gif";
 import brownCatSitGif from "./miso/brown_cat/cat01_sit_8fps.gif";
 import brownCatAttackGif from "./miso/brown_cat/cat01_attack_12fps.gif";
 
+import pixelBackground from "./miso/backgrounds/pixelbackground1.jpg";
+
 export const Home: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeWidgets, setActiveWidgets] = useState<number[]>([]); // This now tracks multiple widgets
@@ -43,12 +45,18 @@ export const Home: React.FC = () => {
 
   const [timezone, setTimezone] = useState("America/Los_Angeles");
   const [backgroundImage, setBackgroundImage] = useState(backgroundGif);
+  const [misoBackgroundImage, setMisoBackgroundImage] =
+    useState(pixelBackground);
 
   const [misoTexture, setMisoTexture] = useState({
     walk: brownCatWalkGif,
     sit: brownCatSitGif,
     attack: brownCatAttackGif,
   });
+
+  const changeMisoBackgroundImage = (background: string) => {
+    setMisoBackgroundImage(background);
+  };
 
   // Function to change the Miso texture
   const changeAllMisoTextures = (newTextures) => {
@@ -187,6 +195,7 @@ export const Home: React.FC = () => {
             isMinimized={isMinimized}
             handleMinimize={() => handleWidgetClick(widgetId)}
             misoTexture={misoTexture}
+            misoBackground={misoBackgroundImage}
           />
         );
         break;
@@ -198,6 +207,7 @@ export const Home: React.FC = () => {
             handleMinimize={() => handleWidgetClick(widgetId)}
             setBackgroundImage={handleBackgroundChange}
             setMiso={changeAllMisoTextures}
+            setMisoBackgroundImage={changeMisoBackgroundImage}
           />
         );
         break;

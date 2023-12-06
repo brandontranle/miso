@@ -4,6 +4,7 @@ import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import { useUserContext } from "../useUserContext"; // Import the user context
 import UserProfile from "../UserProfile";
+import Settings from "../Settings";
 
 interface LoginScreenProps {
   showSidebar: boolean;
@@ -28,9 +29,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   const handleFormChange = (formType: FormType) => {
     setCurrentForm(formType);
   };
-
-
-  
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true); // Update the user context
@@ -75,14 +73,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           {/* This is a simple text 'X', you can use an icon or SVG instead */}
         </button>
         <div className="sidebar-content">
-        {isAuthenticated && currentContent === 'userProfile' ? (
+          {isAuthenticated && currentContent === "userProfile" ? (
             <UserProfile />
-          ) : currentContent === 'content1' ? (
-            
+          ) : currentContent === "content1" ? (
             <> balls 1 </>
-          ) : currentContent === 'content2' ? (
-            // Render Content 2
-            <> balls 2 </>
+          ) : currentContent === "content2" ? (
+            <Settings />
           ) : (
             <>
               <div className="form-switcher">

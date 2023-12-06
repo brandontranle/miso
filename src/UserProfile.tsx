@@ -3,8 +3,9 @@ import "./style.css";
 import "./profile.css";
 import profilePicture from "./assets/profile-picture.png";
 import { useUserContext } from "./useUserContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TimeZoneDropdown from "./timezone-dropdown-menu";
+import axios from "axios";
 
 export const UserProfile: React.FC = () => {
   const { user, isAuthenticated } = useUserContext();
@@ -12,6 +13,30 @@ export const UserProfile: React.FC = () => {
   const [selectedTimezone, setSelectedTimezone] = useState(
     "America/Los_Angeles"
   );
+  const [kibbles, setKibbles] = useState(0);
+
+  const roundKibbles = (num: number) => {
+    setKibbles(Math.round(num));
+  };
+
+  const getKibbles = async () => {
+    try {
+      const userId = sessionStorage.getItem("userId");
+
+      const response = await axios.post("http://localhost:5000/getKibbles", {
+        userId: userId,
+      });
+
+      roundKibbles(response.data.kibbles);
+      console.log("kibbles retrieved");
+    } catch (error) {
+      console.log(error + " failed to retrieve kibbles");
+    }
+  };
+
+  useEffect(() => {
+    getKibbles();
+  }, [isAuthenticated]);
 
   const handleTimezoneChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -26,11 +51,14 @@ export const UserProfile: React.FC = () => {
         <div className="profile-container">
           <img className="profile-picture" src={profilePicture}></img>
           {user && <h3 id="username"> {user.name} </h3>}
-          <label className="profile-row-label">80 kibbles🍥</label>
-          <TimeZoneDropdown
-            handleTimezoneChange={handleTimezoneChange}
-            selectedTimezone={selectedTimezone}
-          />
+          <label className="profile-row-label">{kibbles} kibbles 🍥</label>
+          <div className="horizontal-line"> </div>
+          <label className="profile-row-label-about"> About me! </label>
+          <label className="profile-bio">
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </label>
         </div>
       </div>
     </div>
