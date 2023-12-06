@@ -119,6 +119,7 @@ app.get('/auth/callback', (req, res) => {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       global.access_token = body.access_token;
+      console.log(global.access_token)
       res.redirect('http://localhost:5173')
     }
   });
