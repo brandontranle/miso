@@ -22,6 +22,7 @@
   outline: none;
   border-radius: 5px;
   text-decoration: none;
+
 }
 .main-weather {
   align-items: center;
@@ -32,12 +33,23 @@
   height: 50px; /* Adjust icon size as needed */
   margin-right: 10px; /* Space between icon and temperature */
 }
-
+.unit-selector 
+{
+  position: absolute; /* Position dropdown absolutely */
+  top: 50%; /* Adjust based on desired position */
+  transform: translateY(-50%); /* Center vertically */
+  border-radius: 10px; /* Rounded corners */
+  background-color: rgba(255, 255, 255, 0.15); /* Glassy background */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  padding: 5px; /* Adjust padding as needed */
+}
 .temp {
   font-weight: bold;
   font-size: 100%;
   position: relative;
   font-family: "Nunito-Regular";
+  
+  display: inline-block;
 }
 .description {
   text-align: left;
