@@ -38,6 +38,14 @@ export const Home: React.FC = () => {
   const { user, isAuthenticated } = useUserContext(); // Get the user context
 
   const [timezone, setTimezone] = useState("America/Los_Angeles");
+  const [backgroundImage, setBackgroundImage] = useState(backgroundGif); 
+
+  const handleBackgroundChange = (newBackgroundImage) => {
+    setBackgroundImage(newBackgroundImage);
+    console.log('image changed!')
+    
+  };
+  
 
   // Call getTimeZone to initialize the timezone state
   useEffect(() => {
@@ -100,12 +108,20 @@ export const Home: React.FC = () => {
     console.log("Deactivated widget", widgetId);
   };
 
+
+
+ 
+
   const backgroundImageStyle = {
-    backgroundImage: `url(${backgroundGif})`,
+    backgroundImage: `url(${backgroundImage})`,
     backgroundSize: "cover", // Optional: Scale the background image to cover the entire container
     backgroundRepeat: "no-repeat", // Optional: Prevent background image from repeating
     backgroundPosition: "center center", // Optional: Center the background image
   };
+
+  const handleMisoChange = () => [
+
+  ]
 
   const handleWidgetClick = async (widgetId: number) => {
     // Update the active widgets state
@@ -167,6 +183,8 @@ export const Home: React.FC = () => {
           <HubsWidget
             isMinimized={isMinimized}
             handleMinimize={() => handleWidgetClick(widgetId)}
+            setBackgroundImage={handleBackgroundChange}
+            setMiso={handleMisoChange}
           />
         );
         break;
