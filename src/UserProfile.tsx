@@ -49,6 +49,7 @@ export const UserProfile: React.FC = () => {
     <div className="side-bar-container">
       <div className="nav-bar-form">
         <div className="profile-container">
+          <label className = "my-stats-label">MY ACCOUNT</label>
           <img className="profile-picture" src={profilePicture}></img>
           {user && <h3 id="username"> {user.name} </h3>}
           <label className="profile-row-label">{kibbles} kibbles 🍥</label>
