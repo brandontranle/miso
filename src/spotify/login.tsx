@@ -5,10 +5,6 @@ function Login() {
   const handleLogin = async () => {
     try {
       const response = await axios.get("http://localhost:5000/auth/login");
-
-      if (response) {
-        console.log("balls");
-      }
     } catch (error) {
       console.log("failed to login: " + error);
     }
