@@ -99,23 +99,6 @@ var randomString = function (length) {
   return text;
 }
 
-// token authorization (spotify)
-app.get('/auth/login', (req, res) => {
-
-  var scope = "streaming user-read-email user-read-private"
-  var state = randomString(16);
-
-  var auth_query_parameters = new URLSearchParams({
-    response_type: "code",
-    client_id: spotify_client_id || '',
-    scope: scope,
-    redirect_uri: spotify_redirect_uri || '',
-    state: state
-  })
-
-  res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
-})
-
 app.get('/auth/callback', (req, res) => {
 
   var code = req.query.code;
@@ -136,8 +119,10 @@ app.get('/auth/callback', (req, res) => {
 
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      global.access_token = body.access_token;
       res.redirect('http://localhost:5173')
+      console.log("access token: " + body.access_token);
+      global.access_token = body.access_token;
+
     }
   });
 

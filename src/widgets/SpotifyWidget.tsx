@@ -12,7 +12,9 @@ export const SpotifyWidget = ({ handleMinimize }) => {
   const [spotifyApi, setSpotifyApi] =
     useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
   const [isSpotifyAuthenticated, setIsSpotifyAuthenticated] = useState(false);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(
+    "BQDhqYRfo9j0Pw4SKOCk3H-5evvPZelkObXKUGn_oOnt2ihzHkTnBSc71dVK-Z3iUGuqPUrWlM46ICE54kdBqCqPpMS5kI9fvoryibsJLtAp2qihYtESqGopiIw5ZD4lMiRDA9BuaGzfNIdGfxw7Au5jl73TxbG3gHcy-tYqoOFdEPdcVuiqWulHpydPZvpRhjIaQHiz2MMefTymErUTRq296A"
+  );
   const authToken =
     "BQAePqQGcKeKp0NxH_6L-h-IbsQPpWkcERo7YRlxuFiKaQ2ggVRAUQ2-UAyNA4aDof9Bw-CdrQUjcjFJdc0m2SMAzAs0vXES-cDgBdmUt752JpnxklqobTAJX2D-f6MeDh0gXJuluY8NIceG7IbJ9bECbN0dpBQW04Bcf2JcrI0AWCFPmVWx86woAKtPkxR9V_xCBz7-EfYjJ1cDeeTzpYLk8-L9rhHg";
 
