@@ -45,6 +45,13 @@ export const Home: React.FC = () => {
     console.log('image changed!')
     
   };
+
+  const [currentContent, setCurrentContent] = useState('userProfile'); // New state for current content
+
+  const handleContentChange = (content: string) => {
+    setCurrentContent(content);
+    setShowSidebar(true); // Open the sidebar if not already open
+  };
   
 
   // Call getTimeZone to initialize the timezone state
@@ -251,12 +258,14 @@ export const Home: React.FC = () => {
           className={`widget-window ${widgetClass} ${
             isMinimized ? "minimized" : ""
           }`}
+          
         >
           <div className="widget-drag-handle">
             {/* Render the content based on the widgetId */}
             {WidgetComponent}
           </div>
         </div>
+       
       </Draggable>
     );
   };
@@ -265,7 +274,7 @@ export const Home: React.FC = () => {
     <div className="page" style={backgroundImageStyle}>
       <div className="TopBarContainer">
         <div className="Nav-Bar">
-          <Navbar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+        <Navbar showSidebar={showSidebar} setShowSidebar={setShowSidebar} onContentChange={handleContentChange} />        
         </div>
       </div>
       <div className="MainContainer">
@@ -280,8 +289,7 @@ export const Home: React.FC = () => {
       <div
         className={`backdrop ${showSidebar ? "backdrop-visible" : ""}`}
       ></div>
-      <LoginScreen showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-    </div>
+    <LoginScreen showSidebar={showSidebar} setShowSidebar={setShowSidebar} currentContent={currentContent} />    </div>
   );
 };
 export default Home;

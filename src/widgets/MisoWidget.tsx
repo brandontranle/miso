@@ -6,6 +6,8 @@ import brownCatSitGif from "../miso/brown_cat/cat01_sit_8fps.gif"
 import brownCatAttackGif from "../miso/brown_cat/cat01_attack_12fps.gif"
 import pixelbackground1 from "../miso/backgrounds/pixelbackground1.jpg"
 import pixelbackground2 from "../miso/backgrounds/pixelbackground2.png"
+import Tooltip from "../Tooltip";
+
 
 
 
@@ -23,6 +25,7 @@ export const MisoWidget = ({ handleMinimize, isMinimized }) => {
   const [misoPosition, setMisoPosition] = useState(0);
   const [direction, setDirection] = useState(1); // 1 for right, -1 for left
   const [attacking, setAttacking] = useState(false);  
+  const [showTooltip, setShowTooltip] = useState(false); // State for showing the tooltip
   const containerWidth = 300; // Width of the widget container
   const misoWidth = 50; // Width of the Miso gif
   const stepSize = 3; // Number of pixels Miso moves per step
@@ -89,7 +92,7 @@ export const MisoWidget = ({ handleMinimize, isMinimized }) => {
     // Style for Miso's position
     const misoStyle:CSSProperties = {
       position: 'absolute',
-      top: '70%', // Example vertical centering
+      top: '90%', // Example vertical centering
       left: `${misoPosition}px`,
       height: "70px", 
       transform: `translateY(-50%) ${direction === -1 ? 'scaleX(-1)' : ''}`, // Flip image when moving left
@@ -106,6 +109,9 @@ export const MisoWidget = ({ handleMinimize, isMinimized }) => {
     <div className="miso-widget">
       <div className="widget-header">
         <p className="widget-title">Miso</p>
+        <Tooltip content="This is a tooltip message">
+        <button>Hover over me</button>
+      </Tooltip>
         <button className="minimize-symbol" onClick={() => handleMinimize()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +131,7 @@ export const MisoWidget = ({ handleMinimize, isMinimized }) => {
       </div>
       <>
         <div className="widget-line"></div>
-        <div className="widget-content" style={{ backgroundImage: `url(${pixelbackground2})`, backgroundSize: "contain"  }}>        
+        <div className="widget-content" style={{ backgroundImage: `url(${pixelbackground2})`, backgroundPosition:"bottom", backgroundRepeat: "no-repeat"  }}>        
         <img src={misoAction} className="miso"style={misoStyle} alt="Miso the cat"  />
         </div>
       </>

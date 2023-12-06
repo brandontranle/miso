@@ -10,15 +10,18 @@ import { Link } from "react-router-dom";
 import { useUserContext } from "./useUserContext"; // Update the path to your UserContext
 import ProfileButton from "./buttons/Profile-button";
 import LoginButton from "./buttons/Log-In-Btn";
+import DropdownMenu from "./DropdownMenu";
 
 interface NavBarProps {
   showSidebar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  onContentChange: (string) => void;
 }
 
 export const Navbar: React.FC<NavBarProps> = ({
   showSidebar,
   setShowSidebar,
+  onContentChange
 }) => {
   const { user, isAuthenticated } = useUserContext();
 
@@ -32,7 +35,8 @@ export const Navbar: React.FC<NavBarProps> = ({
 
       <div className="right-side">
         {isAuthenticated ? (
-          <ProfileButton onClick={() => setShowSidebar(!showSidebar)} />
+          <div> 
+<DropdownMenu handlePopup={() => setShowSidebar(!showSidebar)} onContentChange={onContentChange} />          </div>
         ) : (
           <LoginButton
             className={"LOGIN-BUTTON"}
