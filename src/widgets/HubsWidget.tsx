@@ -1,20 +1,41 @@
-import "./hubs.css"
-import {useState} from "react";
-import ImageButton from "./ImageButton"
-import background1 from "../assets/background.png"
-import background2 from "../assets/ghibli.gif"
-import background3 from "../assets/ghibli2.gif"
+import "./hubs.css";
+import { useState } from "react";
+import ImageButton from "./ImageButton";
+import background1 from "../assets/background.gif";
+import background2 from "../assets/background4.gif";
+import background3 from "../assets/backgroundd5.gif";
 
+import brownCatWalkGif from "../miso/brown_cat/cat01_walk_8fps.gif";
+import blackCatWalkGif from "../miso/black_cat/cat05_walk_8fps.gif";
+import greyCatWalkGif from "../miso/grey_cat/cat02_walk_8fps.gif";
+
+import brownCatSitGif from "../miso/brown_cat/cat01_sit_8fps.gif";
+import blackCatSitGif from "../miso/black_cat/cat05_sit_8fps.gif";
+import greyCatSitGif from "../miso/grey_cat/cat02_sit_8fps.gif";
+
+import brownCatAttackGif from "../miso/brown_cat/cat01_attack_12fps.gif";
+import blackCatAttackGif from "../miso/black_cat/cat05_attack_12fps.gif";
+import greyCatAttackGif from "../miso/grey_cat/cat02_attack_12fps.gif";
+
+import pixelBackground1 from "../miso/backgrounds/pixelbackground1.jpg";
+import pixeBackground2 from "../miso/backgrounds/pixelbackground2.png";
 
 interface HubsWidgetProps {
   setBackgroundImage: (image: string) => void;
   handleMinimize: () => void;
   isMinimized: boolean;
+  setMiso: () => void;
+  setMisoBackgroundImage: (image: string) => void;
 }
 
-export const HubsWidget = ({ handleMinimize, isMinimized, setBackgroundImage, setMiso }) => {
+export const HubsWidget = ({
+  handleMinimize,
+  isMinimized,
+  setBackgroundImage,
+  setMiso,
+  setMisoBackgroundImage,
+}) => {
   const [background, setBackground] = useState();
-
 
   const changeBackground = (newBackground: string) => {
     setBackgroundImage(newBackground);
@@ -22,9 +43,11 @@ export const HubsWidget = ({ handleMinimize, isMinimized, setBackgroundImage, se
 
   const changeMiso = (newMiso: string) => {
     setMiso(newMiso);
+  };
 
-  }
-
+  const changeMisoBackground = (newMisoBackground: string) => {
+    setMisoBackgroundImage(newMisoBackground);
+  };
 
   return (
     <div className="hubs-widget">
@@ -51,36 +74,79 @@ export const HubsWidget = ({ handleMinimize, isMinimized, setBackgroundImage, se
         <div className="widget-line"></div>
         <div className="widget-content">
           <div className="hubs-bg-container">
-          <div className="left-container"> 
-
-            <label> Background </label>
+            <div className="left-container">
+              <label> Background </label>
             </div>
             <div className="row-selections">
-              <ImageButton imageUrl={background1} onClick={() => changeBackground(background1)}/>
-              <ImageButton imageUrl={background2} onClick={() => changeBackground(background2)}/>
-              <ImageButton imageUrl={background3} onClick={() => changeBackground(background3)}/>
-
-
+              <ImageButton
+                imageUrl={background1}
+                onClick={() => changeBackground(background1)}
+              />
+              <ImageButton
+                imageUrl={background2}
+                onClick={() => changeBackground(background2)}
+              />
+              <ImageButton
+                imageUrl={background3}
+                onClick={() => changeBackground(background3)}
+              />
             </div>
-            <div className="left-container"> 
-            <button className="bottom-button"> Choose File </button>
+            <div className="left-container">
+              <button className="bottom-button"> Choose File </button>
             </div>
           </div>
           <div className="vertical-line"></div>
-            <div className="hubs-miso-container">
-            <div className="left-container"> 
-
+          <div className="hubs-miso-container">
+            <div className="left-container">
               <label> Miso </label>
-              </div>
-              <div className="row-selections">
-              <ImageButton imageUrl={""} onClick={() => changeBackground("")}/>
-              <ImageButton imageUrl={""} onClick={() => changeBackground("")}/>
-              <ImageButton imageUrl={""} onClick={() => changeBackground("")}/>
-
-
             </div>
-
+            <div className="row-selections">
+              <ImageButton
+                imageUrl={""}
+                onClick={() => changeMisoBackground(pixelBackground1)}
+              />
+              <ImageButton
+                imageUrl={""}
+                onClick={() => changeMisoBackground(pixeBackground2)}
+              />
+              <ImageButton
+                imageUrl={""}
+                onClick={() => changeMisoBackground(background3)}
+              />
             </div>
+            <div className="row-selections">
+              <ImageButton
+                imageUrl={brownCatWalkGif}
+                onClick={() =>
+                  setMiso({
+                    walk: brownCatWalkGif,
+                    sit: brownCatSitGif,
+                    attack: brownCatAttackGif,
+                  })
+                }
+              />
+              <ImageButton
+                imageUrl={blackCatWalkGif}
+                onClick={() =>
+                  setMiso({
+                    walk: blackCatWalkGif,
+                    sit: blackCatSitGif,
+                    attack: blackCatAttackGif,
+                  })
+                }
+              />
+              <ImageButton
+                imageUrl={greyCatWalkGif}
+                onClick={() =>
+                  setMiso({
+                    walk: greyCatWalkGif,
+                    sit: greyCatSitGif,
+                    attack: greyCatAttackGif,
+                  })
+                }
+              />{" "}
+            </div>
+          </div>
         </div>
       </>
     </div>

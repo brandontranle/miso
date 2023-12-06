@@ -1,0 +1,110 @@
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+  }
+  
+  .flex-container::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .flex-container::-webkit-scrollbar-thumb {
+    color: grey;
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+  }
+
+  /* do not use above */
+  
+  .nav-bar-form {
+    height: 100%;
+  }
+  
+  .profile-picture {
+    border-radius: 50%;
+    height: 40%;
+    margin-bottom: 20px;
+  }
+  
+  .profile-label {
+    font-weight: 0;
+  }
+  
+ 
+  #username {
+    font-weight: bold;
+  }
+  
+  .my-stats-label {
+
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-family: "Nunito-Bold";
+    font-size: 20px;
+    font-weight: 0;
+    
+  }
+
+  .row-container-2-items{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  
+
+  .item-container {
+    width: 100%;
+    display: flex;
+    align-items: center; /* Aligns the SVG and label vertically */
+    gap: 50px; /* Space between the SVG and label */
+    
+  }
+
+
+  .item-container-textcss {
+    align-items: center;
+    margin-right: 30px;
+    font-family: "Nunito-Bold";
+    font-size: 13px;
+    font-weight: 0;
+  }
+
+
+  .kibble-css {
+    font-family: "Nunito-Bold";
+    color: #D3A380;
+    font-size: 30px;
+  }
+
+  .hours-css {
+    font-family: "Nunito-Bold";
+    color: #D3A380;
+    font-size: 30px;
+  }
+
+  .activity-row-label {
+
+    margin-top: 40px;
+    font-size: 13px;
+    width: 100%;
+    font-family: "Nunito-Bold";
+    text-align: left;
+    color: #D3A380;
+    margin-left: 45px;
+
+}
+
+.last-7-days {
+    margin-left: 45px;
+    margin-top: 5px;
+    font-size: 11px;
+    width: 100%;
+    font-family: "Nunito-Bold";
+    text-align: left;
+}

@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faStepBackward,
+  faPlay,
+  faPause,
+  faStepForward,
+} from "@fortawesome/free-solid-svg-icons";
+import "./webplayback.css";
 
 const track = {
   name: "",
@@ -9,7 +17,7 @@ const track = {
 };
 
 function WebPlayback(props) {
-  const [player, setPlayer] = useState("undefined");
+  const [player, setPlayer] = useState<Spotify.Player | undefined>(undefined);
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
   const [current_track, setTrack] = useState(track);
@@ -30,7 +38,7 @@ function WebPlayback(props) {
         volume: 0.5,
       });
 
-      // setPlayer(player);
+      setPlayer(player);
 
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
@@ -55,12 +63,60 @@ function WebPlayback(props) {
 
       player.connect();
     };
-  }, []);
+  }, [props]);
 
   return (
     <>
       <div className="container">
-        <div className="main-wrapper"></div>
+        <div className="main-wrapper">
+          <img
+            src={current_track.album.images[0].url}
+            className="now-playing__cover"
+            alt=""
+          />
+          <div className="now-playing__side">
+            <div className="now-playing__name">{current_track.name}</div>
+            <div className="now-playing__artist">
+              {current_track.artists[0].name}
+            </div>
+            <button
+              className="btn-spotify"
+              onClick={() => {
+                player?.previousTrack();
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faStepBackward}
+                style={{ fontSize: "2em" }}
+              />
+            </button>
+
+            <button
+              className="btn-spotify"
+              onClick={() => {
+                player?.togglePlay();
+              }}
+            >
+              {is_paused ? (
+                <FontAwesomeIcon icon={faPlay} style={{ fontSize: "2em" }} />
+              ) : (
+                <FontAwesomeIcon icon={faPause} style={{ fontSize: "2em" }} />
+              )}
+            </button>
+
+            <button
+              className="btn-spotify"
+              onClick={() => {
+                player?.nextTrack();
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faStepForward}
+                style={{ fontSize: "2em" }}
+              />
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
