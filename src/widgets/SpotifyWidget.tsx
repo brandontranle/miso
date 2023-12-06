@@ -7,7 +7,9 @@ import SpotifyWebApi from "spotify-web-api-js";
 export const SpotifyWidget = ({ handleMinimize }) => {
   const [spotifyApi, setSpotifyApi] =
     useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
-  const [token, setToken] = useState("BQDZy7QPA9YsQCh67rf8SiPQb--1Fp7Ms8ncnDPUtN85TgHForILnIzlTSzfNKq0bgGOKCszS5LFErOmhuox9--G9E6ZP3GgRiCohUFHEaMUv1rZQZ1l4GCJB-fZvfTlDZMvuhG9pXUVMyQw560K8p_T_vg8WeTRiLtR0V_q-xZnI7kqkKz3bWCdrfi1-O2igo0JrmTe4HdpTtpeWGviZezUOJCRxQ");
+  const [token, setToken] = useState(
+    "BQDZy7QPA9YsQCh67rf8SiPQb--1Fp7Ms8ncnDPUtN85TgHForILnIzlTSzfNKq0bgGOKCszS5LFErOmhuox9--G9E6ZP3GgRiCohUFHEaMUv1rZQZ1l4GCJB-fZvfTlDZMvuhG9pXUVMyQw560K8p_T_vg8WeTRiLtR0V_q-xZnI7kqkKz3bWCdrfi1-O2igo0JrmTe4HdpTtpeWGviZezUOJCRxQ"
+  );
   const authToken =
     "BQAePqQGcKeKp0NxH_6L-h-IbsQPpWkcERo7YRlxuFiKaQ2ggVRAUQ2-UAyNA4aDof9Bw-CdrQUjcjFJdc0m2SMAzAs0vXES-cDgBdmUt752JpnxklqobTAJX2D-f6MeDh0gXJuluY8NIceG7IbJ9bECbN0dpBQW04Bcf2JcrI0AWCFPmVWx86woAKtPkxR9V_xCBz7-EfYjJ1cDeeTzpYLk8-L9rhHg";
 
