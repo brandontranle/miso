@@ -50,7 +50,7 @@ dotenv.config()
 var spotify_redirect_uri = 'http://localhost:5000/auth/callback'
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
-
+var spotify_refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
 
 //generates a random string for security 
 var randomString = function (length) {
@@ -80,24 +80,6 @@ app.get('/auth/login', (req, res) => {
 
   res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
 })
-
-//app.get('/auth/callback', (req, res) => {
-
-/*
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
-})*/
-
-//generates a random string for security 
-var randomString = function (length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for(var i = 0; i < length; i++){
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
 
 // token authorization (spotify)
 app.get('/auth/login', (req, res) => {
@@ -160,24 +142,9 @@ module.exports = function (app) {
   }));
 };
 
-/*
-app.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      global.access_token = body.access_token;
-      res.redirect('/')
-    }
-  });
-
-})*/
-
 app.get('/auth/token', (req, res) => {
   res.json({ access_token: global.access_token})
 })
-
-/*
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
-})*/
 
 //email transporter
 
