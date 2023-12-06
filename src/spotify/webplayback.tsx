@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStepBackward, faPlay, faPause, faStepForward } from '@fortawesome/free-solid-svg-icons';
 import "./webplayback.css"
 
 const track = {
@@ -68,15 +70,15 @@ function WebPlayback(props) {
                     <div className="now-playing__name">{current_track.name}</div>
                     <div className="now-playing__artist">{ current_track.artists[0].name}</div>
                     <button className="btn-spotify" onClick={() => { player?.previousTrack() }} >
-                    &lt;&lt;
+                    <FontAwesomeIcon icon={faStepBackward} style={{ fontSize: '2em' }}/>
       </button>
 
       <button className="btn-spotify" onClick={() => { player?.togglePlay() }} >
-            { is_paused ? "PLAY" : "PAUSE" }
+            { is_paused ? <FontAwesomeIcon icon= {faPlay} style={{ fontSize: '2em' }} /> : <FontAwesomeIcon icon= {faPause} style={{ fontSize: '2em' }}/> }
       </button>
 
       <button className="btn-spotify" onClick={() => { player?.nextTrack() }} >
-          &gt;&gt;
+        <FontAwesomeIcon icon={faStepForward} style={{ fontSize: '2em' }}/>
       </button>
             </div>
         </div>
