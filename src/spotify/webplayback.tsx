@@ -64,6 +64,10 @@ function WebPlayback(props) {
     <>
       <div className="container">
         <div className="main-wrapper">
+        <div
+        className="background-image"
+        style={{ backgroundImage: `url(${current_track.album.images[0].url})` }}
+      ></div>
         <img src={current_track.album.images[0].url} 
                      className="now-playing__cover" alt="" />
          <div className="now-playing__side">

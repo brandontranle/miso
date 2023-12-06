@@ -7,7 +7,7 @@ import SpotifyWebApi from "spotify-web-api-js";
 export const SpotifyWidget = ({ handleMinimize }) => {
   const [spotifyApi, setSpotifyApi] =
     useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
-  const [token, setToken] = useState("BQDytyrJYfy2XLIiUSPFSPl-gWeFc_zHc0r3AzwwwmeeNIWvu3eCy_XqaPfcMr6btF6P7q1eG2Swzx8QQiktTGimv4mddyHLikVUdYF4YN9K8ZLek4zXp730DoK-9D-xekcddui11FOjWrAl5IKfzxId7YsKFPTBZx0BCGb2gxwZoyYEXBafqOUoIM15L8RPdqkbCfkni0Dr0YKsF6BXwCBJPdQvFQ");
+  const [token, setToken] = useState("");
   const authToken =
     "BQAePqQGcKeKp0NxH_6L-h-IbsQPpWkcERo7YRlxuFiKaQ2ggVRAUQ2-UAyNA4aDof9Bw-CdrQUjcjFJdc0m2SMAzAs0vXES-cDgBdmUt752JpnxklqobTAJX2D-f6MeDh0gXJuluY8NIceG7IbJ9bECbN0dpBQW04Bcf2JcrI0AWCFPmVWx86woAKtPkxR9V_xCBz7-EfYjJ1cDeeTzpYLk8-L9rhHg";
 
