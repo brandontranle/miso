@@ -4,6 +4,7 @@ import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import { useUserContext } from "../useUserContext"; // Import the user context
 import UserProfile from "../UserProfile";
+import Stats from "../stats/stats"
 
 interface LoginScreenProps {
   showSidebar: boolean;
@@ -79,10 +80,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
             <UserProfile />
           ) : currentContent === 'content1' ? (
             
-            <> balls 1 </>
+            <Stats/>
           ) : currentContent === 'content2' ? (
             // Render Content 2
-            <> balls 2 </>
+            <> balls 3 </>
           ) : (
             <>
               <div className="form-switcher">
