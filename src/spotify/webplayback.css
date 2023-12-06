@@ -1,13 +1,35 @@
 /** Now Playing **/
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.main-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 800px;
+  width: 100%;
+}
 .now-playing__name {
     font-size: 1.5em;
     margin-bottom: 0.2em;
+    font-family: "CircularStd-Bold";
+  }
+
+  .now-playing__cover {
+    border-radius: 10px;
   }
   .now-playing__artist {
     margin-bottom: 1em;
+    font-size: 1em;
+    font-family: "CircularStd-Bold";
   }
   .now-playing__status {
     margin-bottom: 1em;
+
   }
   .now-playing__img {
     float: left;
@@ -23,14 +45,21 @@
     margin-left: 5%;
     width: 45%;
   }
+
+  .btn-spotify {
+    font-family: "CircularStd-Bold";
+    border: none;
+    background-color: transparent;
+    border-radius: 20px;
+  }
   /** Progress **/
   .progress {
-    border: 1px solid #eee;
+    border: 1px solid burlywood;
     height: 6px;
     border-radius: 3px;
     overflow: hidden;
   }
   .progress__bar {
-    background-color: #eee;
+    background-color: burlywood;
     height: 4px;
   }
