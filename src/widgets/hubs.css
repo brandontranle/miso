@@ -60,13 +60,17 @@
 
 .image-button{
     border-radius: 10px;
-    height: 50px;
-    width: 50px;
+    height: 50px; /* Adjust size as necessary */
+    width: 50px; /* Adjust size as necessary */
+    padding: 0; /* Remove padding */
+    border: none; /* Remove border */
+    overflow: hidden; /* Prevents any part of the image from overflowing outside the button */
 }
 
 .hubs-img{
     width: 100%;
     height: 100%;
+    object-fit: cover;
 }
 .vertical-line{
     height: 80%;

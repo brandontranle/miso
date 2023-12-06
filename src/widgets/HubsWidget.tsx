@@ -1,14 +1,27 @@
 import "./hubs.css"
 import {useState} from "react";
 import ImageButton from "./ImageButton"
+import background1 from "../assets/background.png"
+import background2 from "../assets/ghibli.gif"
+import background3 from "../assets/ghibli2.gif"
 
 
-export const HubsWidget = ({ handleMinimize, isMinimized }) => {
+interface HubsWidgetProps {
+  setBackgroundImage: (image: string) => void;
+  handleMinimize: () => void;
+  isMinimized: boolean;
+}
+
+export const HubsWidget = ({ handleMinimize, isMinimized, setBackgroundImage, setMiso }) => {
   const [background, setBackground] = useState();
 
 
-  const handleOnCick = async () => {
+  const changeBackground = (newBackground: string) => {
+    setBackgroundImage(newBackground);
+  };
 
+  const changeMiso = (newMiso: string) => {
+    setMiso(newMiso);
 
   }
 
@@ -43,9 +56,9 @@ export const HubsWidget = ({ handleMinimize, isMinimized }) => {
             <label> Background </label>
             </div>
             <div className="row-selections">
-              <ImageButton imageUrl={""} onClick={handleOnCick}/>
-              <ImageButton imageUrl={""} onClick={handleOnCick}/>
-              <ImageButton imageUrl={""} onClick={handleOnCick}/>
+              <ImageButton imageUrl={background1} onClick={() => changeBackground(background1)}/>
+              <ImageButton imageUrl={background2} onClick={() => changeBackground(background2)}/>
+              <ImageButton imageUrl={background3} onClick={() => changeBackground(background3)}/>
 
 
             </div>
@@ -60,9 +73,9 @@ export const HubsWidget = ({ handleMinimize, isMinimized }) => {
               <label> Miso </label>
               </div>
               <div className="row-selections">
-              <ImageButton imageUrl={""} onClick={handleOnCick}/>
-              <ImageButton imageUrl={""} onClick={handleOnCick}/>
-              <ImageButton imageUrl={""} onClick={handleOnCick}/>
+              <ImageButton imageUrl={""} onClick={() => changeBackground("")}/>
+              <ImageButton imageUrl={""} onClick={() => changeBackground("")}/>
+              <ImageButton imageUrl={""} onClick={() => changeBackground("")}/>
 
 
             </div>
