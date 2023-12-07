@@ -39,13 +39,13 @@
   position: absolute; /* Position dropdown absolutely */
   top: 50%; /* Adjust based on desired position */
   transform: translateY(-50%); /* Center vertically */
-  border-radius: 10px; /* Rounded corners */
+  border-radius: 3px; /* Rounded corners */
   background-color: rgba(255, 255, 255, 0.15); /* Glassy background */
   backdrop-filter: blur(5px); /* Apply blur effect */
   padding: 1px; /* Adjust padding as needed */
   position: absolute;
-  top: 65%;
-  left: 59.9%;
+  top: 65.3%;
+  left: 59.5%;
   font: Nunito-Regular;
   z-index: 1;
   font-size: 10px;
@@ -56,8 +56,6 @@
   font-size: 100%;
   position: relative;
   font-family: "Nunito-Regular";
-  
-  display: inline-block;
 }
 .description {
   text-align: left;
