@@ -45,10 +45,11 @@
   padding: 1px; /* Adjust padding as needed */
   position: absolute;
   top: 65.3%;
-  left: 59.5%;
+  left: 58.6%;
   font: Nunito-Regular;
   z-index: 1;
   font-size: 10px;
+  width: 75px;
 }
 
 .temp {

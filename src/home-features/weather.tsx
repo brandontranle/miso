@@ -26,6 +26,8 @@ const Weather: React.FC = () => {
   const [lat, setLat] = useState<number | null>(null); //lat for latitutde, when initailized can be a number or  null
   const [long, setLong] = useState<number | null>(null); //long for longitude
   const [data, setData] = useState<WeatherData | null>(null);
+  const [locationDenied, setLocationDenied] = useState(false); //do not show unit dropdown if location is denied
+
 
   useEffect(() => { //load functions when application is loaded and reloaded
     //get latitude and longitude using navigator.gelocation
@@ -36,25 +38,12 @@ const Weather: React.FC = () => {
       navigator.geolocation.getCurrentPosition(function(position) {
         setLat(position.coords.latitude);
         setLong(position.coords.longitude);
+      },
+      function (error){
+        setLocationDenied(true);
       });
     };
     fetchData();
-
-      //await fetch(`${apiUrl}/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${apiKey}`)
-          /*we are inputing into fetch the API call, using user's own lat, long, and our API key*/
-      //.then(res => res.json())  /*once we fetched data, then...*/
-      //.then(result => {
-        //we get the fetch call from the API documentation
-        //we can add parameters using &___, from documentation
-        /*try { 
-          const response = await fetch(`${apiUrl}/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${apiKey}`)
-          const result = await response.json(); //convert the weather data we get from fetch call to json file
-          setData(result);
-          console.log(result);
-        } catch(error) {
-          console.error("Error fetching weather data: ", error);
-        }
-        */
 
     //change units
     type Unit = 'standard' | 'metric' | 'imperial';
@@ -89,6 +78,7 @@ const Weather: React.FC = () => {
   return (
 
     <div className="weather-container">
+      {!locationDenied && lat !== null && long !== null && (
       <div className="unit-selector">
         <select value={selectedUnit} onChange={(e) => setSelectedUnit(e.target.value)}>
           <option value ="standard">Kelvin</option>
@@ -96,6 +86,7 @@ const Weather: React.FC = () => {
           <option value="imperial">Fahrenheit</option>
         </select>
       </div>
+      )}
       {data ? <WeatherCard weatherData={data} selectedUnit={selectedUnit}/> : <div></div>} {/*shows nothing if location is not allowed*/}
       {/*We pass props weatherData and selctedunit to WeatherCard component*/}
     </div>
