@@ -962,6 +962,67 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
   });
 
+  
+  app.post('/getWeeklyTime', async (req, res) => {
+    try {
+    const {userId} = req.body;
+    const user = await UserData.findOne({userId});
+
+    if (!user) {
+      res.status(404).json("user not found while getting time");
+    }
+
+    if (!user.weeklyTime) {
+      user.weeklyTime = {
+        sunday: 1,
+        monday: 1,
+        tuesday: 1,
+        wednesday: 1,
+        thursday: 1,
+        friday: 1,
+        saturday: 1
+      };
+    }
+
+    console.log(user.weeklyTime);
+
+    res.status(200).json({weeklyTime: user.weeklyTime});
+
+    } catch (error) {
+      console.log("error fetching time");
+      res.status(500).json({ error: "An error occurred while fetching the weekly time studying" });
+
+    }
+
+  });
+
+
+  app.post('/getTimeAndKibbles', async (req, res) => {
+      try {
+        const {userId} = req.body;
+        const user = await UserData.findOne({userId});
+
+        console.log(userId);
+        if (!user) {
+          console.log("user not found")
+          res.status(404).json({error: "user not found!"})
+        } 
+
+
+
+        res.status(200).json({hours: user.time, kibbles: user.kibbles})
+
+      } catch (error) {
+        console.log('failed to retrieve time and kibbles');
+        res.status(500).json({error: "an error occured while fetching time and kibbles"})
+
+      }
+
+
+
+  });
+
+
   app.post('/getKibbles', async (req, res) => {
     try {
     const {userId} = req.body;

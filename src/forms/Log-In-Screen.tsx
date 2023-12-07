@@ -5,6 +5,7 @@ import LoginForm from "./LoginForm";
 import { useUserContext } from "../useUserContext"; // Import the user context
 import UserProfile from "../UserProfile";
 import Settings from "../Settings";
+import Stats from "../stats/stats"
 
 interface LoginScreenProps {
   showSidebar: boolean;
@@ -76,7 +77,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           {isAuthenticated && currentContent === "userProfile" ? (
             <UserProfile />
           ) : currentContent === "content1" ? (
-            <> balls 1 </>
+            <Stats/>
           ) : currentContent === "content2" ? (
             <Settings />
           ) : (
