@@ -116,6 +116,7 @@ export const SpotifyWidget = ({ handleMinimize }) => {
         <>
           <div className="widget-line"></div>
           <div className="widget-content">
+            
             {token === "" ? <Login /> : <WebPlayback token={token} />}
           </div>
         </>

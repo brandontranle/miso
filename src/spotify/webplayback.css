@@ -1,5 +1,6 @@
 /** Now Playing **/
 .container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,36 +8,60 @@
   background-size: cover;
 }
 
-.background-image {
+.background-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.white-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 253, 253, 0.4); 
+  z-index: 1;/* Semi-transparent white */
+}
+
+.blur-background {
+  width: 100%;
+  height: 100%;
+  filter: blur(7px);
   background-size: cover;
-  filter: blur(10px); /* Adjust the blur intensity */
-  z-index: -1;
 }
 
 .main-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   max-width: 800px;
   width: 100%;
+  z-index: 2;
 }
 .now-playing__name {
-    font-size: 1.5em;
+    font-size: 2em;
     margin-bottom: 0.2em;
     font-family: "CircularStd-Bold";
   }
 
   .now-playing__cover {
     border-radius: 10px;
+    border: 3px solid black;
+    height: auto;
+    min-width: 45%;
+    min-height: 45%;
+    max-width: 100%;
+    max-height: 100%;
   }
   .now-playing__artist {
     margin-bottom: 1em;
-    font-size: 1em;
+    font-size: 1.5em;
     font-family: "CircularStd-Bold";
   }
   .now-playing__status {
