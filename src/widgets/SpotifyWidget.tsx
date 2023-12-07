@@ -1,7 +1,7 @@
 import "./SpotifyWidget.css";
 import WebPlayback from "../spotify/webplayback";
 import Login from "../spotify/login";
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
 import axios from "axios";
 
@@ -95,7 +95,7 @@ export const SpotifyWidget = ({ handleMinimize }) => {
     <>
       <div className="spotify-widget">
         <div className="widget-header">
-          <p className="widget-title">Spotify</p>
+          <p className="widget-title">spotify</p>
           <button className="minimize-symbol" onClick={() => handleMinimize()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,6 +116,7 @@ export const SpotifyWidget = ({ handleMinimize }) => {
         <>
           <div className="widget-line"></div>
           <div className="widget-content">
+            
             {token === "" ? <Login /> : <WebPlayback token={token} />}
           </div>
         </>
