@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 function mapLetterToGPA(letterGrade) {
   const gradeMap = {
     'A+': 4.0,
@@ -20,19 +21,50 @@ function mapLetterToGPA(letterGrade) {
 }
 
 export const MessagesWidget = ({ handleMinimize, isMinimized }) => {
-  const [gradeResult, setGradeResult] = useState(""); // State to store the calculated grade
-  const [grades, setGrades] = useState({ grade1: "", grade2: "", grade3: "" });
+  const [gradeResult, setGradeResult] = useState("");
+  const [grades, setGrades] = useState<string[]>([]);
+  const [updatedGrades, setUpdatedGrades] = useState<string[]>([]);
+  const [classList, setClassList] = useState([
+    "A+",
+    "A",
+    "A-",
+    "B+",
+    "B",
+    "B-",
+    "C+",
+    "C",
+    "C-",
+    "D+",
+    "D",
+    "F",
+  ]);
 
-  const handleGradeChange = (e) => {
-    const { id, value } = e.target;
-    setGrades((prevGrades) => ({ ...prevGrades, [id]: value }));
+  const handleGradeChange = (e, index) => {
+    const { value } = e.target;
+    const updatedGrades = [...grades];
+    updatedGrades[index] = value;
+    setGrades(updatedGrades);
   };
+
+  const addGrade = () => {
+    setGrades([...grades, ""]);
+  };
+
+  const removeGrade = (index) => {
+    const updatedGrades = [...grades];
+    updatedGrades.splice(index, 1);
+    setGrades(updatedGrades);
+  };
+
   const calculateGrade = () => {
-    const { grade1, grade2, grade3 } = grades;
-    const finalGrade =
-      (mapLetterToGPA(grade1) + mapLetterToGPA(grade2) + mapLetterToGPA(grade3)) / 3;
+    const totalCredits = grades.length;
+    const totalGPA = grades.reduce(
+      (accumulator, currentGrade) => accumulator + mapLetterToGPA(currentGrade),
+      0
+    );
+    const finalGrade = totalGPA / totalCredits || 0;
     setGradeResult(`Your average GPA is: ${finalGrade.toFixed(1)}`);
-    };
+  };
 
   return (
     <div className="catgpt-widget">
@@ -55,74 +87,27 @@ export const MessagesWidget = ({ handleMinimize, isMinimized }) => {
           </svg>
         </button>
       </div>
-      <>
-        <div className="widget-line"></div>
-        <div className="widget-content">
-          <p>
-            <h1>Grade Calculator</h1>
-            <form id="gradeForm">
-              <label htmlFor="grades">Enter Grade: </label>
-              <div>
-              <select id="grade1" value={grades.grade1} onChange={handleGradeChange}>
-                <option value="">Class 1: Select Grade</option>
-                <option value="A+">A+</option>
-                <option value="A">A</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="B-">B-</option>
-                <option value="C+">C+</option>
-                <option value="C+">C</option>
-                <option value="C-">C-</option>
-                <option value="D+">D+</option>
-                <option value="D">D</option>
-                <option value="F">F</option>
-              </select>
-              </div>
-              <div>
-              <select id="grade2" value={grades.grade2} onChange={handleGradeChange}>
-                <option value="">Class 2: Select Grade</option>
-                <option value="A+">A+</option>
-                <option value="A">A</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="B-">B-</option>
-                <option value="C+">C+</option>
-                <option value="C+">C</option>
-                <option value="C-">C-</option>
-                <option value="D+">D+</option>
-                <option value="D">D</option>
-                <option value="F">F</option>
-                {/* Add more grade options */}
-              </select>
-              </div>
-              <div>
-              <select id="grade3" value={grades.grade3} onChange={handleGradeChange}>
-                <option value="">Class 3: Select Grade</option>
-                <option value="A+">A+</option>
-                <option value="A">A</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="B-">B-</option>
-                <option value="C+">C+</option>
-                <option value="C+">C</option>
-                <option value="C-">C-</option>
-                <option value="D+">D+</option>
-                <option value="D">D</option>
-                <option value="F">F</option>
-                {/* Add more grade options */}
-              </select>
-              </div>
-              <button type="button" onClick={calculateGrade}>
-                Calculate
-              </button>
-            </form>
-            <p id="result">{gradeResult}</p>
-          </p>
-        </div>
-      </>
+      <div className="widget-line"></div>
+      <div className="widget-content">
+        <h1>Grade Calculator</h1>
+        {grades.map((grade, index) => (
+          <div key={index}>
+            <label>{`Class ${index + 1}: `}</label>
+            <select value={grade} onChange={(e) => handleGradeChange(e, index)}>
+              <option value="">Select Grade</option>
+              {classList.map((className) => (
+                <option key={className} value={className}>
+                  {className}
+                </option>
+              ))}
+            </select>
+            <button onClick={() => removeGrade(index)}>Remove</button>
+          </div>
+        ))}
+        <button onClick={addGrade}>Add Class</button>
+        <button onClick={calculateGrade}>Calculate</button>
+        <p>{gradeResult}</p>
+      </div>
     </div>
   );
 };
