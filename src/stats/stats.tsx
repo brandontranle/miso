@@ -3,7 +3,19 @@ import "./stats.css";
 import axios from "axios";
 import {useUserContext} from "../useUserContext";
 import { Bar } from 'react-chartjs-2';
+import {ChartOptions } from 'chart.js/auto';
+import { TooltipOptions } from 'chart.js/auto';
 import { Chart as ChartJS, ChartData, BarElement, LinearScale, Tooltip, CategoryScale, Legend} from 'chart.js/auto';
+import miso from "../miso/brown_cat/cat01_sit_8fps.gif";
+
+interface CustomTooltipOptions extends TooltipOptions<'bar'> {
+    shadow?: {
+        color: string;
+        blur: number;
+        offsetY: number;
+        offsetX: number;
+    };
+}
 
 ChartJS.register (
     BarElement,
@@ -23,40 +35,86 @@ const BarChart = () => {
     const {user, isAuthenticated} = useUserContext();
     //const [weeklyTime, setWeeklyTime] = useState({});
 
+    
 
-
-    const chartOptions = {
+    const chartOptions: ChartOptions<'bar'> = {
+        
         scales: {
             x: {
+                
                 ticks: {
-                    color: 'red',
+                    color: '#4E4E4E',
                     font: {
                         size: 11,
                         family: "Nunito-Bold",
                     },
                 },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)',
+                },
             },
             y: {
-                ticks: {
-                    color: 'blue',
+                title: {
+                    display: true,
+                    text: 'Total Hours Worked',
+                    color: '#4E4E4E',
                     font: {
                         size: 11,
-                        family: "Nunito-Bold",
+                        family: 'Nunito-Bold',
                     },
+                    
+                    padding: {
+                        top: 4,
+                    },
+                },
+                position: 'left',
+                ticks: {
+                    color: '#4E4E4E',
+                    font: {
+                        size: 11,
+                        family: 'Nunito-Bold',
+                    },
+                },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)',
                 },
             },
         },
         plugins: {
+
             legend: {
-                labels: {
-                    color: 'green',
-                    font: {
-                        size: 16,
-                        famil: "Nunito-Bold",
-                    },
+              display: false,
+            },
+
+
+            tooltip: {
+                yAlign: "bottom" as const,
+                backgroundColor: '#818181',
+                bodyColor: '#FFFFFF',
+                bodyFont: {
+                    family: 'Nunito-Bold',
+                    size: 11,
+
                 },
+                displayColors: false,
+                mode: 'index',
+                enabled: true,
+                intersect: false,
+
+        
+                
             },
         },
+
+        elements: {
+            bar: {
+              backgroundColor: '#DBB69B', // Change bar color
+              borderColor: '#D9B9A2', // Change bar border color
+              borderRadius: 10, // Change bar border radius
+              
+            },
+        },
+        
     };
 
 
@@ -71,17 +129,22 @@ const BarChart = () => {
 
     };
 
-
+    
+    const secondsToHours = (seconds) => {
+        return parseFloat((seconds /3600).toFixed(2));
+    };
     const formatChartData = (data) => {
         const labels = Object.keys(data).map(day => transformLabels[day]);
-        const values = Object.values(data).map(value => Number(value));
+        const values = Object.values(data).map(value => secondsToHours(Number(value)));
             
 
         return {
             labels,
             datasets: [{
-                label: 'Hours Worked',
+                label: 'Total Hours Worked',
                 data: values,
+                    
+                    backgroundColor: '#EED4C1',
             }]
         };
     };
@@ -115,12 +178,12 @@ const BarChart = () => {
     useEffect(() => {
         getWeeklyTime();
 
-    }, [isAuthenticated]);
+    }, [isAuthenticated, getWeeklyTime]);
     
     return (
 
         <div>
-            <Bar data={chartData} options={chartOptions}/>
+            <Bar data={chartData} options={chartOptions} />
         </div>
     );
    
@@ -131,6 +194,13 @@ export const Stats = () => {
     const [hours, setHours] = useState(0);
     const [kibbles, setKibbles] = useState(0);
     const {user, isAuthenticated} = useUserContext();
+
+    const secondsToHours = (seconds) => {
+        return (seconds /3600).toFixed(2);
+    };
+    const secondsToHoursInt = (seconds) => {
+        return Math.floor((seconds / 3600));
+    }
 
     const getHoursAndKibbles = async () => {
 
@@ -144,10 +214,12 @@ export const Stats = () => {
                 {
                   userId: userId,
                 })
-
-                const hoursWorked = response.data.hours;
-                const kibbleEarned = Math.floor(hoursWorked/20);
-                setHours(hoursWorked);
+                const hoursWorked = (response.data.hours/3600).toFixed(2);
+                const hoursWorkedInt = Math.floor(response.data.hours/3600);
+            const kibbleEarned = Math.floor(hoursWorkedInt / 20);
+                //const hoursWorked = secondsToHours((response.data.hours));
+                //const kibbleEarned = secondsToHoursInt(Number(response.data.hours))/20;
+                setHours(parseFloat(hoursWorked));
                 setKibbles(kibbleEarned);
 
                 console.log("successfully retrieved data and kibbles!");
@@ -178,7 +250,7 @@ export const Stats = () => {
 
                 {/* Kibble and Total Hours worked */}
                 <div className="row-container-2-items"> 
-                    <div className= "itemContainer"> 
+                    <div className= "itemContainer-2"> 
                         <svg width="34" height="34" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_140_795)">
 <path d="M36.8867 29.7617H36.5315L33.6424 15.798C33.3325 14.2999 32.2077 13.1289 30.7931 12.7102C30.7978 12.63 30.8008 12.5496 30.8008 12.4688C30.8008 10.2437 29.0113 8.4288 26.796 8.38746C26.1946 7.30387 25.0488 6.60547 23.75 6.60547C23.0674 6.60547 22.4077 6.8092 21.8492 7.17213C21.0996 6.44226 20.0823 6.01172 19 6.01172C17.9177 6.01172 16.9004 6.44226 16.1508 7.17213C15.5922 6.80913 14.9327 6.60547 14.25 6.60547C12.9512 6.60547 11.8055 7.30387 11.2041 8.38746C8.98871 8.4288 7.19922 10.2437 7.19922 12.4688C7.19922 12.5496 7.20219 12.63 7.20686 12.7102C5.79218 13.1289 4.66739 14.2999 4.35753 15.798L1.46849 29.7617H1.11328C0.498453 29.7617 0 30.2602 0 30.875C0 31.4898 0.498453 31.9883 1.11328 31.9883H36.8867C37.5015 31.9883 38 31.4898 38 30.875C38 30.2602 37.5015 29.7617 36.8867 29.7617ZM11.2812 10.6133C11.4169 10.6133 11.5542 10.6286 11.6895 10.659C11.9777 10.7236 12.2797 10.6711 12.5291 10.5129C12.7785 10.3549 12.9549 10.1041 13.0194 9.81595C13.1471 9.2458 13.6646 8.83203 14.25 8.83203C14.6987 8.83203 15.1043 9.06293 15.3349 9.44961C15.5475 9.80623 15.9407 10.0149 16.3554 9.99088C16.7699 9.96691 17.1367 9.7142 17.3067 9.33546C17.6059 8.66897 18.2706 8.23828 19 8.23828C19.7293 8.23828 20.3941 8.66897 20.6933 9.33546C20.8633 9.71427 21.2301 9.96691 21.6445 9.99088C22.0589 10.0149 22.4524 9.80623 22.6651 9.44961C22.8956 9.06293 23.3012 8.83203 23.7499 8.83203C24.3353 8.83203 24.8528 9.2458 24.9805 9.81595C25.045 10.1041 25.2214 10.3549 25.4708 10.5129C25.7202 10.671 26.0223 10.7236 26.3103 10.659C26.4456 10.6286 26.5829 10.6133 26.7186 10.6133C27.7417 10.6133 28.5741 11.4456 28.5741 12.4688C28.5741 12.4936 28.5732 12.5183 28.5722 12.543H9.42764C9.42667 12.5183 9.42578 12.4936 9.42578 12.4688C9.42578 11.4456 10.2581 10.6133 11.2812 10.6133ZM3.74218 29.7617L6.53793 16.2491C6.71524 15.3918 7.47939 14.7695 8.35488 14.7695H29.645C30.5205 14.7695 31.2846 15.3918 31.462 16.2491L34.2578 29.7617H3.74218Z" fill="#B9835E"/>
@@ -194,7 +266,7 @@ export const Stats = () => {
                         
                         <label className="item-container-textcss">Kibble</label>
                     </div> 
-                    <div className = "itemContainer"> 
+                    <div className = "itemContainer-2"> 
                         <svg width="26" height="26" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M13.4999 0.583252C10.9452 0.583252 8.44794 1.3408 6.32381 2.7601C4.19967 4.1794 2.54411 6.19671 1.56648 8.55692C0.588849 10.9171 0.333055 13.5142 0.831448 16.0198C1.32984 18.5254 2.56003 20.827 4.36646 22.6334C6.17289 24.4398 8.47442 25.67 10.98 26.1684C13.4856 26.6668 16.0827 26.411 18.4429 25.4334C20.8031 24.4557 22.8204 22.8002 24.2397 20.676C25.659 18.5519 26.4166 16.0546 26.4166 13.4999C26.4166 11.8037 26.0825 10.124 25.4334 8.55692C24.7842 6.9898 23.8328 5.56588 22.6334 4.36646C21.434 3.16703 20.01 2.2156 18.4429 1.56647C16.8758 0.917351 15.1962 0.583252 13.4999 0.583252ZM13.4999 23.8333C11.4562 23.8333 9.45834 23.2272 7.75903 22.0918C6.05972 20.9563 4.73527 19.3425 3.95317 17.4543C3.17106 15.5661 2.96643 13.4885 3.36514 11.484C3.76386 9.47952 4.74801 7.63829 6.19315 6.19315C7.6383 4.74801 9.47952 3.76385 11.484 3.36514C13.4885 2.96642 15.5661 3.17106 17.4543 3.95316C19.3425 4.73527 20.9563 6.05972 22.0918 7.75903C23.2272 9.45833 23.8333 11.4562 23.8333 13.4999C23.8333 16.2405 22.7446 18.8688 20.8067 20.8067C18.8688 22.7446 16.2405 23.8333 13.4999 23.8333Z" fill="#B9835E"/>
 <path d="M19.5 13H15V8.5C15 8.10218 14.842 7.72064 14.5607 7.43934C14.2794 7.15804 13.8978 7 13.5 7C13.1022 7 12.7206 7.15804 12.4393 7.43934C12.158 7.72064 12 8.10218 12 8.5V14.5C12 14.8978 12.158 15.2794 12.4393 15.5607C12.7206 15.842 13.1022 16 13.5 16H19.5C19.8978 16 20.2794 15.842 20.5607 15.5607C20.842 15.2794 21 14.8978 21 14.5C21 14.1022 20.842 13.7206 20.5607 13.4393C20.2794 13.158 19.8978 13 19.5 13Z" fill="#B9835E"/>
@@ -206,8 +278,8 @@ export const Stats = () => {
 
                 {/* kibble and hours numericaly values */}
                 <div className = "row-container-2-items">
-                    <div className = "item-container kibble-css"> {kibbles} </div>
-                    <div className = "item-container hours-css"> {hours}</div>
+                    <label className = "item-container kibble-css"> {kibbles} </label>
+                    <label className = "item-container hours-css"> {hours}</label>
                     
 
 
@@ -221,11 +293,12 @@ export const Stats = () => {
             <label className="activity-row-label">Total Activity</label>
             <label className="last-7-days">last 7 days</label>
 
-
-            <BarChart />
+            
+            <BarChart/>
+            <img src={miso} alt="Cat GIF" className="cat-gif" />
 
           </div>
-
+            
           
         </div>
       );
