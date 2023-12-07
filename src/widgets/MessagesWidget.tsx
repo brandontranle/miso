@@ -61,7 +61,7 @@ export const MessagesWidget = ({ handleMinimize, isMinimized }) => {
           <p>
             <h1>Grade Calculator</h1>
             <form id="gradeForm">
-              <label htmlFor="grades">Enter GPA: </label>
+              <label htmlFor="grades">Enter Grade: </label>
               <div>
               <select id="grade1" value={grades.grade1} onChange={handleGradeChange}>
                 <option value="">Class 1: Select Grade</option>
