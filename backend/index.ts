@@ -44,6 +44,7 @@ const jwtSecret = process.env.JWT_SECRET;
 const app = express();
 const port = process.env.PORT || 5000;
 
+
 //spotify authentication
 global.access_token = ''
 global.refresh_token = ''
