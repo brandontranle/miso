@@ -43,6 +43,12 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const app = express();
 const port = process.env.PORT || 5000;
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+
+
+
+
 
 //spotify authentication
 global.access_token = ''
@@ -167,7 +173,10 @@ const UserData = mongoose.model('UserData', {
     saturday: Number,
   },
   timezone: String,
-  notebooks: [{text: String, notebookId: String, title: String}]
+  notebooks: [{text: String, notebookId: String, title: String}],
+  bio: String,
+  image: String,
+  createdAt: Date,
 })
 
 
@@ -205,7 +214,8 @@ app.post('/signup', async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const newUser = new User({firstName, lastName, email, password: hashedPassword, verified: false// Add this field
+    const newUser = new User({firstName, lastName, email, password: hashedPassword, verified: false, createdAt: new Date() // This will store the current date and time
+    // Add this field
   });
     const savedUser = await newUser.save();
     //Handle account verification
@@ -219,9 +229,21 @@ app.post('/signup', async (req, res) => {
     todosHistory: [],
     time: 0,
     kibbles: 0,
-    notebooks: [{text: "", notebookId: "1", title: "my notebook"}]
+    notebooks: [{text: "", notebookId: "1", title: "my notebook"}],
+    weeklyTime: {
+      sunday: 0,
+      monday: 0,
+      tuesday: 0,
+      wednesday: 0,
+      thursday: 0,
+      friday: 0,
+      saturday: 0,
+    },
+    timezone: "America/Los_Angeles",
+    bio: "I am a new user!",
+    createdAt: Date.now(),
     // Add other user-specific data if needed
-  });
+  }, { timestamps: true });
 
   await userData.save();
 
@@ -340,6 +362,31 @@ app.post('/sendOTP', async(req, res) => {
 
 });
 
+
+app.post('/getDate', async(req, res) => { 
+
+  try {
+    const {userId} = req.body;
+    const user = await UserData.findById(userId);
+
+    if (!user) {
+      res.status(404).json("user not found");
+    }
+
+    if (!user.createdAt){
+      console.log("not found???");
+      user.createdAt = new Date();
+      await user.save();
+    }
+
+    console.log("date of member retrieved!")
+    res.status(200).json({createdAt: user.createdAt});
+  } catch (error) { 
+    console.log("failed to retrieve the date: " + error);
+    res.status(500).json("failed to retrieve the date");
+  }
+
+});
 
 
 app.post('/verifyOTP', async(req, res) => {
@@ -935,6 +982,87 @@ app.post('/deleteTodoInHistory', async (req, res) => {
   });
 
 
+  app.post('/getBio', async (req, res) => {
+
+    try {
+      const {userId} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        res.status(404).json("user not founnd");
+      }
+
+      if (!user.bio) {
+        await user.updateOne({bio: "I am a new miso user!"}, {new:  true});
+        await user.save();
+      }
+
+      const bio = user.bio;
+      res.status(200).json({bio: bio});
+    } catch (error) {
+      res.status(500).json("error retrieving bio");
+    }
+  });
+
+
+  app.post('/editBio', async (req, res) => {
+    try {
+      const { userId, bio } = req.body;
+      console.log(bio);
+      const user = await UserData.findOne({ userId });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      // Update the bio field and save the user
+      user.bio = bio;
+      await user.save();
+  
+      console.log('Bio edited successfully!');
+      res.status(200).json({ bio: bio });
+    } catch (error) {
+      console.error('Error editing bio:', error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post('/updateProfilePicture', async (req, res) => {
+    // The image is expected to be a Base64 encoded string
+  
+    // Save the image to the database
+    try {
+      const { userId, image } = req.body;
+      const user = await UserData.findOne({ userId });
+      const result = await user.updateOne({image: image}, {new: true}); // Implement this function
+      res.status(200).json("pfp changed!");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ success: false, message: 'Failed to save image.' });
+    }
+  });
+  
+  app.post('/getProfilePicture', async (req, res) => {
+  
+    try {
+      const {userId} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        res.status(404).json("user not found");
+      }
+
+      //console.log("picture from backend: " + user.image);
+
+      //console.log('setting profile picture from backend!');
+      res.status(200).json({image: user.image.toString()});
+    } catch (error) {
+      res.status(500).json("profile picture failed");
+    }
+
+
+  });
+
   app.post('/changeTimezone', async (req, res) => {
     try {
       const {userId, timezone} = req.body;
@@ -953,10 +1081,6 @@ app.post('/deleteTodoInHistory', async (req, res) => {
         console.log("error changing timezone");
         res.status(500).json({ error: "An error occurred while changing the timezone" });
     }
-
-
-
-
   });
 
   app.post('/createNotebook', async (req, res) => {
