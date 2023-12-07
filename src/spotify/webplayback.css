@@ -24,7 +24,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 253, 253, 0.4); 
+  background-color: rgba(169, 165, 165, 0.3); 
   z-index: 1;/* Semi-transparent white */
 }
 
@@ -45,23 +45,27 @@
   z-index: 2;
 }
 .now-playing__name {
-    font-size: 2em;
+    font-size: 175%;
     margin-bottom: 0.2em;
+    color: #ffffff;
     font-family: "CircularStd-Bold";
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.7);
   }
 
   .now-playing__cover {
-    border-radius: 10px;
-    border: 3px solid black;
+    border-radius: 10px; 
     height: auto;
-    min-width: 45%;
-    min-height: 45%;
+    min-width: 20%;
+    min-height: 20%;
     max-width: 100%;
     max-height: 100%;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.2);
   }
   .now-playing__artist {
     margin-bottom: 1em;
-    font-size: 1.5em;
+    font-size: 125%;
+    color: #ffffff;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.7);
     font-family: "CircularStd-Bold";
   }
   .now-playing__status {
@@ -83,11 +87,17 @@
     width: 45%;
   }
 
+  .flex-row-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+  }
+
   .btn-spotify {
-    font-family: "CircularStd-Bold";
     border: none;
     background-color: transparent;
     border-radius: 20px;
+    
   }
   /** Progress **/
   .progress {
@@ -99,4 +109,11 @@
   .progress__bar {
     background-color: burlywood;
     height: 4px;
+  }
+
+  .volume-slider {
+    margin-bottom: 1em;
+    z-index: 2;
+    font-family: "CircularStd-Bold";
+
   }

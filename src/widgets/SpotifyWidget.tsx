@@ -1,7 +1,7 @@
 import "./SpotifyWidget.css";
 import WebPlayback from "../spotify/webplayback";
 import Login from "../spotify/login";
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
 import axios from "axios";
 
