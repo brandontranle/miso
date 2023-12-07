@@ -12,6 +12,7 @@ import TasksWidget from "./widgets/TasksWidget";
 import SoundsWidget from "./widgets/SoundsWidget";
 import SpotifyWidget from "./widgets/SpotifyWidget";
 import MessagesWidget from "./widgets/MessagesWidget";
+import ChatGPT from "./widgets/ChatGPT";
 import NotesWidget from "./widgets/NotesWidget";
 import backgroundImage from "./assets/background.png";
 import backgroundGif from "./assets/ghibli.gif";
@@ -260,6 +261,15 @@ export const Home: React.FC = () => {
             isMinimized={isMinimized}
             handleMinimize={() => handleWidgetClick(widgetId)}
           />
+        );
+        break;
+      case 9:
+        widgetClass = "catGPT-widget";
+        WidgetComponent = (
+          <ChatGPT
+            isMinimized={isMinimized}
+            handleMinimize={() => handleWidgetClick(widgetId)}
+            />
         );
         break;
       // Add cases for other widgets as needed ~ these are realistically the ones we are doing for the project, but we will delete if necessary!
