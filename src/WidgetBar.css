@@ -430,7 +430,6 @@ input[type="range"].custom-volume-slider {
   width: 100%;
   height: 10px;
   -webkit-appearance: none;
-  background: #ddd;
   border-radius: 5px;
   outline:none;
 }

@@ -82,6 +82,9 @@ const SoundsWidget = ({ handleMinimize, isMinimized }) => {
             step="0.1"
             value={campfireVolume}
             onChange={adjustVolume(setCampfireVolume)}
+            style={{
+              background: `linear-gradient(to right, #333 ${campfireVolume * 100}%, transparent 0%)`,
+            }}
           />
           </div>
           
@@ -95,6 +98,9 @@ const SoundsWidget = ({ handleMinimize, isMinimized }) => {
             step="0.1"
             value={rainVolume}
             onChange={adjustVolume(setRainVolume)}
+            style={{
+              background: `linear-gradient(to right, #333 ${rainVolume * 100}%, transparent 0%)`,
+            }}
           />
           </div>
           <div className="volume-slider">
@@ -107,6 +113,9 @@ const SoundsWidget = ({ handleMinimize, isMinimized }) => {
             max="1"
             step="0.1"
             value={waterfallVolume}
+            style={{
+              background: `linear-gradient(to right, #333 ${waterfallVolume * 100}%, transparent 0%)`,
+            }}
             onChange={adjustVolume(setWaterfallVolume)}
           />
           </div>
