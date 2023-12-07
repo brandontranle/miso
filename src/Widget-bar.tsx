@@ -32,7 +32,7 @@ export const WidgetBar: React.FC<WidgetBarProps> = ({ onWidgetClick }) => {
     { id: 4, icon: <TasksIcon />, name: "Tasks" },
     { id: 5, icon: <SoundsIcon />, name: "Sounds" },
     { id: 6, icon: <SpotifyIcon />, name: "Spotify" },
-    { id: 7, icon: <MessagesIcon />, name: "Messages" },
+    { id: 7, icon: <MessagesIcon />, name: "GPA Calculator" },
     { id: 8, icon: <NotesIcon />, name: "Notes" },
     // ... other widget properties
   ];
