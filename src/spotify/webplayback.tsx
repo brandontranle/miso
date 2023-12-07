@@ -1,11 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faStepBackward,
-  faPlay,
-  faPause,
-  faStepForward,
-} from "@fortawesome/free-solid-svg-icons";
 import "./webplayback.css";
 
 const track = {
@@ -21,6 +14,9 @@ function WebPlayback(props) {
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
   const [current_track, setTrack] = useState(track);
+  const [position, setPosition] = useState(0);
+  const [duration, setDuration] = useState(0);
+
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -32,7 +28,7 @@ function WebPlayback(props) {
     window.onSpotifyWebPlaybackSDKReady = () => {
       
       const player = new window.Spotify.Player({
-        name: "Web Playback SDK",
+        name: "Miso Spotify Player",
         getOAuthToken: (cb) => {
           cb(props.token);
         },
@@ -56,6 +52,7 @@ function WebPlayback(props) {
 
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
+        setDuration(state.duration);
 
         player.getCurrentState().then((state) => {
           (!state)? setActive(false) : setActive(true);
@@ -66,9 +63,52 @@ function WebPlayback(props) {
       player.connect();
 
     };
+    const interval = setInterval(() => {
+      if (!is_paused) {
+        setPosition(prevPosition => {
+          const newPosition = prevPosition + 1000; // Increment position by 1000 milliseconds (1 second)
+          return newPosition > duration ? duration : newPosition; // Ensure position doesn't exceed duration
+        });
+      }
+    }, 1000); 
 
-  }, [props]);
+    return () => clearInterval(interval);
 
+  }, []);
+
+   useEffect(() => {
+    let intervalId;
+
+      // ... (existing code)
+
+      intervalId = setInterval(() => {
+        setPosition((prevPosition) => {
+          if (!is_paused && prevPosition < duration) {
+            const newPosition = prevPosition + 1000; // Increment position by 1000 milliseconds (1 second)
+            return newPosition > duration ? duration : newPosition; // Ensure position doesn't exceed duration
+          }
+          return prevPosition;
+        });
+      }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [is_paused, duration]);
+
+  const progress = (position / duration) * 100;
+
+  const formatTime = (milliseconds: number): string => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+  
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+  
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
+  
   return (
     <>
     
@@ -114,6 +154,14 @@ function WebPlayback(props) {
 </svg> 
       </button>
       </div>
+      <div className="progress-bar">
+      <div className ="progress-unfilled"></div>
+      <div className="progress-filled" style={{ width: `${progress}%` }}></div>
+</div>
+<div className="progress-labels">
+  <span>{formatTime(position)}</span>
+  <span>{formatTime(duration)}</span>
+</div>
             </div>
           </div>
       </div>
