@@ -292,19 +292,53 @@
   height: 100%;
   width: 100%;
 }
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
 
 .widget-window.catGPT-widget {
-  width: 509px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   position: absolute;
   /* Position it at the bottom right of the MainContainer */
   flex-shrink: 0;
   top: 1%; /* Adjust as needed */
   left: 69%; /* Adjust as needed */
-
   border-radius: 13px;
 }
+select,
+button {
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #0056b3;
+}
 
+#result {
+  margin-top: 15px;
+  font-weight: bold;
+}
+select {
+  width: 100%; /* Set the width to 100% */
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 /****** notes widget ******/
 .notes-widget {
   height: 100%;
@@ -386,12 +420,14 @@ select {
   width: 100%;
 }
 
+
+
 .widget-window.sounds-widget {
   width: 200px;
-  height: 146px;
+  height: 200px;
   position: absolute;
   left: 40%; /* Start at the half-way point of the MainContainer */
-  top: 50%;
+  top: 40%;
   border-radius: 13px;
 }
 
@@ -412,6 +448,24 @@ select {
   z-index: 100;
   cursor: pointer;
   justify-content: left;
+}
+
+input[type="range"].custom-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #333;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+input[type="range"].custom-volume-slider {
+  width: 100%;
+  height: 10px;
+  -webkit-appearance: none;
+  border-radius: 5px;
+  outline:none;
 }
 
 /***** timer widget *****/
