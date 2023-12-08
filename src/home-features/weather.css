@@ -9,18 +9,18 @@
 }
 .flex {
   width: 240px;
-  height: 110px;
+  height: 115px;
   position: absolute;
   top: 60%;
   left: 18%;
   border: 1px solid transparent; /* Remove the border if not needed */
   border-radius: 5%;
-  padding: 8px;
+  padding: 4px;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(6px);
   outline: none;
-  border-radius: 5px;
+  border-radius: 20px;
   text-decoration: none;
 
 }
@@ -40,14 +40,18 @@
   top: 50%; /* Adjust based on desired position */
   transform: translateY(-50%); /* Center vertically */
   border-radius: 3px; /* Rounded corners */
-  background-color: rgba(255, 255, 255, 0.15); /* Glassy background */
-  backdrop-filter: blur(5px); /* Apply blur effect */
-  padding: 1px; /* Adjust padding as needed */
+  
+  text-align: center;
+  padding:2px; /* Adjust padding as needed */
   position: absolute;
-  top: 65.3%;
-  left: 62.5%;
-  font: Nunito-Regular;
+  top: 15%;
+  right: 3%;
+  font: 'Nunito-Regular';
+  border-radius: 6px;
+  color: white;
   z-index: 1;
+  background: transparent;
+  
   font-size: 10px;
   width: 75px;
 }
@@ -58,13 +62,18 @@
 }
 .description {
   text-align: left;
+  font-family: "Nunito-Bold"
 }
 .weather-loading {
   color: white;
 }
 .location {
-  margin-left: 22%;
+  margin-left: 10%;
   text-align: left;
   font-family: "Nunito-Regular";
-  font-size: 13px;
+  font-size: 14px;
+}
+
+.unit-selector select option {
+  color: black;
 }

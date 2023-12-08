@@ -7,7 +7,7 @@ interface DropdownMenuProps {
   onContentChange: (string) => void;
 }
 
-interface DropdownItemProps {
+
   children?: React.ReactNode;
   onClick?: () => void;
 }

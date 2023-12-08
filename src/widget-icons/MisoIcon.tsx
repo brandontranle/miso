@@ -1,6 +1,6 @@
 export const MisoIcon = () => {
   return (
-    <svg
+    <svg className = "miso-widget-svg-icon"
       xmlns="http://www.w3.org/2000/svg"
       width="34"
       height="22"
