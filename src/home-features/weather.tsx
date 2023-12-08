@@ -22,6 +22,7 @@ interface WeatherData {
 
 const Weather: React.FC = () => {
 
+  const [selectedUnit, setSelectedUnit]  = useState('metric') //default unit is celcius
   const [lat, setLat] = useState<number | null>(null); //lat for latitutde, when initailized can be a number or  null
   const [long, setLong] = useState<number | null>(null); //long for longitude
   const [data, setData] = useState<WeatherData | null>(null);
@@ -54,11 +55,20 @@ const Weather: React.FC = () => {
           console.error("Error fetching weather data: ", error);
         }
         */
+
+    //change units
+    type Unit = 'standard' | 'metric' | 'imperial';
+    const handleUnitChange = (newUnit: Unit) => 
+    {
+      setSelectedUnit(newUnit);
+      //update api call to use selected unit
+    }
+    
     const fetchWeatherData = async () => {
       if (lat !== null && long !== null && apiUrl && apiKey) {
         try {
           const response = await fetch(
-            `${apiUrl}/weather/?lat=${lat}&lon=${long}&units=metric&appid=${apiKey}`
+            `${apiUrl}/weather/?lat=${lat}&lon=${long}&units=${selectedUnit}&appid=${apiKey}`
           );
           const result: WeatherData = await response.json();
           setData(result);
@@ -74,13 +84,20 @@ const Weather: React.FC = () => {
     const intervalId = setInterval(fetchWeatherData, 600000); //fetch data every 10 minutes
     fetchWeatherData(); //intial fetch
     
-
-  }, [lat, long, apiUrl, apiKey]);
+  }, [lat, long, apiUrl, apiKey, selectedUnit]);
 
   return (
 
     <div className="weather-container">
-      {data ? <WeatherCard weatherData={data}/> : <div></div>} {/*shows nothing if location is not allowed*/}
+      <div className="unit-selector">
+        <select value={selectedUnit} onChange={(e) => setSelectedUnit(e.target.value)}>
+          <option value ="standard">Kelvin</option>
+          <option value="metric">Celcius</option>
+          <option value="imperial">Fahrenheit</option>
+        </select>
+      </div>
+      {data ? <WeatherCard weatherData={data} selectedUnit={selectedUnit}/> : <div></div>} {/*shows nothing if location is not allowed*/}
+      {/*We pass props weatherData and selctedunit to WeatherCard component*/}
     </div>
     
   );
