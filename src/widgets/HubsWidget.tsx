@@ -24,6 +24,9 @@ import pixelBackground1 from "../miso/backgrounds/pixelbackground1.jpg";
 import pixeBackground2 from "../miso/backgrounds/pixelbackground2.png";
 
 import { useUserContext } from "../useUserContext";
+import blossomrain from "../assets/blossomrain.gif";
+import lofi from "../assets/lofi.gif";
+import study1 from "../assets/study1.gif";
 
 interface HubsWidgetProps {
   setBackgroundImage: (image: string) => void;
@@ -170,6 +173,23 @@ export const HubsWidget = ({
                 onClick={() => changeBackground(cherryblossom)}
               />
             </div>
+
+            <div className="row-selections">
+              <ImageButton
+                imageUrl={blossomrain}
+                onClick={() => changeBackground(blossomrain)}
+              />
+              <ImageButton
+                imageUrl={lofi}
+                onClick={() => changeBackground(lofi)}
+              />
+              <ImageButton
+                imageUrl={study1}
+                onClick={() => changeBackground(study1)}
+              />
+            </div>
+
+
             <div className="left-container">
               <button className="bottom-button">
                 <label htmlFor="file-upload">Choose File</label>

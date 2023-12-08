@@ -1,0 +1,117 @@
+.calculator-title {
+    font-family: 'Nunito-Bold';
+    font-size: 25px;
+    width: 100%;
+    
+}
+
+.calculator-description {
+    width: 100%;
+    font-family: 'Nunito-Bold';
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #895a38;;
+
+}
+.add-class-button {
+    background-color: #e4ab82;
+    color: white;
+    font-family: 'Nunito-Bold';
+    border: none;
+    border-radius: 13px;
+    width: 100px;
+    height: 30px;
+    margin-right: 5px;
+    font-size: 14px;
+    
+
+}
+ /*  makes sure classes are aligned in center */
+.container-items {
+    justify-content: center;
+    align-items:center;
+    padding: 5px;
+    
+}
+
+.delete-icon {
+    border: none;
+    background: none;
+}
+
+.delete-icon:hover svg path {
+    stroke: rgb(193, 60, 60);
+    fill: rgb(193, 60, 60);
+}
+
+select {
+    padding: 6px;
+    flex: 1;
+    font-family: 'Nunito-Bold';
+    margin-right: 10px;
+}
+
+select option {
+    background-color: white; 
+}
+
+select:hover {
+    background-color: white;
+}
+
+select:focus>option:checked {
+    background-color: rgb(229, 222, 215);
+}
+
+select:focus > option:checked:before {
+    background-color: red;
+}
+
+
+.calculate-button {
+    background-color: #e4ab82;
+    color: white;
+    font-family: 'Nunito-Bold';
+    border: none;
+    border-radius: 13px;
+    width: 100px;
+    margin-left: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    height: 30px;
+}
+
+.calculate-button:hover {
+    background-color: #ad7a55;
+}
+
+.grade-result {
+    font-family: 'Nunito-Bold';
+    border: none;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.grade-result-button {
+    border-radius: 12px;
+    width: 210px;
+    height: 35px;
+    outline: none;
+    border-color: #e4ab82;
+    
+}
+
+.grade-result-button:hover {
+    cursor: default;
+}
+
+.add-class-button:hover {
+    background-color: #ad7a55;
+}
+
+.class-text {
+    font-family: 'Nunito-Bold';
+
+}
