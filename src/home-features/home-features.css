@@ -1,17 +1,19 @@
 .quote {
-    position: absolute; 
-    left: 50%;
-    top: 40%;
-    text-align: center;
+    position: relative; 
+    left: 83%;
+    top: 120%;
+    width: 450px;
     transform: translate(-50%,-50%);
-    text-align: center;
+    text-align: right;
 
 }
 
 .quote-content{
     color: white;
-    position: center;
-    font-family: "Nunito-Bold";
+    position: relative;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-style: italic;
+    
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
 }
 

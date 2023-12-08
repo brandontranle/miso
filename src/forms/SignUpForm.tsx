@@ -43,6 +43,7 @@ export const SignUpForm: React.FC<{ onLoginSuccess: () => void }> = ({
 
           if (password.length < 8) {
             setMessage("Password must be at least 8 characters long.");
+            setLoading(false);
             return;
           }
 
@@ -63,7 +64,7 @@ export const SignUpForm: React.FC<{ onLoginSuccess: () => void }> = ({
           setShowVerificationForm(true);
           setLoading(false); // Set loading to false when registration is complete
         } catch (error) {
-          setMessage("Registration failed. Email already exists!");
+          setMessage((error as any).error);
           console.error("Registration error:", error);
           if ((error as any).response) {
             console.error("Response status:", (error as any).response.status);

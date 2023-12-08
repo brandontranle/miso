@@ -20,11 +20,20 @@
   height: 100%;
 }
 
+.profile-flex-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .profile-picture {
   border-radius: 50%;
-  height: 40%;
+  height: 205px;
+  width: 210px;
   margin-bottom: 20px;
   margin-top: 35px;
+  border: 5px solid #2c2b2a;
 }
 
 .profile-label {
@@ -38,11 +47,24 @@
   font-family: "Nunito-Semibold";
 }
 
-.profile-row .profile-bio {
+.profile-row-label-about {
+  font-size: 23px;
+  font-weight: 0;
+  font-family: "Nunito-Bold";
+}
+
+.profile-row-label-kibbles {
+  font-size: 23px;
+  font-weight: 0;
+  font-family: "Nunito-Semibold";
+  padding-right: 10px;
+}
+
+.profile-bio {
   width: 100%;
   font-size: 20px;
   font-weight: 0;
-  font-family: "Nunito-Semibold";
+  font-family: "Nunito-Regular";
 }
 
 #username {
@@ -67,14 +89,149 @@
   background: #c9c7c7;
 }
 
+.larger-miso {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  right: 28%;
+  bottom: 10%;
+}
+
+.profile-picture-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.edit-icon {
+  position: absolute;
+  top: 0; /* Adjust as needed */
+  right: 0; /* Adjust as needed */
+  width: 24px; /* Adjust as needed */
+  height: 24px; /* Adjust as needed */
+  display: none; /* Icon is not displayed by default */
+}
+
+.pencil-icon {
+  position: absolute;
+  top: 30%; /* Center the icon vertically */
+  left: 50%; /* Center the icon horizontally */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Align the center of the icon with the cursor position */
+  width: 80px; /* Set the size of your icon */
+  height: 80px; /* Set the size of your icon */
+  pointer-events: none; /* This prevents the icon from affecting hover/click events */
+  opacity: 1; /* Start invisible */
+  transition: opacity 0.2s; /* Smooth transition for the icon appearance */
+}
+
+.profile-picture-container:hover .pencil-icon {
+  opacity: 1; /* Fully visible when hovering */
+}
+
+.profile-picture-container:hover .profile-picture {
+  filter: brightness(70%); /* Darkens the image */
+  cursor: pointer;
+}
+
+.profile-picture-container:hover::after {
+  opacity: 1; /* Fully visible overlay when hovering */
+}
+
+.header-label {
+  font-family: "Nunito-Bold";
+  margin-top: 2%;
+  font-size: 20px;
+  color: #2c2b2a;
+  font-weight: bold;
+}
+
+.date-label {
+  position: absolute;
+  bottom: 10%;
+  left: 33%;
+  font-family: "Nunito-Bold";
+}
+
+.item-centered-row-container {
+  display: relative;
+}
+
+.larger-miso {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  right: 28%;
+  bottom: 10%;
+}
+
+.profile-picture-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.edit-icon {
+  position: absolute;
+  top: 0; /* Adjust as needed */
+  right: 0; /* Adjust as needed */
+  width: 24px; /* Adjust as needed */
+  height: 24px; /* Adjust as needed */
+  display: none; /* Icon is not displayed by default */
+}
+
+.pencil-icon {
+  position: absolute;
+  top: 30%; /* Center the icon vertically */
+  left: 50%; /* Center the icon horizontally */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Align the center of the icon with the cursor position */
+  width: 80px; /* Set the size of your icon */
+  height: 80px; /* Set the size of your icon */
+  pointer-events: none; /* This prevents the icon from affecting hover/click events */
+  opacity: 1; /* Start invisible */
+  transition: opacity 0.2s; /* Smooth transition for the icon appearance */
+}
+
+.profile-picture-container:hover .pencil-icon {
+  opacity: 1; /* Fully visible when hovering */
+}
+
+.profile-picture-container:hover .profile-picture {
+  filter: brightness(70%); /* Darkens the image */
+  cursor: pointer;
+}
+
+.profile-picture-container:hover::after {
+  opacity: 1; /* Fully visible overlay when hovering */
+}
+
+.header-label {
+  font-family: "Nunito-Bold";
+  margin-top: 2%;
+  font-size: 20px;
+  color: #2c2b2a;
+  font-weight: bold;
+}
+
+.date-label {
+  position: absolute;
+  bottom: 10%;
+  left: 33%;
+  font-family: "Nunito-Bold";
+}
+
+.item-centered-row-container {
+  display: relative;
+}
 
 .my-account-label {
-
   margin-top: 15px;
   width: 100%;
   margin-bottom: 20px;
   font-family: "Nunito-Bold";
   font-size: 20px;
   font-weight: 0;
-  
 }

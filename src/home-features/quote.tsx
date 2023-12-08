@@ -18,7 +18,7 @@ const Quote = () => {
     // Get the day of the year function
     const getDayOfYear = (date) => {
       const start = new Date(date.getFullYear(), 0, 0);
-      const diff = (date - start.getDate()) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+      const diff = (date - start.getTime()) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
       const oneDay = 1000 * 60 * 60 * 24;
       const day = Math.floor(diff / oneDay);
       return day;

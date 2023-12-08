@@ -98,6 +98,7 @@ body {
 }
 
 .right-side .LOGIN-BUTTON {
+  margin-top: 20px;
   right: 0;
 }
 .HeroContainer {
@@ -158,7 +159,7 @@ body {
 }
 
 .profile-select {
-  color: #e44c10;
+  color: #DEA57B;
   text-decoration: none;
   font-family: Inter;
   font-size: 20px;
@@ -172,6 +173,7 @@ body {
   align-items: center;
   display: flex;
   height: 4vh;
+  font-family: "Nunito-Bold";
   justify-content: center;
   position: relative;
   width: 5vw;
@@ -190,7 +192,7 @@ body {
 }
 
 .LOGIN-BUTTON .button {
-  color: #88db74;
+  color: #DEA57B;
   align-items: center;
   border-radius: 40%/100%;
   display: flex;
@@ -203,7 +205,8 @@ body {
 
 .LOGIN-BUTTON .login {
   color: #ffffff;
-  font-family: "Inter-SemiBold", Helvetica;
+  /*font-family: "Inter-SemiBold", Helvetica;*/
+  font-family: "Nunito-Bold";
   font-size: 100%;
   width: 100%;
   font-weight: 600;
@@ -222,7 +225,7 @@ body {
   height: 10%;
   justify-content: center;
   width: 100%;
-  color: #88db74;
+  color: #DEA57B;
   outline: none;
   text-decoration: none;
 }
@@ -450,7 +453,7 @@ body {
   justify-content: space-between; /* This will push buttons to the edge */
   flex-grow: 1;
 
-  border-bottom: 4px solid #ccc; /* Add a bottom border to separate items */
+   /* Add a bottom border to separate items */
 }
 
 .item-wrapper:hover {
@@ -460,8 +463,8 @@ body {
 /* Set a maximum width for the to-do list item */
 
 .to-do-list-item {
-  font-size: 14px;
-  font-family: "Nunito-Bold", Helvetica;
+  font-size: 12px;
+  font-family: "Nunito-Bold";
   width: 80%;
   display: flex;
   flex-grow: 1;
@@ -474,12 +477,13 @@ body {
 }
 
 .delete-button:hover svg path {
-  fill: rgb(216, 94, 94);
+  fill: rgb(194, 38, 38);
+  stroke: rgb(194, 38, 38);
 }
 
 .text-content {
   white-space: normal; /* Allow text to break lines */
-  font-size: 0.91rem;
+  font-size: 0.90rem;
   text-overflow: clip;
   word-break: break-word;
   max-width: calc(
@@ -497,7 +501,7 @@ body {
 .to-do-list-form {
   width: 100%;
   height: 5%;
-  font-size: 130%;
+  font-size: 100%;
   display: flex; /* Use flexbox to align form elements */
   justify-content: center; /* Center form elements horizontally */
   align-items: center; /* Center form elements vertically*/
@@ -517,12 +521,12 @@ body {
 input[type="text"] {
   background: transparent;
   border: none;
-  border-bottom: 1px solid #000000;
+  border-bottom: 2px solid #4E4E4E;
   width: 50%;
   text-decoration: none;
   outline: none;
-  font-family: "Nunito-Regular", Helvetica;
-  color: #54453a;
+  font-family: "Nunito-Regular";
+  color: #4E4E4E;
 }
 
 input[type="checkbox"] {
@@ -614,6 +618,10 @@ input[type="checkbox"] {
   flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 
+.edit-button:hover svg path {
+  fill: rgb(231, 159, 58);
+}
+
 .delete-button {
   flex-shrink: 0; /* Prevent buttons from shrinking */
 }
@@ -681,6 +689,8 @@ input[type="checkbox"] {
   top: 5%;
   left: 10%;
   cursor: pointer;
+  font-family: 'Nunito-Bold';
+  font-size: 12px;
 }
 
 .form-switcher {
@@ -815,7 +825,7 @@ input[type="checkbox"] {
 }
 
 .extended-button:hover {
-  background-color: #6ecb5a;
+  background-color: #D3A380;
 }
 
 .row {

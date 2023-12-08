@@ -52,7 +52,8 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData, selectedUnit }) 
         <label className="temp">{convertTemperature(weatherData.main.temp)}</label>
       </div>
       <div className="location">
-        {capitalizedDescription} in {weatherData.name}
+        <div>{capitalizedDescription} in </div>
+        <div>{weatherData.name}</div>
       </div>
       {/*div className = "description">{weatherData.weather[0].description}</div>
             <p className="location">in {weatherData.name}</p> */}

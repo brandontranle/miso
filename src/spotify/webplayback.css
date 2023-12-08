@@ -46,6 +46,7 @@
 }
 .now-playing__name {
     font-size: 180%;
+
     margin-bottom: 0.2em;
     color: #ffffff;
     font-family: "CircularStd-Bold";
@@ -64,6 +65,7 @@
   .now-playing__artist {
     margin-bottom: 1em;
     font-size: 140%;
+
     color: #ffffff;
     text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.7);
     font-family: "CircularStd-Bold";
@@ -95,6 +97,7 @@
     background-color: transparent;
     border-radius: 20px;
   
+
   }
 
   /* Progress */
@@ -188,3 +191,17 @@
   color: #ffffff;
   font-family: "CircularStd-Bold";
 }
+
+  }
+  .progress__bar {
+    background-color: burlywood;
+    height: 4px;
+  }
+
+  .volume-slider {
+    margin-bottom: 1em;
+    z-index: 2;
+    font-family: "CircularStd-Bold";
+
+  }
+

@@ -52,18 +52,27 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    text-align: center;
+    
+    margin-bottom: 10px;
   }
 
   
 
   .item-container {
     width: 100%;
-    display: flex;
     align-items: center; /* Aligns the SVG and label vertically */
-    gap: 50px; /* Space between the SVG and label */
-    
+    text-align: center;
+  }
+
+  .itemContainer-2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+
   }
 
 
@@ -71,27 +80,33 @@
     align-items: center;
     margin-right: 30px;
     font-family: "Nunito-Bold";
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 0;
+    padding-left: 5px;
   }
 
-
+  
   .kibble-css {
     font-family: "Nunito-Bold";
     color: #D3A380;
     font-size: 30px;
+    text-align: center;
+    width: 100%;
+
   }
 
   .hours-css {
     font-family: "Nunito-Bold";
     color: #D3A380;
     font-size: 30px;
+    text-align: center;
+
   }
 
   .activity-row-label {
 
-    margin-top: 40px;
-    font-size: 13px;
+    margin-top: 30px;
+    font-size: 15px;
     width: 100%;
     font-family: "Nunito-Bold";
     text-align: left;
@@ -102,9 +117,17 @@
 
 .last-7-days {
     margin-left: 45px;
-    margin-top: 5px;
-    font-size: 11px;
+    margin-top: 8px;
+    font-size: 13px;
     width: 100%;
     font-family: "Nunito-Bold";
     text-align: left;
+    margin-bottom: 35px;
+}
+
+.cat-gif {
+  margin-top: 10px;
+  height: 80px;
+  justify-content: center;
+  
 }
