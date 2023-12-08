@@ -3,19 +3,13 @@ import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import "./ChatGPT.css"
 
-const API_KEY = "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";
+const API_KEY = "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";
 const systemMessage = {
     role: "system",
     content: "Talk like a cat." //change this to make chatgpt respond hoever you want
 }
 
-interface MessageModel {
-    message?:string;
-    sentTime?:string;
-    sender?:string;
-    direction: 'outgoing';
-    position: "single" | "first" | "normal" | "last" | 0 |  1 | 2 | 3;
-}
+
 
 export const ChatGPT = ({ handleMinimize, isMinimized }) => {
 
@@ -50,6 +44,7 @@ export const ChatGPT = ({ handleMinimize, isMinimized }) => {
         //from documentation: chatMessages { sender: "user" or "ChatGPT", message: "message content"}
                             //apiMessages {role: "user" or "assistant", content: "message content"}
                                         //these are properties from the API
+        
         let apiMessages = chatMessages.map((messageObject) => {
             let role = "";
             if (messageObject.sender == "ChatGPT")
@@ -81,7 +76,8 @@ export const ChatGPT = ({ handleMinimize, isMinimized }) => {
             return data.json();
         }).then((data) => {
             console.log(data);
-            console.log(data.choices[0].message.content);
+            /*console.log(data.choices[0].message.content);
+            console.log('mewoo');
             setMessages(
                 [...chatMessages, {
                     message: data.choices[0].message.content,
@@ -89,8 +85,9 @@ export const ChatGPT = ({ handleMinimize, isMinimized }) => {
                     }
                 ]
             );
-            setTyping(false);
+            setTyping(false);*/
         });
+
     }
 
     return (
@@ -126,7 +123,11 @@ export const ChatGPT = ({ handleMinimize, isMinimized }) => {
                             >
                                 {messages.map((message, i) => {
                                         console.log(message)
-                                        return <Message key = {i} model= {message} />
+                                        if (message && message.message && message.sender)
+                                        {
+                                         
+                                            return <Message key = {i} model= {message} />
+                                        }
                                     })}
                             </MessageList>
                             <MessageInput placeholder='Type message here' onSend={handleSend}/>
