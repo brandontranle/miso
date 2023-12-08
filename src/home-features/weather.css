@@ -19,9 +19,9 @@
   padding: 10px;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(3px);
   outline: none;
-  border-radius: 5px;
+  border-radius: 15px;
   text-decoration: none;
 }
 .main-weather {
@@ -42,12 +42,15 @@
 }
 .description {
   text-align: left;
+  font-family: "Nunito-Bold"
 }
 .weather-loading {
   color: white;
 }
 .location {
+  
   margin-left: 10%;
+  
   text-align: left;
   font-family: "Nunito-Regular";
 }

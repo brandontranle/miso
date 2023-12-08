@@ -80,6 +80,8 @@ const BarChart = () => {
                 },
             },
         },
+        maintainAspectRatio: false,
+
         plugins: {
 
             legend: {
@@ -88,7 +90,7 @@ const BarChart = () => {
 
 
             tooltip: {
-                yAlign: "bottom" as const,
+                yAlign: 'bottom',
                 backgroundColor: '#818181',
                 bodyColor: '#FFFFFF',
                 bodyFont: {
@@ -97,9 +99,13 @@ const BarChart = () => {
 
                 },
                 displayColors: false,
+                bodyAlign: 'center',
                 mode: 'index',
                 enabled: true,
                 intersect: false,
+                bodySpacing: 2,
+                position: 'nearest',
+                titleAlign: 'center',
 
         
                 
@@ -114,6 +120,7 @@ const BarChart = () => {
               
             },
         },
+       
         
     };
 
@@ -293,10 +300,14 @@ export const Stats = () => {
             <label className="activity-row-label">Total Activity</label>
             <label className="last-7-days">last 7 days</label>
 
+            <div className = "stats-chart-container">
+                
+                <BarChart/>
+            </div>
             
-            <BarChart/>
+            <div className = "miso-image">
             <img src={miso} alt="Cat GIF" className="cat-gif" />
-
+            </div>
           </div>
             
           

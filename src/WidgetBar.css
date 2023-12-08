@@ -28,10 +28,10 @@
 }
 */
 
-.menu-bar svg:hover {
+/* .menu-bar svg:hover {
   color: #D3A380;
   cursor: pointer;
-}
+} */
 
 /*
 .menu-bar::after {
@@ -51,6 +51,7 @@
   text-align: center;
 }
 
+
 .widget-title {
   font-family: Nunito-Bold !important;
 }
@@ -65,13 +66,56 @@
 }
 
 
-
+/* TRYING TO FIX SVG BELOW */
 .widget-container:hover {
   cursor: pointer;
+  stroke: #D3A380;
   /*transform: translateY(-2px); */
   color: #D3A380;
 
 }
+
+.widget-container:hover path{
+  stroke: #D3A380;
+  color: #D3A380;
+  
+
+}
+
+.widget-container:hover .spotify-widget-svg-icon path {
+  fill: #D3A380;
+}
+/* TRYING TO FIX SVG ABOVE */
+
+.widget-container:hover .miso-widget-svg-icon path {
+  fill: #D3A380;
+  stroke: none;
+}
+
+.miso-widget-svg-icon:hover path{
+  fill: #D3A380;
+   
+}
+
+.hubs-widget-svg-icon {
+  stroke: #D3A380
+}
+.timer-widget-svg-icon {
+  fill: #D3a380;
+}
+
+.sounds-widget-svg-icon  {
+  fill: #D3a380;
+
+  
+}
+.spotify-widget-svg-icon:hover path {
+ 
+  stroke:#D3a380;
+  
+}
+
+
 
 .widget-window {
   position: absolute; /* or absolute, depending on your layout */

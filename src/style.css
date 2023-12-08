@@ -170,19 +170,33 @@ body {
 }
 
 .LOGIN-BUTTON {
-  align-items: center;
+  /* align-items: center;
   display: flex;
   height: 4vh;
   font-family: "Nunito-Bold";
   justify-content: center;
   position: relative;
   width: 5vw;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: 
   backdrop-filter: blur(5px);
 
   outline: none;
   border-radius: 5px;
-  text-decoration: none;
+  text-decoration: none; */
+
+align-items:center;
+width: 5.5vw;
+height: 5vh;
+display:flex;
+font-family: 'Nunito-Bold';
+justify-content:center;
+position: relative;
+background-color: rgba(255, 255, 255, 0.15);
+outline: none;
+border-radius: 9px;
+text-decoration: none;
+
+
 }
 
 .LOGIN-BUTTON:before {
@@ -558,6 +572,11 @@ input[type="checkbox"] {
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
+
+
+
+
+
 .sidebar-wrapper {
   padding: 5%;
   height: 100%;
@@ -740,6 +759,7 @@ input[type="checkbox"] {
   text-align: center;
   height: 100%;
   width: 100%;
+  
 }
 
 .input-box {
@@ -759,7 +779,7 @@ input[type="checkbox"] {
 .input-field {
   width: 100%;
   height: 8%;
-  margin-bottom: 5%;
+  margin-bottom: 6%;
   position: relative;
 }
 
@@ -805,8 +825,65 @@ input[type="checkbox"] {
   z-index: 1;
 }
 
+
+/* LOGIN SCREEN DIFFERENT DISTRIBUTION */
+
+.input-field-login {
+  width: 100%;
+  height: 8%;
+  margin-bottom: 10%;
+  position: relative;
+}
+
+.input-field-login input::placeholder {
+  color: transparent;
+}
+
+.input-field-login input {
+  width: 90%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background-color: transparent;
+  border: 1px solid;
+  border-color: #53443a36;
+  color: #53443a;
+  border-radius: 9px;
+  font-family: "Nunito-Regular", Helvetica;
+  box-sizing: border-box; /* Include padding and border in the total width */
+  position: relative; /* Add position relative to the input box */
+  z-index: 1; /* Add a z-index to make sure the label stays on top */
+}
+
+.input-field-login .form-label {
+  position: absolute;
+  top: 50%;
+  left: 5%; /* Adjust the left positioning to align with the input box */
+  font-size: 15px;
+  padding: 0 10px;
+  color: #53443a;
+  pointer-events: none; /* Allow clicking through the label */
+  transition: 0.15s all ease;
+  background-color: white;
+}
+
+.input-field-login input:focus + .form-label,
+.input-field input:not(:placeholder-shown) + .form-label {
+  transform: translate(5px, -35px);
+  background-color: #ffffff;
+  color: #53443a;
+  font-size: 15px;
+  z-index: 1;
+}
+
+/*  END LOGIN  */
+
+
+
+
 .extended-button {
-  background-color: #88db74;
+  background-color: #EEBE9B;
   align-items: center;
   color: white;
   border-radius: 9px;
@@ -816,7 +893,7 @@ input[type="checkbox"] {
   text-decoration: none;
   font-weight: 600;
   color: #ffffff;
-  font-family: "Inter-SemiBold", Helvetica;
+  font-family: "Nunito-Bold", Helvetica;
   font-size: 100%;
   /*margin-left: 3.5%;*/
   border: none;
