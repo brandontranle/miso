@@ -46,9 +46,9 @@
 /*dropdown menu for time zones*/
 .timezone-dropdown {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-top: 50px; /*spacing for clock and dropdown */
+  margin-left: 10px;
+  margin-bottom: 6%;
 }
 
 #timezone-selector {
@@ -57,7 +57,6 @@
   align-items: center;
   border-radius: 5px;
   text-align: center;
-  margin-top: 50px;
   right: 100;
   border: 0.5px solid grey;
 }

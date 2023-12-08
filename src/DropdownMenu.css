@@ -1,48 +1,87 @@
+/*  BELOW IS  PREVIOUS */
+
 .dropdown-container {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-button {
-    margin-top: 10px;
-    
-    background:none;
-    border: none;
-    cursor: pointer;
-    outline:none;
-  }
-  
-  /* i assumed this to be the dropdown box css,
-    however i want some margin spacing from the edges like
-       in the Figma file */
+  display: inline-block;
+  position: relative; /* Ensure relative positioning for proper alignment */
+}
 
-  .dropdown-content {
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 175px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-    margin-top: 8px;
-    justify-content: center;
-    right: 24%;
-    border-radius: 13px;
-    font-size: 16px;
-    font-family: 'Nunito-Bold';
-  }
-  
-  .dropdown-item {
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    /* Style your dropdown items here */
-    color:black;
-  }
-  
-  .dropdown-item:hover {
-    background-color: #794141;
-  }
+.dropdown-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  margin-right: 10px;
+  right: 0;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  margin-top: 10px;
+  opacity: 0; /* Initially hidden */
+  visibility: hidden; /* Initially not visible */
+  transform: translateY(-20px); /* Start above its final position */
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s; /* Transition for opacity, transform, and delay hiding */
+}
 
-  .horizontal-line{
-    height: 2px;
-    width: 100%;
-    color:#dbdbdb;
-  }
+/* Class when dropdown is open */
+.dropdown-container.open .dropdown-content {
+  opacity: 1; /* Fully visible */
+  visibility: visible; /* Make it visible */
+  transform: translateY(0); /* Slide to final position */
+  transition-delay: 0s; /* No delay when showing */
+}
+
+.dropdown-item {
+  text-decoration: none;
+  text-align: center !important;
+  width: 100%;
+  height: 2em !important;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: 2px solid black;
+  font-family: "Nunito-SemiBold";
+}
+
+.svg-dropdown-icon {
+}
+
+.item-name {
+  margin-left: 5px;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+.item-name-last-child {
+  margin-left: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.dropdown-button {
+  border-radius: 10px;
+  background-color: transparent;
+  border: none;
+}
+
+.dropdown-item.functional:hover {
+  background-color: rgb(235, 235, 235) !important;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.dropdown-item.no-hover:hover {
+  cursor: default;
+}
+
+.dropdown-item.no-hover {
+  height: 10px !important;
+}
+
+.dropdown-container .horizontal-line {
+  height: 1px;
+  width: 100%;
+  color: #f9f9f9;
+  margin-bottom: 0px;
+}
