@@ -15,7 +15,7 @@ export const ChatGPT = ({ handleMinimize, isMinimized }) => {
 
     const [typing, setTyping] = useState(false);
     const [messages, setMessages] = useState([{
-        message: "Hello, I am CatGPT!",
+        message: "Hello, I am CatGPT. Meow!",
         sender: "ChatGPT"
       
         //position: 'single',
@@ -32,11 +32,57 @@ export const ChatGPT = ({ handleMinimize, isMinimized }) => {
         }; // []
     
         const newMessages = [...messages, newMessage];
-        setMessages(newMessages);
-        // Process message to ChatGPT
-        
-        //set typing indciator
-        setTyping(true);
+        setMessages(newMessages); // Process message to ChatGPT
+        setTyping(true); //set typing indciator
+
+        setTimeout(() => {
+            let automatedResponse;
+
+            if(message.toLowerCase().includes('food'))
+            {
+                automatedResponse = {
+                    message: "Meow! I love fish!",
+                    sender: "ChatGPT",
+                    direction: "incoming",
+                    position: "single"
+                };
+            }
+            else if (message.toLowerCase().includes('play')) {
+                automatedResponse = {
+                    message: 'Purr... Let’s play with a ball of yarn!',
+                    sender: 'ChatGPT',
+                    direction: 'incoming',
+                    position: 'single'
+                };
+            } else if (message.toLowerCase().includes('hello') || message.toLowerCase().includes('hi')) {
+                automatedResponse = {
+                    message: 'Meow! Hello there!',
+                    sender: 'ChatGPT',
+                    direction: 'incoming',
+                    position: 'single'
+                };
+            } 
+            else if (message.toLowerCase().includes('miso')) {
+                automatedResponse = {
+                    message: 'Miso is a productivty app.  My name is also Miso!',
+                    sender: 'ChatGPT',
+                    direction: 'incoming',
+                    position: 'single'
+                };
+            } else {
+                automatedResponse = {
+                    message: 'Purr....',
+                    sender: 'ChatGPT',
+                    direction: 'incoming',
+                    position: 'single'
+                };
+            }
+            
+            const updatedMessages = [...newMessages, automatedResponse];
+            setMessages(updatedMessages);
+            setTyping(false);
+        }, 1000); //simulating delay of 3000 milliseconds
+
         await processMessageToChatGPT(newMessages);
     };
 

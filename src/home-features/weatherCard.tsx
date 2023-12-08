@@ -1,6 +1,7 @@
 import React from "react";
 import "./weather.css";
 
+
 interface WeatherData {
   main: {
     temp: number;
@@ -16,6 +17,7 @@ interface WeatherCardProps {
   weatherData: WeatherData;
   selectedUnit: string;
 }
+
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData, selectedUnit }) => {
   //Capitalize the description string from weather data
