@@ -50,8 +50,10 @@ export const getRefreshToken = async (authorizationCode) => {
 }; */
 
 export const SpotifyWidget = ({ handleMinimize }) => {
-  const [spotifyApi, setSpotifyApi] =
-    useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
+  const [
+    spotifyApi,
+    setSpotifyApi,
+  ] = useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -128,7 +130,7 @@ export const SpotifyWidget = ({ handleMinimize }) => {
     <>
       <div className="spotify-widget">
         <div className="widget-header widget-handle">
-          <p className="widget-title">spotify</p>
+          <p className="widget-title">Spotify</p>
           <button className="minimize-symbol" onClick={() => handleMinimize()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +151,6 @@ export const SpotifyWidget = ({ handleMinimize }) => {
         <>
           <div className="widget-line"></div>
           <div className="widget-content">
-            
             {token === "" ? <Login /> : <WebPlayback token={token} />}
           </div>
         </>

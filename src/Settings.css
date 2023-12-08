@@ -29,6 +29,11 @@
   color: #2c2b2a;
   margin-bottom: 10px;
 }
+.left-aligned-paragraph {
+  width: 100%;
+  text-align: left;
+  margin-left: 10px;
+}
 
 .setting-container input {
   width: 95%;
