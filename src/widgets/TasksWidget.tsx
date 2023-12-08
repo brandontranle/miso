@@ -299,7 +299,7 @@ export const TasksWidget = ({ handleMinimize, isMinimized }) => {
 
   return (
     <div className="tasks-widget">
-      <div className="widget-header">
+      <div className="widget-header widget-handle">
         <p className="widget-title">Tasks</p>
         <button className="minimize-symbol" onClick={() => handleMinimize()}>
           <svg

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import VerificationForm from "./Verification-form";
 import { useUserContext } from "../useUserContext"; // Import the user context
+import miso from "../miso/brown_cat/cat01_sit_8fps.gif";
 
 const LoginForm: React.FC<{ onLoginSuccess: () => void }> = ({
   onLoginSuccess,
@@ -129,7 +130,7 @@ const LoginForm: React.FC<{ onLoginSuccess: () => void }> = ({
             </button>
           </div>
           <div className="row-centered">
-            <label className="default-label"> OR </label>
+            <label className="default-label"> </label>
           </div>
         </div>
       )}
