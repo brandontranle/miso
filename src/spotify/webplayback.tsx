@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./webplayback.css";
 
 const track = {
@@ -16,7 +16,8 @@ function WebPlayback(props) {
   const [current_track, setTrack] = useState(track);
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
-
+  const [volume, setVolume] = useState(50);
+  const intervalRef = useRef<number | undefined>();
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -53,6 +54,7 @@ function WebPlayback(props) {
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
         setDuration(state.duration);
+        setPosition(state.position);
 
         player.getCurrentState().then((state) => {
           (!state)? setActive(false) : setActive(true);
@@ -63,38 +65,33 @@ function WebPlayback(props) {
       player.connect();
 
     };
-    const interval = setInterval(() => {
-      if (!is_paused) {
-        setPosition(prevPosition => {
-          const newPosition = prevPosition + 1000; // Increment position by 1000 milliseconds (1 second)
-          return newPosition > duration ? duration : newPosition; // Ensure position doesn't exceed duration
-        });
-      }
-    }, 1000); 
-
-    return () => clearInterval(interval);
 
   }, []);
 
-   useEffect(() => {
-    let intervalId;
+  useEffect(() => {
+    clearInterval(intervalRef.current);
 
-      // ... (existing code)
+    if (!is_paused && position < duration) {
+    handleInterval();
+    } else if (is_paused && position > 0) {
+      clearInterval(intervalRef.current);
+    } else if (!is_paused && position === 0) {
+      setPosition(0);
+      handleInterval();
+    }
+  }, [current_track, is_paused, position, duration]);
 
-      intervalId = setInterval(() => {
-        setPosition((prevPosition) => {
-          if (!is_paused && prevPosition < duration) {
-            const newPosition = prevPosition + 1000; // Increment position by 1000 milliseconds (1 second)
-            return newPosition > duration ? duration : newPosition; // Ensure position doesn't exceed duration
-          }
-          return prevPosition;
-        });
-      }, 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [is_paused, duration]);
+  const handleInterval = () => {
+    intervalRef.current = window.setInterval(() => {
+      setPosition((prevPosition) => {
+        if (!is_paused && prevPosition < duration) {
+          const newPosition = prevPosition + 1000; // Increment position by 1000 milliseconds (1 second)
+          return newPosition > duration ? duration : newPosition; // Ensure position doesn't exceed duration
+        }
+        return prevPosition;
+      });
+    }, 1000);
+  };
 
   const progress = (position / duration) * 100;
 
@@ -102,11 +99,26 @@ function WebPlayback(props) {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-  
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
+
+    let formattedMinutes = String(minutes).padStart(1, '0');
+    let formattedSeconds = String(seconds).padStart(2, '0');
+
+    if( minutes > 10 ) {
+      formattedMinutes = String(minutes).padStart(2, '0');
+      let formattedSeconds = String(seconds).padStart(2, '0');
+
+    }
   
     return `${formattedMinutes}:${formattedSeconds}`;
+  };
+
+  const changeVolume = (newVolume) => {
+    if (player) {
+      player.setVolume(newVolume / 100).then(() => {
+        setVolume(newVolume);
+      });
+     }
+
   };
   
   return (
@@ -162,6 +174,16 @@ function WebPlayback(props) {
   <span>{formatTime(position)}</span>
   <span>{formatTime(duration)}</span>
 </div>
+<div className ="volume-control">
+<span className="volume-text">volume</span>
+      <input
+          type="range"
+          min="0"
+          max="100"
+          value={volume}
+          onChange={(e) => changeVolume(Number(e.target.value))}
+        />
+      </div>
             </div>
           </div>
       </div>
