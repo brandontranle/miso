@@ -174,7 +174,7 @@ const SoundsWidget = ({ handleMinimize, isMinimized }) => {
               value={campfireVolume}
               onChange={adjustVolume(setCampfireVolume)}
               style={{
-                background: `linear-gradient(to right, #333 ${
+                background: `linear-gradient(to right, #d4a484 ${
                   campfireVolume * 100
                 }%, #ccc ${campfireVolume * 100}%, #ccc 100%)`,
                 height: "0.3em",
@@ -273,7 +273,7 @@ const SoundsWidget = ({ handleMinimize, isMinimized }) => {
               value={rainVolume}
               onChange={adjustVolume(setRainVolume)}
               style={{
-                background: `linear-gradient(to right, #333 ${
+                background: `linear-gradient(to right, #d4a484 ${
                   rainVolume * 100
                 }%, #ccc ${rainVolume * 100}%, #ccc 100%)`,
                 height: "0.3em",
@@ -371,7 +371,7 @@ const SoundsWidget = ({ handleMinimize, isMinimized }) => {
               value={waterfallVolume}
               onChange={adjustVolume(setWaterfallVolume)}
               style={{
-                background: `linear-gradient(to right, #333 ${
+                background: `linear-gradient(to right, #d4a484 ${
                   waterfallVolume * 100
                 }%, #ccc ${waterfallVolume * 100}%, #ccc 100%)`,
                 height: "0.3em",
@@ -470,7 +470,7 @@ const SoundsWidget = ({ handleMinimize, isMinimized }) => {
               value={natureVolume}
               onChange={adjustVolume(setNatureVolume)}
               style={{
-                background: `linear-gradient(to right, #333 ${
+                background: `linear-gradient(to right, #d4a484 ${
                   natureVolume * 100
                 }%, #ccc ${natureVolume * 100}%, #ccc 100%)`,
                 height: "0.3em",

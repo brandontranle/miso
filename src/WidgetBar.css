@@ -28,10 +28,7 @@
 }
 */
 
-.menu-bar svg:hover {
-  color: #d3a380;
-  cursor: pointer;
-}
+
 
 /*
 .menu-bar::after {
@@ -51,6 +48,7 @@
   text-align: center;
 }
 
+
 .widget-title {
   font-family: Nunito-Bold !important;
 }
@@ -64,11 +62,55 @@
   margin-bottom: 0;
 }
 
+
 .widget-container:hover {
   cursor: pointer;
+  stroke: #D3A380;
   /*transform: translateY(-2px); */
   color: #d3a380;
 }
+
+.widget-container:hover path{
+  stroke: #D3A380;
+  color: #D3A380;
+  
+
+}
+
+.widget-container:hover .spotify-widget-svg-icon path {
+  fill: #D3A380;
+}
+/* TRYING TO FIX SVG ABOVE */
+
+.widget-container:hover .miso-widget-svg-icon path {
+  fill: #D3A380;
+  stroke: none;
+}
+
+.miso-widget-svg-icon:hover path{
+  fill: #D3A380;
+   
+}
+
+.hubs-widget-svg-icon {
+  stroke: #D3A380
+}
+.timer-widget-svg-icon {
+  fill: #D3a380;
+}
+
+.sounds-widget-svg-icon  {
+  fill: #D3a380;
+
+  
+}
+.spotify-widget-svg-icon:hover path {
+ 
+  stroke:#D3a380;
+  
+}
+
+
 
 .widget-window {
   position: absolute; /* or absolute, depending on your layout */
@@ -213,7 +255,7 @@
   top: 2%; /* Adjust as needed */
   left: 1%; /* Adjust as needed */
   flex-shrink: 0;
-
+  resize: both;
   border-radius: 13px;
 }
 
@@ -456,10 +498,10 @@ input[type="range"].custom-volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 15px;
   height: 15px;
-  background: #333;
+  background: #d4a484;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 5px 0px rgba(129, 57, 22, 0.75);
 }
 
 input[type="range"].custom-volume-slider {
