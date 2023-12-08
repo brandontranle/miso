@@ -174,7 +174,7 @@ export const TimerWidget = ({ handleMinimize, isMinimized }) => {
   };
 
   return (
-    <div className="timer-widget">
+    <div className="timer-widget widget-handle">
       <div className="widget-header">
         <p className="widget-title">Timer</p>
         <button className="minimize-symbol" onClick={() => handleMinimize()}>
