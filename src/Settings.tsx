@@ -66,7 +66,6 @@ export const Settings = () => {
         {message}
       </div>
       <label className="left-aligned-section-label">Account Info</label>
-
       {/* Current Password Field */}
       <div className="input-field">
         <input
@@ -79,7 +78,6 @@ export const Settings = () => {
         />
         <label className="form-label">Current Password</label>
       </div>
-
       {/* New Password Field */}
       <div className="input-field">
         <input
@@ -92,7 +90,6 @@ export const Settings = () => {
         />
         <label className="form-label">New Password</label>
       </div>
-
       {/* Submit Button */}
       <button className="submit-button" onClick={changePassword}>
         Change Password
@@ -103,10 +100,13 @@ export const Settings = () => {
         handleTimezoneChange={handleTimezoneChange}
         selectedTimezone={selectedTimezone}
       />
-      <label className="left-aligned-section-label">Apperance </label>
-      <div className="theme-toggle">
-        <button onClick={toggleTheme}>Toggle Light/Dark Mode</button>
-      </div>
+      <label className="left-aligned-section-label"> Credits </label>
+      <p className="left-aligned-paragraph">
+        Please give thanks to the amazing engineers that pioneered this
+        application into a reality! <br />
+        <br />
+        Brandon Le, Hannah Truong, Alicia Filomeno, Tingyu Gong, Ivan Lin
+      </p>
     </div>
   );
 };
