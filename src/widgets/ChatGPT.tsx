@@ -15,7 +15,7 @@ export const ChatGPT = ({ handleMinimize, isMinimized }) => {
 
     const [typing, setTyping] = useState(false);
     const [messages, setMessages] = useState([{
-        message: "Hello, I am CatGPT!",
+        message: "Hello, I am CatGPT. Meow!",
         sender: "ChatGPT"
       
         //position: 'single',

@@ -64,12 +64,6 @@ export const MessagesWidget = ({ handleMinimize, isMinimized }) => {
     );
     const finalGrade = totalGPA / totalCredits || 0;
 
-    const { grade1, grade2, grade3 } = grades;
-    const finalGrade =
-      (mapLetterToGPA(grade1) +
-        mapLetterToGPA(grade2) +
-        mapLetterToGPA(grade3)) /
-      3;
     setGradeResult(`Your average GPA is: ${finalGrade.toFixed(1)}`);
   };
 
