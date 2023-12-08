@@ -1,5 +1,22 @@
 @import "./fonts.css/";
 
+:root {
+  --background-color-light: #ffffff;
+  --text-color-light: #000000;
+  --background-color: var(--background-color-light);
+  --text-color: var(--text-color-light);
+}
+
+.dark-theme {
+  --background-color: var(--background-color-dark);
+  --text-color: var(--text-color-dark);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
 /* style.css */
 /* Add a custom CSS class for the Link component to remove text decoration */
 html,
@@ -159,7 +176,7 @@ body {
 }
 
 .profile-select {
-  color: #DEA57B;
+  color: #dea57b;
   text-decoration: none;
   font-family: Inter;
   font-size: 20px;
@@ -206,7 +223,7 @@ text-decoration: none;
 }
 
 .LOGIN-BUTTON .button {
-  color: #DEA57B;
+  color: #dea57b;
   align-items: center;
   border-radius: 40%/100%;
   display: flex;
@@ -239,7 +256,7 @@ text-decoration: none;
   height: 10%;
   justify-content: center;
   width: 100%;
-  color: #DEA57B;
+  color: #dea57b;
   outline: none;
   text-decoration: none;
 }
@@ -467,7 +484,7 @@ text-decoration: none;
   justify-content: space-between; /* This will push buttons to the edge */
   flex-grow: 1;
 
-   /* Add a bottom border to separate items */
+  /* Add a bottom border to separate items */
 }
 
 .item-wrapper:hover {
@@ -497,7 +514,7 @@ text-decoration: none;
 
 .text-content {
   white-space: normal; /* Allow text to break lines */
-  font-size: 0.90rem;
+  font-size: 0.9rem;
   text-overflow: clip;
   word-break: break-word;
   max-width: calc(
@@ -535,12 +552,12 @@ text-decoration: none;
 input[type="text"] {
   background: transparent;
   border: none;
-  border-bottom: 2px solid #4E4E4E;
+  border-bottom: 2px solid #4e4e4e;
   width: 50%;
   text-decoration: none;
   outline: none;
   font-family: "Nunito-Regular";
-  color: #4E4E4E;
+  color: #4e4e4e;
 }
 
 input[type="checkbox"] {
@@ -561,9 +578,9 @@ input[type="checkbox"] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); /* Center the div */
-  width: 30%;
-  height: 85%;
-  border-radius: 5%;
+  width: 550px;
+  height: 700px;
+  border-radius: 6.5%;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -708,7 +725,7 @@ input[type="checkbox"] {
   top: 5%;
   left: 10%;
   cursor: pointer;
-  font-family: 'Nunito-Bold';
+  font-family: "Nunito-Bold";
   font-size: 12px;
 }
 
@@ -902,7 +919,7 @@ input[type="checkbox"] {
 }
 
 .extended-button:hover {
-  background-color: #D3A380;
+  background-color: #d3a380;
 }
 
 .row {
@@ -1101,4 +1118,3 @@ input::placeholder {
   color: #53443a;
   font-size: 1rem;
 }
-

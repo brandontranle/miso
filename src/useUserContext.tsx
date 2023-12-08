@@ -46,6 +46,18 @@ export const UserContextProvider: React.FC<UserContextProviderProps> = ({
   const [loggedIn, setLoggedIn] = useState(false); // Add loggedIn state
   const [isAuthenticated, setIsAuthenticated] = useState(loggedIn);
 
+  const token = sessionStorage.getItem("token");
+
+  useEffect(() => {
+    if (token) {
+      setLoggedIn(true);
+      setIsAuthenticated(true);
+    } else {
+      setUser(null);
+      setIsAuthenticated(false);
+    }
+  }, [token]);
+
   // Update isAuthenticated when loggedIn changes
   useEffect(() => {
     setIsAuthenticated(loggedIn);

@@ -18,7 +18,7 @@
 
 .menu-bar svg {
   transition: transform 0.5s ease, cursor 0.3s ease; /* Adjust the duration and timing function as needed */
-  color: #4E4E4E;
+  color: #4e4e4e;
 }
 
 /*
@@ -28,10 +28,7 @@
 }
 */
 
-/* .menu-bar svg:hover {
-  color: #D3A380;
-  cursor: pointer;
-} */
+
 
 /*
 .menu-bar::after {
@@ -66,13 +63,11 @@
 }
 
 
-/* TRYING TO FIX SVG BELOW */
 .widget-container:hover {
   cursor: pointer;
   stroke: #D3A380;
   /*transform: translateY(-2px); */
-  color: #D3A380;
-
+  color: #d3a380;
 }
 
 .widget-container:hover path{
@@ -141,7 +136,7 @@
 .widget-drag-handle {
   width: 100%;
   height: 100%;
-  
+
   cursor: grab; /* Indicates this area is draggable */
 }
 
@@ -168,7 +163,7 @@
 
 .widget-title {
   color: #4e4e4e;
-  font-family: 'Nunito';
+  font-family: "Nunito";
   font-size: 17px;
   font-weight: 800;
   line-height: normal;
@@ -193,7 +188,7 @@
 .widget-line {
   width: 100%;
   height: 2px;
-  background: #DFDFDF;
+  background: #dfdfdf;
 }
 
 .widget-content {
