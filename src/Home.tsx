@@ -12,10 +12,12 @@ import TasksWidget from "./widgets/TasksWidget";
 import SoundsWidget from "./widgets/SoundsWidget";
 import SpotifyWidget from "./widgets/SpotifyWidget";
 import MessagesWidget from "./widgets/MessagesWidget";
+import ChatGPT from "./widgets/ChatGPT";
 import NotesWidget from "./widgets/NotesWidget";
 import backgroundImage from "./assets/background.png";
 import backgroundGif from "./assets/ghibli.gif";
 import backgroundGif2 from "./assets/ghibli2.gif";
+import background from "./assets/backgroundd5.gif";
 import Clock from "./home-features/clock";
 import Date from "./home-features/date";
 import Weather from "./home-features/weather";
@@ -44,7 +46,7 @@ export const Home: React.FC = () => {
   const { user, isAuthenticated } = useUserContext(); // Get the user context
 
   const [timezone, setTimezone] = useState("America/Los_Angeles");
-  const [backgroundImage, setBackgroundImage] = useState(backgroundGif);
+  const [backgroundImage, setBackgroundImage] = useState(background);
   const [misoBackgroundImage, setMisoBackgroundImage] =
     useState(pixelBackground);
 
@@ -63,6 +65,29 @@ export const Home: React.FC = () => {
     setMisoTexture(newTextures);
   };
 
+  const fetchBackground = async () => {
+    if (isAuthenticated) {
+      try {
+        const userId = sessionStorage.getItem("userId");
+        const response = await axios.post(
+          "http://localhost:5000/getWallpaper",
+          {
+            userId,
+          }
+        );
+
+        if (!response.data.wallpaper) {
+          setBackgroundImage(background);
+        } else {
+          handleBackgroundChange(response.data.wallpaper);
+        }
+        console.log("wallpaper fetched and changed!");
+      } catch (error) {
+        console.log("error fetching wallpaper");
+      }
+    }
+  };
+
   const handleBackgroundChange = (newBackgroundImage) => {
     setBackgroundImage(newBackgroundImage);
     console.log("image changed!");
@@ -79,6 +104,10 @@ export const Home: React.FC = () => {
   useEffect(() => {
     getTimeZone();
   }, [timezone, showSidebar]);
+
+  useEffect(() => {
+    fetchBackground();
+  }, []);
 
   const handleTimezoneChange = async () => {
     const newTimezone = getTimeZone();
@@ -262,13 +291,36 @@ export const Home: React.FC = () => {
           />
         );
         break;
+      case 9:
+        widgetClass = "catGPT-widget";
+        WidgetComponent = (
+          <ChatGPT
+            isMinimized={isMinimized}
+            handleMinimize={() => handleWidgetClick(widgetId)}
+            />
+        );
+        break;
       // Add cases for other widgets as needed ~ these are realistically the ones we are doing for the project, but we will delete if necessary!
       default:
         break;
     }
 
     return (
-      <Draggable handle=".widget-drag-handle">
+      <Draggable
+        handle=".widget-drag-handle"
+        onStart={(e, data) => {
+          const target = e.target as HTMLElement;
+
+          // Check if the target of the click is not a slider
+          if (
+            target.className.includes("custom-volume-slider") ||
+            target.className.includes("notebook") ||
+            target.className.includes("item-wrapper")
+          ) {
+            return false; // returning false will cancel the drag
+          }
+        }}
+      >
         <div
           key={widgetId}
           className={`widget-window ${widgetClass} ${

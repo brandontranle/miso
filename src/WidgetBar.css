@@ -235,19 +235,16 @@
   border-radius: 13px;
   min-width: 349px;
   min-height: 211px;
-  max-width: 661px;
-  max-height: 433px;
-
+  max-width: 638px;
+  max-height: 375px;
 }
 
-.miso{
+.miso {
   z-index: 1000;
 }
 .widget-window.miso-widget.minimized {
   display: none;
 }
-
-
 
 /***** HUBS WIDGET ******/
 .hubs-widget {
@@ -350,17 +347,31 @@
   height: 100%;
   width: 100%;
 }
+/*
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  font-weight: bold;
+}*/
 
 .widget-window.catGPT-widget {
-  width: 509px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   position: absolute;
   /* Position it at the bottom right of the MainContainer */
   flex-shrink: 0;
   top: 1%; /* Adjust as needed */
   left: 69%; /* Adjust as needed */
-
   border-radius: 13px;
+}
+
+#result {
+  margin-top: 15px;
+  font-weight: bold;
 }
 
 /****** notes widget ******/
@@ -446,11 +457,26 @@ select {
 
 .widget-window.sounds-widget {
   width: 200px;
-  height: 146px;
+  height: 200px;
   position: absolute;
   left: 40%; /* Start at the half-way point of the MainContainer */
-  top: 50%;
+  top: 40%;
   border-radius: 13px;
+  max-width: 355px;
+  max-height: 300px;
+  resize: both;
+  min-width: 355px;
+  min-height: 170px;
+}
+
+.sounds-widget .widget-content {
+  overflow: scroll;
+}
+
+.sounds-name {
+  text-align: left;
+  width: 100%;
+  color: #4e4e4e;
 }
 
 .sounds-widget .widget-content {
@@ -466,10 +492,40 @@ select {
   justify-content: left;
 }
 
-.volume-slider {
-  z-index: 100;
+.sounds-widget .volume-slider {
+  z-index: 1000;
   cursor: pointer;
   justify-content: left;
+  width: 100%;
+}
+
+input[type="range"].custom-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #333;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+input[type="range"].custom-volume-slider {
+  width: 80%;
+  height: 10px;
+  -webkit-appearance: none;
+  border-radius: 5px;
+  z-index: 1000;
+  outline: none;
+}
+
+.sounds-icon {
+  margin-right: 10px;
+  height: 20px;
+  width: 20px;
+}
+
+.sounds-widget path {
+  stroke: #4e4e4e;
 }
 
 /***** timer widget *****/
@@ -540,7 +596,7 @@ select {
   border: transparent;
 }
 
-.reset-button{
+.reset-button {
   color: transparent;
   background-color: transparent;
 }
@@ -565,6 +621,8 @@ select {
   font-size: 14px;
   color: #333;
   z-index: 1000; /* Ensure it's above other content */
+}
 
-  
+.react-draggable-dragging {
+  z-index: 10000;
 }

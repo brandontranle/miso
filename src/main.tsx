@@ -1,14 +1,14 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.css";
 import { UserContextProvider } from "./useUserContext"; // Import the UserContextProvider
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.render(
   <React.StrictMode>
-    <UserContextProvider>
-      {/* Wrap your App with the context provider */}
-      <App />
-    </UserContextProvider>
-  </React.StrictMode>
-);
+  <UserContextProvider>
+    <App />
+  </UserContextProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+  );

@@ -2,6 +2,7 @@ export {};
 const express = require('express');
 const dotenv = require('dotenv');
 const moment = require('moment-timezone');
+
 const request = require('request');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
@@ -14,6 +15,7 @@ const cron = require('node-cron');
 
 const jwt = require('jsonwebtoken');
 const session = require('express-session');
+
 
 cron.schedule('* * * * *', async () => {
   try {
@@ -42,112 +44,34 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const app = express();
 const port = process.env.PORT || 5000;
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
+
+
+
+
+
+
 
 //spotify authentication
 global.access_token = ''
+global.refresh_token = ''
 dotenv.config()
 
 var spotify_redirect_uri = 'http://localhost:5000/auth/callback'
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
+var spotify_refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
 
-
-//generates a random string for security 
-var randomString = function (length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for(var i = 0; i < length; i++){
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
-// token authorization (spotify)
-app.get('/auth/login', (req, res) => {
-
-  var scope = "streaming user-read-email user-read-private"
-  var state = randomString(16);
-
-  var auth_query_parameters = new URLSearchParams({
-    response_type: "code",
-    client_id: spotify_client_id || '',
-    scope: scope,
-    redirect_uri: spotify_redirect_uri || '',
-    state: state
-  })
-
-
-  res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
-})
-
-//app.get('/auth/callback', (req, res) => {
-
-/*
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
-})*/
-
-//generates a random string for security 
-var randomString = function (length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for(var i = 0; i < length; i++){
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
-// token authorization (spotify)
-app.get('/auth/login', (req, res) => {
-
-  var scope = "streaming user-read-email user-read-private"
-  var state = randomString(16);
-
-  var auth_query_parameters = new URLSearchParams({
-    response_type: "code",
-    client_id: spotify_client_id || '',
-    scope: scope,
-    redirect_uri: spotify_redirect_uri || '',
-    state: state
-  })
-
-  res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
-})
-
-app.get('/auth/callback', (req, res) => {
-
-  var code = req.query.code;
-
-  var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    form: {
-      code: code,
-      redirect_uri: spotify_redirect_uri,
-      grant_type: 'authorization_code'
-    },
-    headers: {
-      'Authorization': 'Basic ' + (Buffer.from(spotify_client_id + ':' + spotify_client_secret).toString('base64')),
-      'Content-Type' : 'application/x-www-form-urlencoded'
-    },
-    json: true
-  };
-
-  request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      global.access_token = body.access_token;
-      res.redirect('http://localhost:5173')
-    }
-  });
-
-})
-
-app.get('/auth/token', (req, res) => {
-  res.json(
-    { access_token: global.access_token
-    })
-})
+app.use(bodyParser.json());
+const corsOptions = {
+  origin: 'http://localhost:5173', // Replace with your React app's URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
 
 
 module.exports = function (app) {
@@ -160,24 +84,21 @@ module.exports = function (app) {
   }));
 };
 
-/*
-app.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      global.access_token = body.access_token;
-      res.redirect('/')
-    }
-  });
 
-})*/
+//generates a random string for security 
+var randomString = function (length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-app.get('/auth/token', (req, res) => {
-  res.json({ access_token: global.access_token})
-})
+  for(var i = 0; i < length; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
 
-/*
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
-})*/
+
+// token authorization (spotify)
+
 
 //email transporter
 
@@ -206,13 +127,6 @@ console.log("error occured at 193");
 });
 
 
-app.use(bodyParser.json());
-const corsOptions = {
-  origin: 'http://localhost:5173', // Replace with your React app's URL
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
 
 /* Authentication token to check if a user is logged in at a given moment */
 app.use(
@@ -264,7 +178,11 @@ const UserData = mongoose.model('UserData', {
     saturday: Number,
   },
   timezone: String,
-  notebooks: [{text: String, notebookId: String, title: String}]
+  notebooks: [{text: String, notebookId: String, title: String}],
+  bio: String,
+  image: String,
+  wallpaper: String,
+  createdAt: Date,
 })
 
 
@@ -280,15 +198,14 @@ const UserOTPVerification = mongoose.model('UserOTPVerification', {
 app.post('/signup', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
-  /* Email Validation */
+  /*
   let re =
   /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
-/*Validate email and password here*/
   const isEmailValid = re.test(email);
 
   if (!isEmailValid) {
     return res.status(400).json({ error: 'Invalid email format' });
-  }
+  }*/
 
 
   // Check if email already exists
@@ -302,7 +219,8 @@ app.post('/signup', async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const newUser = new User({firstName, lastName, email, password: hashedPassword, verified: false// Add this field
+    const newUser = new User({firstName, lastName, email, password: hashedPassword, verified: false, createdAt: new Date() // This will store the current date and time
+    // Add this field
   });
     const savedUser = await newUser.save();
     //Handle account verification
@@ -324,10 +242,13 @@ app.post('/signup', async (req, res) => {
       wednesday: 0,
       thursday: 0,
       friday: 0,
-      saturday: 0
+      saturday: 0,
     },
+    timezone: "America/Los_Angeles",
+    bio: "I am a new user!",
+    createdAt: Date.now(),
     // Add other user-specific data if needed
-  });
+  }, { timestamps: true });
 
   await userData.save();
 
@@ -385,6 +306,7 @@ const sendVerificationEmail = async ({_id, email}, res) => {
   try{
     //generate an OTP (One-time-password verification code)
     const otp = Math.floor(1000 + Math.random() * 9000);
+    console.log("(for testers and developers) this is your verification code: " + otp);
  
     const mailOptions = {
       from: process.env.AUTH_EMAIL,
@@ -446,6 +368,31 @@ app.post('/sendOTP', async(req, res) => {
 
 });
 
+
+app.post('/getDate', async(req, res) => { 
+
+  try {
+    const {userId} = req.body;
+    const user = await UserData.findById(userId);
+
+    if (!user) {
+      res.status(404).json("user not found");
+    }
+
+    if (!user.createdAt){
+      console.log("not found???");
+      user.createdAt = new Date();
+      await user.save();
+    }
+
+    console.log("date of member retrieved!")
+    res.status(200).json({createdAt: user.createdAt});
+  } catch (error) { 
+    console.log("failed to retrieve the date: " + error);
+    res.status(500).json("failed to retrieve the date");
+  }
+
+});
 
 
 app.post('/verifyOTP', async(req, res) => {
@@ -1102,6 +1049,121 @@ app.post('/deleteTodoInHistory', async (req, res) => {
   });
 
 
+  app.post('/getBio', async (req, res) => {
+
+    try {
+      const {userId} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        res.status(404).json("user not founnd");
+      }
+
+      if (!user.bio) {
+        await user.updateOne({bio: "I am a new miso user!"}, {new:  true});
+        await user.save();
+      }
+
+      const bio = user.bio;
+      res.status(200).json({bio: bio});
+    } catch (error) {
+      res.status(500).json("error retrieving bio");
+    }
+  });
+
+
+  app.post('/editBio', async (req, res) => {
+    try {
+      const { userId, bio } = req.body;
+      console.log(bio);
+      const user = await UserData.findOne({ userId });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      // Update the bio field and save the user
+      user.bio = bio;
+      await user.save();
+  
+      console.log('Bio edited successfully!');
+      res.status(200).json({ bio: bio });
+    } catch (error) {
+      console.error('Error editing bio:', error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post('/updateProfilePicture', async (req, res) => {
+    // The image is expected to be a Base64 encoded string
+  
+    // Save the image to the database
+    try {
+      const { userId, image } = req.body;
+      const user = await UserData.findOne({ userId });
+      const result = await user.updateOne({image: image}, {new: true}); // Implement this function
+      res.status(200).json("pfp changed!");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ success: false, message: 'Failed to save image.' });
+    }
+  });
+
+  app.post('/updateBackgroundImage', async (req, res) => {
+    
+    try {
+      const {userId, image} = req.body;
+      const user = await UserData.findOne({userId});
+      await user.updateOne({wallpaper: image}, {new: true}); 
+      res.status(200).json("wallpaper changed!");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ success: false, message: 'Failed to save wallpaper.'});
+    }
+  });
+
+  app.post('/getWallpaper', async (req, res) => {
+  
+    try {
+      const {userId} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        res.status(404).json("user not found");
+      }
+
+      //console.log("picture from backend: " + user.image);
+
+      //console.log('setting profile picture from backend!');
+      res.status(200).json({wallpaper: user.wallpaper.toString()});
+    } catch (error) {
+      res.status(500).json("profile picture failed");
+    }
+
+
+  });
+  
+  app.post('/getProfilePicture', async (req, res) => {
+  
+    try {
+      const {userId} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        res.status(404).json("user not found");
+      }
+
+      //console.log("picture from backend: " + user.image);
+
+      //console.log('setting profile picture from backend!');
+      res.status(200).json({image: user.image.toString()});
+    } catch (error) {
+      res.status(500).json("profile picture failed");
+    }
+
+
+  });
+
   app.post('/changeTimezone', async (req, res) => {
     try {
       const {userId, timezone} = req.body;
@@ -1120,10 +1182,6 @@ app.post('/deleteTodoInHistory', async (req, res) => {
         console.log("error changing timezone");
         res.status(500).json({ error: "An error occurred while changing the timezone" });
     }
-
-
-
-
   });
 
   app.post('/createNotebook', async (req, res) => {
@@ -1329,3 +1387,98 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
   });
 
+
+  /*** SPOTIFY BACKEND *****/
+  app.get('/auth/login', (req, res) => {
+
+    var scope = 'user-read-private user-read-email playlist-read-private user-modify-playback-state user-library-read app-remote-control streaming user-read-playback-position';  // Add other necessary scopes
+    var state = randomString(16);
+  
+    var auth_query_parameters = new URLSearchParams({
+      response_type: "code",
+      client_id: spotify_client_id || '',
+      scope: scope,
+      redirect_uri: spotify_redirect_uri || '',
+      state: state
+    })
+  
+    res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
+  })
+  
+  app.get('/auth/callback', (req, res) => {
+  
+    var code = req.query.code;
+  
+    var authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      form: {
+        code: code,
+        redirect_uri: spotify_redirect_uri,
+        grant_type: 'authorization_code'
+      },
+      headers: {
+        'Authorization': 'Basic ' + (Buffer.from(spotify_client_id + ':' + spotify_client_secret).toString('base64')),
+        'Content-Type' : 'application/x-www-form-urlencoded'
+      },
+      json: true
+    };
+  
+    request.post(authOptions, function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+        global.access_token = body.access_token;
+        global.refreshToken = body.refresh_token; // Store refresh token
+
+        console.log(global.access_token)
+        res.redirect('http://localhost:5173')
+      }
+    });
+  })
+  
+  app.get('/auth/token', (req, res) => {
+    res.json(
+      { access_token: global.access_token
+      })
+  })
+  
+  app.post('/getToken', cors(corsOptions),(req, res) => {
+  
+    try {
+      console.log("getting token: " + global.access_token);
+      
+      res.status(200).json({ access_token: global.access_token})
+    } catch (error) {
+      res.status(500).json("cannot be retrieved");
+    }
+  
+  });
+  
+  
+  
+  app.get('/auth/token', (req, res) => {
+    res.json({ access_token: global.access_token})
+  })  
+
+  app.post('/refreshToken', (req, res) => {
+    var refreshOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      form: {
+        refresh_token: global.refreshToken,
+        grant_type: 'refresh_token'
+      },
+      headers: {
+        'Authorization': 'Basic ' + (Buffer.from(spotify_client_id + ':' + spotify_client_secret).toString('base64')),
+        'Content-Type' : 'application/x-www-form-urlencoded'
+      },
+      json: true
+    };
+  
+    request.post(refreshOptions, function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+        global.accessToken = body.access_token; // Update access token
+        res.json({ access_token: global.accessToken });
+      } else {
+        // Error handling
+        res.status(response.statusCode).json({ error: "Failed to refresh token", details: body });
+      }
+    });
+  });
