@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './Calculator.css'
 
 function mapLetterToGPA(letterGrade) {
   const gradeMap = {
@@ -90,24 +91,28 @@ export const MessagesWidget = ({ handleMinimize, isMinimized }) => {
       </div>
       <div className="widget-line"></div>
       <div className="widget-content">
-        <h1>Grade Calculator</h1>
-        {grades.map((grade, index) => (
-          <div key={index}>
-            <label>{`Class ${index + 1}: `}</label>
-            <select value={grade} onChange={(e) => handleGradeChange(e, index)}>
-              <option value="">Select Grade</option>
-              {classList.map((className) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ))}
-            </select>
-            <button onClick={() => removeGrade(index)}>Remove</button>
+        <div className="calculator-container">
+          <h1>Grade Calculator</h1>
+          {grades.map((grade, index) => (
+            <div key={index} className="calc-border">
+              <label>{`Class ${index + 1}: `}</label>
+              <select value={grade} onChange={(e) => handleGradeChange(e, index)}>
+                <option value="">Select Grade</option>
+                {classList.map((className) => (
+                  <option key={className} value={className}>
+                    {className}
+                  </option>
+                ))}
+              </select>
+              <button onClick={() => removeGrade(index)} className="calc-button">Remove</button>
+            </div>
+          ))}
+          <div className="calc-submit">
+              <button onClick={addGrade} className="calc-add">Add Class</button>
+              <button onClick={calculateGrade} className="calc-calculate">Calculate</button>
+              <p>{gradeResult}</p>
           </div>
-        ))}
-        <button onClick={addGrade}>Add Class</button>
-        <button onClick={calculateGrade}>Calculate</button>
-        <p>{gradeResult}</p>
+        </div>
       </div>
     </div>
   );
