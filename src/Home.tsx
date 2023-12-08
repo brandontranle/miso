@@ -36,8 +36,11 @@ import brownCatSitGif from "./miso/brown_cat/cat01_sit_8fps.gif";
 import brownCatAttackGif from "./miso/brown_cat/cat01_attack_12fps.gif";
 
 import pixelBackground from "./miso/backgrounds/pixelbackground1.jpg";
+import { useTheme } from "./ThemeContext";
 
 export const Home: React.FC = () => {
+  const { theme } = useTheme();
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeWidgets, setActiveWidgets] = useState<number[]>([]); // This now tracks multiple widgets
   const [minimizedWidgets, setMinimizedWidgets] = useState<
@@ -47,8 +50,9 @@ export const Home: React.FC = () => {
 
   const [timezone, setTimezone] = useState("America/Los_Angeles");
   const [backgroundImage, setBackgroundImage] = useState(background);
-  const [misoBackgroundImage, setMisoBackgroundImage] =
-    useState(pixelBackground);
+  const [misoBackgroundImage, setMisoBackgroundImage] = useState(
+    pixelBackground
+  );
 
   const [misoTexture, setMisoTexture] = useState({
     walk: brownCatWalkGif,
@@ -297,7 +301,7 @@ export const Home: React.FC = () => {
           <ChatGPT
             isMinimized={isMinimized}
             handleMinimize={() => handleWidgetClick(widgetId)}
-            />
+          />
         );
         break;
       // Add cases for other widgets as needed ~ these are realistically the ones we are doing for the project, but we will delete if necessary!
@@ -337,7 +341,7 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="page" style={backgroundImageStyle}>
+    <div className="page" style={backgroundImageStyle} data-theme={theme}>
       <div className="TopBarContainer">
         <div className="Nav-Bar">
           <Navbar

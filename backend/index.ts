@@ -24,9 +24,9 @@ cron.schedule('* * * * *', async () => {
     // Find and delete OTP verification records that have expired
     await UserOTPVerification.deleteMany({ expiresAt: { $lt: currentTime } });
 
-    console.log('Expired OTP verification records deleted.');
+    //console.log('Expired OTP verification records deleted.');
   } catch (error) {
-    console.error('Error deleting expired OTP verification records:', error);
+    //console.error('Error deleting expired OTP verification records:', error);
   }
 });
 
@@ -343,6 +343,23 @@ const sendVerificationEmail = async ({_id, email}, res) => {
 
 }
 
+app.post('/logout', (req, res) => {
+  if (req.session) {
+    console.log('logging out...');
+    // Destroy the server-side session
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Could not log out, please try again');
+      } else {
+        res.status(200).send('Logout successful');
+      }
+    });
+  } else {
+    res.status(200).send('Logout successful');
+  }
+});
+
+
 app.post('/sendOTP', async(req, res) => {
 
   try{
@@ -512,8 +529,7 @@ app.post('/login', async (req, res) => {
 
   /*if the user successfully logins, generate a token and store it in the session*/
   const token = jwt.sign({ userId: existingUser._id }, jwtSecret, { expiresIn: '1h' });
- 
-
+  
   req.session.token = token;
   
   req.session.userId = existingUser._id.toString(); // Set userId in the session 
@@ -525,7 +541,7 @@ app.post('/login', async (req, res) => {
 
   console.log('Your id is:', existingUser._id.toString());
 
-  res.status(200).json({ message: 'Login successful', name: firstName, userId: existingUser._id.toString() });
+  res.status(200).json({ message: 'Login successful', name: firstName, userId: existingUser._id.toString(), token: token });
 
 })
 
@@ -549,6 +565,69 @@ app.get('/verifyStatus', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while checking verification status' });
   }
 });
+
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+
+  if (token == null) {
+      return res.status(401).send('No token provided');
+  }
+
+  jwt.verify(token, jwtSecret, (err, user) => {
+      if (err) {
+          return res.status(403).send('Invalid token');
+      }
+      req.user = user;
+      next();
+  });
+};
+
+
+app.post('/changePassword', async (req, res) => {
+
+  try {
+    const {userId, currentPassword, newPassword} = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      res.status(404).json("user not found");
+    }
+
+    //compare the current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Incorrect current password" });
+    }
+
+    //hash and store the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+
+    console.log("Password updated for user ID: " + userId);
+    res.status(200).json({message: "Password updated!"});
+  } catch (error) {
+    res.status(500).json("failed to change password")
+  }
+
+
+});
+
+//this is intended to change the email of a user who has already been registered to the database
+app.post('/changeEmailRegistered', async (req, res) => {
+  try {
+
+
+  } catch (error) {
+
+
+  }
+});
+
+
+
+
 
 app.post('/changeEmail', async (req, res) => {
   
