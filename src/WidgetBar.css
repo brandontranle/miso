@@ -191,19 +191,16 @@
   border-radius: 13px;
   min-width: 349px;
   min-height: 211px;
-  max-width: 661px;
-  max-height: 433px;
-
+  max-width: 638px;
+  max-height: 375px;
 }
 
-.miso{
+.miso {
   z-index: 1000;
 }
 .widget-window.miso-widget.minimized {
   display: none;
 }
-
-
 
 /***** HUBS WIDGET ******/
 .hubs-widget {
@@ -306,6 +303,7 @@
   height: 100%;
   width: 100%;
 }
+/*
 form {
   display: flex;
   flex-direction: column;
@@ -314,7 +312,7 @@ form {
 label {
   margin-bottom: 8px;
   font-weight: bold;
-}
+}*/
 
 .widget-window.catGPT-widget {
   width: 400px;
@@ -326,33 +324,12 @@ label {
   left: 69%; /* Adjust as needed */
   border-radius: 13px;
 }
-select,
-button {
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-button {
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #0056b3;
-}
 
 #result {
   margin-top: 15px;
   font-weight: bold;
 }
-select {
-  width: 100%; /* Set the width to 100% */
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
+
 /****** notes widget ******/
 .notes-widget {
   height: 100%;
@@ -434,8 +411,6 @@ select {
   width: 100%;
 }
 
-
-
 .widget-window.sounds-widget {
   width: 200px;
   height: 200px;
@@ -443,6 +418,21 @@ select {
   left: 40%; /* Start at the half-way point of the MainContainer */
   top: 40%;
   border-radius: 13px;
+  max-width: 355px;
+  max-height: 300px;
+  resize: both;
+  min-width: 355px;
+  min-height: 170px;
+}
+
+.sounds-widget .widget-content {
+  overflow: scroll;
+}
+
+.sounds-name {
+  text-align: left;
+  width: 100%;
+  color: #4e4e4e;
 }
 
 .sounds-widget .widget-content {
@@ -458,16 +448,17 @@ select {
   justify-content: left;
 }
 
-.volume-slider {
-  z-index: 100;
+.sounds-widget .volume-slider {
+  z-index: 1000;
   cursor: pointer;
   justify-content: left;
+  width: 100%;
 }
 
 input[type="range"].custom-volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   background: #333;
   border-radius: 50%;
   cursor: pointer;
@@ -475,11 +466,22 @@ input[type="range"].custom-volume-slider::-webkit-slider-thumb {
 }
 
 input[type="range"].custom-volume-slider {
-  width: 100%;
+  width: 80%;
   height: 10px;
   -webkit-appearance: none;
   border-radius: 5px;
-  outline:none;
+  z-index: 1000;
+  outline: none;
+}
+
+.sounds-icon {
+  margin-right: 10px;
+  height: 20px;
+  width: 20px;
+}
+
+.sounds-widget path {
+  stroke: #4e4e4e;
 }
 
 /***** timer widget *****/
@@ -550,7 +552,7 @@ input[type="range"].custom-volume-slider {
   border: transparent;
 }
 
-.reset-button{
+.reset-button {
   color: transparent;
   background-color: transparent;
 }
@@ -575,6 +577,8 @@ input[type="range"].custom-volume-slider {
   font-size: 14px;
   color: #333;
   z-index: 1000; /* Ensure it's above other content */
+}
 
-  
+.react-draggable-dragging {
+  z-index: 10000;
 }
