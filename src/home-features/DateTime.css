@@ -37,9 +37,10 @@
   text-align: center;
   color: white;
   position: absolute;
-  margin-top: 60px;
+  margin-top: 45px;
   font-weight: bold;
   width: 100%;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /*dropdown menu for time zones*/
