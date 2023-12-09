@@ -1,9 +1,9 @@
 export const TimerIcon = () => {
   return (
-    <svg
+    <svg className = "timer-wdiget-svg-icon"
       xmlns="http://www.w3.org/2000/svg"
       width="24"
-      height="26"
+      height="25"
       viewBox="0 0 24 26"
       fill="none"
     >

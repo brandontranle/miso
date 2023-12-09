@@ -52,10 +52,3 @@ Here are three other distinct features for you to see.
 * **Statistics Chart**: While you're studying using our fantastic Pomodoro timer, your time gets logged into our MongoDB database, where we process your data into a bar graph using ChartJS.
 * **Weather/Date/Time**: After you wake up and open Miso, you're incentivized to see what time it is and what the weather is like today! In addition to this, You can specify your timezone within the Settings after you are authenticated; otherwise, you can always hide this feature in the Settings as well. Please note you need to allow access to your location within the browser tab. This was all implemented using the OpenWeather Map WeatherData API and built-in React libraries. 
   
-
-
-
-
-
-
-

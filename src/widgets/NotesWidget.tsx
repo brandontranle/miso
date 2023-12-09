@@ -384,7 +384,7 @@ export const NotesWidget = ({ handleMinimize, isMinimized }) => {
 
   return (
     <div className="notes-widget">
-      <div className="widget-header">
+      <div className="widget-header widget-handle">
         <p className="widget-title"> Notes </p>
 
         {isAuthenticated && (

@@ -45,11 +45,20 @@
 }
 
 .widget-window.hubs-widget {
-  resize: none;
+  resize: both;
+  max-height: 322px;
+  max-width: 650px;
+  min-width: 509px;
+  min-height: 220px;
 }
 
 .bottom-button {
   margin-top: 20px;
+  border-radius: 5px;
+  border-color: transparent;
+  border-bottom: transparent;
+  border-right: transparent;
+  background-color: #d3a380;
 }
 
 .image-button {
@@ -71,4 +80,9 @@
   width: 2px;
   margin-bottom: 20px;
   background: #e9e9e9;
+}
+
+.upload-button {
+  background-color: #d3a380;
+  color: white;
 }

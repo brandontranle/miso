@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import "./home-features.css";
 import motivationalQuotes from "./motivational-quotes";
+import { useVisibility } from "../VisibilityContext";
 
 const Quote = () => {
+  const { showQuote } = useVisibility();
+
   const [quote, setQuote] = useState("");
 
   useEffect(() => {
@@ -18,7 +21,10 @@ const Quote = () => {
     // Get the day of the year function
     const getDayOfYear = (date) => {
       const start = new Date(date.getFullYear(), 0, 0);
-      const diff = (date - start.getDate()) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+      const diff =
+        date -
+        start.getTime() +
+        (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
       const oneDay = 1000 * 60 * 60 * 24;
       const day = Math.floor(diff / oneDay);
       return day;
@@ -29,10 +35,8 @@ const Quote = () => {
   }, []);
 
   return (
-    <div className="quote">
-      <div className="quote-content">
-        {quote}
-      </div>
+    <div className={`quote ${showQuote ? "" : "minimized"}`}>
+      <div className="quote-content">{quote}</div>
     </div>
   );
 };

@@ -16,9 +16,44 @@ export const initiateSpotifyAuthFlow = () => {
   window.location.href = authUrl;
 };
 
+/*
+
+export const getRefreshToken = async (authorizationCode) => {
+  const clientId = "40c81832f8b34ebd8a20d172147b3dbe";
+  const clientSecret = "5de38867917c438e968af24c635b7bfc";
+  const redirectUri = "http://localhost:5000/auth/callback"; // Must match the redirect URI used in the initial authorization
+
+  const tokenUrl = "https://accounts.spotify.com/api/token";
+  const bodyParams = new URLSearchParams({
+    grant_type: "authorization_code",
+    code: authorizationCode,
+    redirect_uri: redirectUri,
+  });
+
+  const base64Credentials = btoa(`${clientId}:${clientSecret}`);
+
+  try {
+    const response = await axios.post(tokenUrl, bodyParams, {
+      headers: {
+        Authorization: `Basic ${base64Credentials}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    const { access_token, refresh_token } = response.data;
+    console.log("Access token:", access_token);
+    console.log("Refresh token:", refresh_token);
+
+  } catch (error) {
+    console.error("Error getting refresh token:", error);
+  }
+}; */
+
 export const SpotifyWidget = ({ handleMinimize }) => {
-  const [spotifyApi, setSpotifyApi] =
-    useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
+  const [
+    spotifyApi,
+    setSpotifyApi,
+  ] = useState<SpotifyWebApi.SpotifyWebApiJs | null>(null);
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -94,8 +129,8 @@ export const SpotifyWidget = ({ handleMinimize }) => {
   return (
     <>
       <div className="spotify-widget">
-        <div className="widget-header">
-          <p className="widget-title">spotify</p>
+        <div className="widget-header widget-handle">
+          <p className="widget-title">Spotify</p>
           <button className="minimize-symbol" onClick={() => handleMinimize()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +151,6 @@ export const SpotifyWidget = ({ handleMinimize }) => {
         <>
           <div className="widget-line"></div>
           <div className="widget-content">
-            
             {token === "" ? <Login /> : <WebPlayback token={token} />}
           </div>
         </>

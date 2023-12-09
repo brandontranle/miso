@@ -112,7 +112,8 @@ export const MisoWidget = ({
     position: "absolute",
     top: "90%", // Example vertical centering
     left: `${misoPosition}px`,
-    height: "70px",
+    height: "90px",
+    width: "90px",
     transform: `translateY(-50%) ${direction === -1 ? "scaleX(-1)" : ""}`, // Flip image when moving left
     transition: "left 200ms linear", // Smooth transition for movement
   };
@@ -124,7 +125,7 @@ export const MisoWidget = ({
 */
 
   return (
-    <div className="miso-widget">
+    <div className="miso-widget widget-handle">
       <div className="widget-header">
         <p className="widget-title">Miso</p>
 

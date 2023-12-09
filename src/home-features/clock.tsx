@@ -9,6 +9,7 @@
 
 import React, { useEffect, useState } from "react";
 import "./DateTime.css";
+import { useVisibility } from "../VisibilityContext";
 
 interface ClockProps {
   timezone: string;
@@ -21,6 +22,7 @@ const Clock: React.FC<ClockProps> = ({ timezone }) => {
   //const [userDateTime, setUserDateTime] = useState(""); //before seperating date and time
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
+  const { showClock } = useVisibility();
 
   useEffect(() => {
     //Intl.DateTimeFormatOptions is an interface in JS to specfic formatting options for date/time
@@ -78,7 +80,7 @@ const Clock: React.FC<ClockProps> = ({ timezone }) => {
   }, [timezone]);
 
   return (
-    <div className="clock-container">
+    <div className={`clock-container ${showClock ? "" : "minimized"}`}>
       {" "}
       {/*using DateTime.css*/}
       <div className="clock">

@@ -16,6 +16,7 @@ const cron = require('node-cron');
 const jwt = require('jsonwebtoken');
 const session = require('express-session');
 
+
 cron.schedule('* * * * *', async () => {
   try {
     const currentTime = Date.now();
@@ -23,9 +24,9 @@ cron.schedule('* * * * *', async () => {
     // Find and delete OTP verification records that have expired
     await UserOTPVerification.deleteMany({ expiresAt: { $lt: currentTime } });
 
-    console.log('Expired OTP verification records deleted.');
+    //console.log('Expired OTP verification records deleted.');
   } catch (error) {
-    console.error('Error deleting expired OTP verification records:', error);
+    //console.error('Error deleting expired OTP verification records:', error);
   }
 });
 
@@ -44,6 +45,9 @@ const jwtSecret = process.env.JWT_SECRET;
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 
 
 
@@ -177,6 +181,7 @@ const UserData = mongoose.model('UserData', {
   notebooks: [{text: String, notebookId: String, title: String}],
   bio: String,
   image: String,
+  wallpaper: String,
   createdAt: Date,
 })
 
@@ -193,15 +198,14 @@ const UserOTPVerification = mongoose.model('UserOTPVerification', {
 app.post('/signup', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
-  /* Email Validation */
+  /*
   let re =
   /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
-/*Validate email and password here*/
   const isEmailValid = re.test(email);
 
   if (!isEmailValid) {
     return res.status(400).json({ error: 'Invalid email format' });
-  }
+  }*/
 
 
   // Check if email already exists
@@ -302,6 +306,7 @@ const sendVerificationEmail = async ({_id, email}, res) => {
   try{
     //generate an OTP (One-time-password verification code)
     const otp = Math.floor(1000 + Math.random() * 9000);
+    console.log("(for testers and developers) this is your verification code: " + otp);
  
     const mailOptions = {
       from: process.env.AUTH_EMAIL,
@@ -338,6 +343,23 @@ const sendVerificationEmail = async ({_id, email}, res) => {
   }
 
 }
+
+app.post('/logout', (req, res) => {
+  if (req.session) {
+    console.log('logging out...');
+    // Destroy the server-side session
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Could not log out, please try again');
+      } else {
+        res.status(200).send('Logout successful');
+      }
+    });
+  } else {
+    res.status(200).send('Logout successful');
+  }
+});
+
 
 app.post('/sendOTP', async(req, res) => {
 
@@ -387,6 +409,24 @@ app.post('/getDate', async(req, res) => {
     res.status(500).json("failed to retrieve the date");
   }
 
+});
+
+app.post('/getUser', async(req, res) => {
+  
+  try {
+    const {userId} = req.body;
+
+    const user = await User.findOne({_id: userId});
+
+    if (!user) {
+      res.status(404).json("user not found");
+    }
+
+     res.status(200).json({ userId: userId, name: user.firstName });
+  } catch (error) {
+    res.status(500).json("getUser request failed")
+  }
+  
 });
 
 
@@ -508,8 +548,7 @@ app.post('/login', async (req, res) => {
 
   /*if the user successfully logins, generate a token and store it in the session*/
   const token = jwt.sign({ userId: existingUser._id }, jwtSecret, { expiresIn: '1h' });
- 
-
+  
   req.session.token = token;
   
   req.session.userId = existingUser._id.toString(); // Set userId in the session 
@@ -521,7 +560,7 @@ app.post('/login', async (req, res) => {
 
   console.log('Your id is:', existingUser._id.toString());
 
-  res.status(200).json({ message: 'Login successful', name: firstName, userId: existingUser._id.toString() });
+  res.status(200).json({ message: 'Login successful', name: firstName, userId: existingUser._id.toString(), token: token });
 
 })
 
@@ -545,6 +584,69 @@ app.get('/verifyStatus', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while checking verification status' });
   }
 });
+
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+
+  if (token == null) {
+      return res.status(401).send('No token provided');
+  }
+
+  jwt.verify(token, jwtSecret, (err, user) => {
+      if (err) {
+          return res.status(403).send('Invalid token');
+      }
+      req.user = user;
+      next();
+  });
+};
+
+
+app.post('/changePassword', async (req, res) => {
+
+  try {
+    const {userId, currentPassword, newPassword} = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      res.status(404).json("user not found");
+    }
+
+    //compare the current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Incorrect current password" });
+    }
+
+    //hash and store the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+
+    console.log("Password updated for user ID: " + userId);
+    res.status(200).json({message: "Password updated!"});
+  } catch (error) {
+    res.status(500).json("failed to change password")
+  }
+
+
+});
+
+//this is intended to change the email of a user who has already been registered to the database
+app.post('/changeEmailRegistered', async (req, res) => {
+  try {
+
+
+  } catch (error) {
+
+
+  }
+});
+
+
+
+
 
 app.post('/changeEmail', async (req, res) => {
   
@@ -936,10 +1038,10 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       
       await user.save();
 
-      console.log("Time and Kibbles updated!");
+      //console.log("Time and Kibbles updated!");
       res.status(200).json();
     } catch (error) {
-        console.log("error updating time");
+        //console.log("error updating time");
         res.status(500).json({ error: "An error occurred while storing the time spent studying" });
     }
 
@@ -953,10 +1055,10 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
     const study_time = user.time;
 
-    console.log("Time updated!");
+    //console.log("Time updated!");
     res.status(200).json({time: study_time});
     } catch (error) {
-      console.log("error fetching time");
+      //console.log("error fetching time");
       res.status(500).json({ error: "An error occurred while fetching the time spent studying" });
 
     }
@@ -985,7 +1087,7 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       };
     }
 
-    console.log(user.weeklyTime);
+    //console.log(user.weeklyTime);
 
     res.status(200).json({weeklyTime: user.weeklyTime});
 
@@ -1103,6 +1205,40 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       res.status(500).send({ success: false, message: 'Failed to save image.' });
     }
   });
+
+  app.post('/updateBackgroundImage', async (req, res) => {
+    
+    try {
+      const {userId, image} = req.body;
+      const user = await UserData.findOne({userId});
+      await user.updateOne({wallpaper: image}, {new: true}); 
+      res.status(200).json("wallpaper changed!");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ success: false, message: 'Failed to save wallpaper.'});
+    }
+  });
+
+  app.post('/getWallpaper', async (req, res) => {
+  
+    try {
+      const {userId} = req.body;
+      const user = await UserData.findOne({userId});
+
+      if (!user) {
+        res.status(404).json("user not found");
+      }
+
+      //console.log("picture from backend: " + user.image);
+
+      //console.log('setting profile picture from backend!');
+      res.status(200).json({wallpaper: user.wallpaper.toString()});
+    } catch (error) {
+      res.status(500).json("profile picture failed");
+    }
+
+
+  });
   
   app.post('/getProfilePicture', async (req, res) => {
   
@@ -1131,16 +1267,16 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       const user = await UserData.findByIdAndUpdate(userId, {timezone: timezone},  { new: true })
 
       if (!user) {
-        console.log("User not found");
+        //console.log("User not found");
         return res.status(404).json({ error: "User not found" });
       }
 
       user.save()
-      console.log('timezone changed in the db!')
+      //console.log('timezone changed in the db!')
 
       res.status(200).json()
     } catch (error) {
-        console.log("error changing timezone");
+        //console.log("error changing timezone");
         res.status(500).json({ error: "An error occurred while changing the timezone" });
     }
   });
@@ -1151,7 +1287,7 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       const user = await UserData.findOne({userId});
 
       if (!user) {
-        console.log("User not found");
+        //console.log("User not found");
         return res.status(404).json({ error: "User not found" });
       }
 

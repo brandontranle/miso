@@ -17,6 +17,7 @@ import NotesWidget from "./widgets/NotesWidget";
 import backgroundImage from "./assets/background.png";
 import backgroundGif from "./assets/ghibli.gif";
 import backgroundGif2 from "./assets/ghibli2.gif";
+import background from "./assets/backgroundd5.gif";
 import Clock from "./home-features/clock";
 import Date from "./home-features/date";
 import Weather from "./home-features/weather";
@@ -35,8 +36,11 @@ import brownCatSitGif from "./miso/brown_cat/cat01_sit_8fps.gif";
 import brownCatAttackGif from "./miso/brown_cat/cat01_attack_12fps.gif";
 
 import pixelBackground from "./miso/backgrounds/pixelbackground1.jpg";
+import { useTheme } from "./ThemeContext";
 
 export const Home: React.FC = () => {
+  const { theme } = useTheme();
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeWidgets, setActiveWidgets] = useState<number[]>([]); // This now tracks multiple widgets
   const [minimizedWidgets, setMinimizedWidgets] = useState<
@@ -45,9 +49,10 @@ export const Home: React.FC = () => {
   const { user, isAuthenticated } = useUserContext(); // Get the user context
 
   const [timezone, setTimezone] = useState("America/Los_Angeles");
-  const [backgroundImage, setBackgroundImage] = useState(backgroundGif);
-  const [misoBackgroundImage, setMisoBackgroundImage] =
-    useState(pixelBackground);
+  const [backgroundImage, setBackgroundImage] = useState(background);
+  const [misoBackgroundImage, setMisoBackgroundImage] = useState(
+    pixelBackground
+  );
 
   const [misoTexture, setMisoTexture] = useState({
     walk: brownCatWalkGif,
@@ -64,9 +69,32 @@ export const Home: React.FC = () => {
     setMisoTexture(newTextures);
   };
 
+  const fetchBackground = async () => {
+    if (isAuthenticated) {
+      try {
+        const userId = sessionStorage.getItem("userId");
+        const response = await axios.post(
+          "http://localhost:5000/getWallpaper",
+          {
+            userId,
+          }
+        );
+
+        if (!response.data.wallpaper) {
+          setBackgroundImage(background);
+        } else {
+          handleBackgroundChange(response.data.wallpaper);
+        }
+        //console.log("wallpaper fetched and changed!");
+      } catch (error) {
+        //console.log("error fetching wallpaper");
+      }
+    }
+  };
+
   const handleBackgroundChange = (newBackgroundImage) => {
     setBackgroundImage(newBackgroundImage);
-    console.log("image changed!");
+    //console.log("image changed!");
   };
 
   const [currentContent, setCurrentContent] = useState("userProfile"); // New state for current content
@@ -80,6 +108,10 @@ export const Home: React.FC = () => {
   useEffect(() => {
     getTimeZone();
   }, [timezone, showSidebar]);
+
+  useEffect(() => {
+    fetchBackground();
+  }, []);
 
   const handleTimezoneChange = async () => {
     const newTimezone = getTimeZone();
@@ -107,7 +139,7 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     // Listen for changes to the "timezone" state
-    console.log("timezone from handletimzone!");
+    //console.log("timezone from handletimzone!");
     window.addEventListener("storage", handleTimezoneChange);
 
     return () => {
@@ -118,7 +150,7 @@ export const Home: React.FC = () => {
   const getTimeZone = () => {
     //retrieve the timezone from local storage
     const timezone = localStorage.getItem("timezone");
-    console.log("timezone!");
+    //console.log("timezone!");
     if (timezone) {
       setTimezone(timezone);
     }
@@ -134,7 +166,7 @@ export const Home: React.FC = () => {
       prevActiveWidgets.filter((id) => id !== widgetId)
     );
 
-    console.log("Deactivated widget", widgetId);
+    //console.log("Deactivated widget", widgetId);
   };
 
   const backgroundImageStyle = {
@@ -156,11 +188,11 @@ export const Home: React.FC = () => {
         new Map(prev).set(widgetId, !prev.get(widgetId))
       );
 
-      console.log("Deactivated widget", widgetId);
+      //console.log("Deactivated widget", widgetId);
       return;
     }
 
-    console.log("Activated widget", widgetId);
+    //console.log("Activated widget", widgetId);
 
     /* first time click launch*/
 
@@ -269,7 +301,7 @@ export const Home: React.FC = () => {
           <ChatGPT
             isMinimized={isMinimized}
             handleMinimize={() => handleWidgetClick(widgetId)}
-            />
+          />
         );
         break;
       // Add cases for other widgets as needed ~ these are realistically the ones we are doing for the project, but we will delete if necessary!
@@ -278,7 +310,22 @@ export const Home: React.FC = () => {
     }
 
     return (
-      <Draggable handle=".widget-drag-handle">
+      <Draggable
+        handle=".widget-drag-handle"
+        onStart={(e, data) => {
+          const target = e.target as HTMLElement;
+
+          // Check if the target of the click is not a slider
+          if (
+            target.className.includes("custom-volume-slider") ||
+            target.className.includes("notebook") ||
+            target.className.includes("item-wrapper") ||
+            target.className.includes("volume-control")
+          ) {
+            return false; // returning false will cancel the drag
+          }
+        }}
+      >
         <div
           key={widgetId}
           className={`widget-window ${widgetClass} ${
@@ -295,7 +342,7 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="page" style={backgroundImageStyle}>
+    <div className="page" style={backgroundImageStyle} data-theme={theme}>
       <div className="TopBarContainer">
         <div className="Nav-Bar">
           <Navbar

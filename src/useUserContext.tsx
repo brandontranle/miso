@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import axios from "axios";
 
 // Define the shape of the context data
 interface UserContextData {
@@ -46,8 +47,45 @@ export const UserContextProvider: React.FC<UserContextProviderProps> = ({
   const [loggedIn, setLoggedIn] = useState(false); // Add loggedIn state
   const [isAuthenticated, setIsAuthenticated] = useState(loggedIn);
 
+  const token = sessionStorage.getItem("token");
+
+  const fetchUserData = async () => {
+    try {
+      const userId = sessionStorage.getItem("userId");
+      // Replace with the actual endpoint to fetch user data
+      const response = await axios.post("http://localhost:5000/getUser", {
+        userId,
+      });
+
+      const newUser = {
+        name: response.data.name as string,
+        userId: userId as string,
+      };
+
+      // Assume the response contains user data in the 'data' key
+      setUser(newUser);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      // Handle errors, e.g., by setting user to null and isAuthenticated to false
+      setUser(null);
+      setIsAuthenticated(false);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      setLoggedIn(true);
+      fetchUserData();
+      setIsAuthenticated(true);
+      //setUser(user);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [token]);
+
   // Update isAuthenticated when loggedIn changes
   useEffect(() => {
+    console.log(user);
     setIsAuthenticated(loggedIn);
   }, [loggedIn]);
 
