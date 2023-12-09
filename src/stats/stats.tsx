@@ -163,7 +163,7 @@ const BarChart = () => {
 
         const formattedData = formatChartData(response.data.weeklyTime);
         setChartData(formattedData);
-        console.log(formattedData);
+        //console.log(formattedData);
       } catch (error) {
         console.log("failed to retrieve stats!");
       }
