@@ -28,7 +28,13 @@ const motivationalQuotes = [
   '"Success is not just about making money. It\'s about making a difference." - Unknown',
   '"Run fast, still last." - Brandon Le',
   '"Don\'t be afraid of failure, because at the end of the day, it\'s night." - Alicia Filomeno',
-  '"Fishing is awesome!" - Ivan Lin'
+  '"Fishing is awesome!" - Ivan Lin',
+  '"Believe you can and you\'re already halfway there." - Theodore Roosevelt',
+  '"The only person you are destined to become is the person you decide to be." - Franklin D. Roosevelt',
+  '"Your life does not get better by chance, it gets better by change." - Jim Rohn',
+  '"Be someone you will be proud of." - Brandon Le',
+  '"The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will." - Vince Lombardi',
+  '"Whatever you do, always give 100%. UNless you\'re donating blood." - Alicia Filomeno',
 ];
 
 export default motivationalQuotes;
