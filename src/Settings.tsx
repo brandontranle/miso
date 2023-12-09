@@ -6,8 +6,18 @@ import "./Settings.css";
 import TimeZoneDropdown from "./timezone-dropdown-menu";
 import { useUserContext } from "./useUserContext";
 import { useTheme } from "./ThemeContext";
+import { useVisibility } from "./VisibilityContext";
 
 export const Settings = () => {
+  const {
+    showWeather,
+    setShowWeather,
+    showClock,
+    setShowClock,
+    showQuote,
+    setShowQuote,
+  } = useVisibility();
+
   const { user, isAuthenticated } = useUserContext();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -100,15 +110,51 @@ export const Settings = () => {
         handleTimezoneChange={handleTimezoneChange}
         selectedTimezone={selectedTimezone}
       />
-      <label className="left-aligned-section-label"> Credits </label>
-      <p className="left-aligned-paragraph">
-        Please give thanks to the amazing engineers that pioneered this
-        application into a reality! <br />
-        <br />
-        Brandon Le, Hannah Truong, Alicia Filomeno, Tingyu Gong, Ivan Lin
-      </p>
+      <label className="left-aligned-section-label"> Appearance </label>
+      <div className="option">
+        <p className="left-aligned-paragraph"> Weather: </p>
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={showWeather}
+            onChange={() => setShowWeather(!showWeather)}
+          />
+          <span className="slider"> </span>
+        </label>
+      </div>
+      <div className="option">
+        <p className="left-aligned-paragraph"> Date/Time: </p>
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={showClock}
+            onChange={() => setShowClock(!showClock)}
+          />{" "}
+          <span className="slider"> </span>
+        </label>
+      </div>
+      <div className="option">
+        <p className="left-aligned-paragraph"> Daily Quote: </p>
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={showQuote}
+            onChange={() => setShowQuote(!showQuote)}
+          />
+          <span className="slider"> </span>
+        </label>
+      </div>
     </div>
   );
 };
 
 export default Settings;
+
+/*
+<p className="left-aligned-paragraph">
+        Please give thanks to the amazing engineers that pioneered this
+        application into a reality! <br />
+        <br />
+        Brandon Le, Hannah Truong, Alicia Filomeno, Tingyu Gong, Ivan Lin
+      </p>
+*/
