@@ -663,9 +663,10 @@ input[type="checkbox"] {
 }
 
 .message {
-  color: rgb(236, 112, 112);
+  color: #E5C2A8;
   vertical-align: middle;
-  font-family: "Inter-Medium", Helvetica;
+  text-align: center;
+  font-family: "Nunito-Bold", Helvetica;
 }
 
 .message-instruction {
@@ -673,7 +674,8 @@ input[type="checkbox"] {
 }
 
 .message-success {
-  color: #6ecb5a;
+  color: rgb(57, 6, 6);
+  text-align: center;
 }
 
 @keyframes shake {
@@ -984,9 +986,9 @@ input[type="checkbox"] {
   position: relative;
   text-align: center;
   margin-top: 5%;
-  font-family: "Inter-Medium", Helvetica;
+  font-family: "Nunito-Bold", Helvetica;
   font-size: 100%; /* Adjust the font size for better appearance */
-  color: rgb(236, 112, 112);
+  color: rgb(216, 49, 49);
 }
 
 .row-centered-pd {
@@ -1002,7 +1004,8 @@ input[type="checkbox"] {
 }
 
 .divider-label {
-  color: rgb(54, 43, 43);
+  color: #815f45;
+  font-family: "Nunito-Bold";
 }
 .divider {
   margin: 0 10px; /* Adjust the margin as needed */
@@ -1018,15 +1021,21 @@ input[type="checkbox"] {
 
 .verification-label-button {
   cursor: pointer;
-  font-family: "Inter-Medium", Helvetica;
-  color: #57944f;
+  font-family: "Nunito-Bold";
+  width: 125px;
+  height: 25px;
+  justify-content: center;
+  align-items: center;
+  color:#d3a380;
+  color: white;
+  border-radius: 9px;
   font-size: 100%;
   text-decoration: none;
   outline: none;
   border: none;
-  background-color: transparent;
+  background-color: #deb18f;
   text-align: center;
-  margin-top: 5%;
+  margin-top: 10%;
   margin-bottom: 5%;
 }
 
@@ -1082,7 +1091,7 @@ input[type="checkbox"] {
 }
 
 .extended-button-wrapped {
-  background-color: #88db74;
+  background-color: #E5C2A8;
   align-items: center;
   color: white;
   border-radius: 9px;
@@ -1092,8 +1101,11 @@ input[type="checkbox"] {
   text-decoration: none;
   font-weight: 600;
   color: #ffffff;
-  font-family: "Inter-SemiBold", Helvetica;
-  font-size: 100%;
+  font-family: "Nunito-Bold", Helvetica;
+  font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10xp;
+  margin-left: 40px;
   /*margin-left: 3.5%;*/
   border: none;
   outline: none;
