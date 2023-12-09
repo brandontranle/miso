@@ -85,16 +85,16 @@ export const Home: React.FC = () => {
         } else {
           handleBackgroundChange(response.data.wallpaper);
         }
-        console.log("wallpaper fetched and changed!");
+        //console.log("wallpaper fetched and changed!");
       } catch (error) {
-        console.log("error fetching wallpaper");
+        //console.log("error fetching wallpaper");
       }
     }
   };
 
   const handleBackgroundChange = (newBackgroundImage) => {
     setBackgroundImage(newBackgroundImage);
-    console.log("image changed!");
+    //console.log("image changed!");
   };
 
   const [currentContent, setCurrentContent] = useState("userProfile"); // New state for current content
@@ -139,7 +139,7 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     // Listen for changes to the "timezone" state
-    console.log("timezone from handletimzone!");
+    //console.log("timezone from handletimzone!");
     window.addEventListener("storage", handleTimezoneChange);
 
     return () => {
@@ -150,7 +150,7 @@ export const Home: React.FC = () => {
   const getTimeZone = () => {
     //retrieve the timezone from local storage
     const timezone = localStorage.getItem("timezone");
-    console.log("timezone!");
+    //console.log("timezone!");
     if (timezone) {
       setTimezone(timezone);
     }
@@ -166,7 +166,7 @@ export const Home: React.FC = () => {
       prevActiveWidgets.filter((id) => id !== widgetId)
     );
 
-    console.log("Deactivated widget", widgetId);
+    //console.log("Deactivated widget", widgetId);
   };
 
   const backgroundImageStyle = {
@@ -188,11 +188,11 @@ export const Home: React.FC = () => {
         new Map(prev).set(widgetId, !prev.get(widgetId))
       );
 
-      console.log("Deactivated widget", widgetId);
+      //console.log("Deactivated widget", widgetId);
       return;
     }
 
-    console.log("Activated widget", widgetId);
+    //console.log("Activated widget", widgetId);
 
     /* first time click launch*/
 

@@ -8,7 +8,7 @@
   width: 50vh;
 }
 .flex {
-  width: 240px;
+  width: 250px;
   height: 115px;
   position: absolute;
   top: 60%;
@@ -22,7 +22,6 @@
   outline: none;
   border-radius: 20px;
   text-decoration: none;
-
 }
 .main-weather {
   align-items: center;
@@ -33,25 +32,23 @@
   height: 50px; /* Adjust icon size as needed */
   margin-right: 10px; /* Space between icon and temperature */
 }
-.unit-selector select
-{
-  
+.unit-selector select {
   position: absolute; /* Position dropdown absolutely */
   top: 50%; /* Adjust based on desired position */
   transform: translateY(-50%); /* Center vertically */
   border-radius: 3px; /* Rounded corners */
-  
+
   text-align: center;
-  padding:2px; /* Adjust padding as needed */
+  padding: 2px; /* Adjust padding as needed */
   position: absolute;
   top: 15%;
   right: 3%;
-  font: 'Nunito-Regular';
+  font: "Nunito-Regular";
   border-radius: 6px;
   color: white;
   z-index: 1;
   background: transparent;
-  
+
   font-size: 10px;
   width: 75px;
 }
@@ -62,7 +59,7 @@
 }
 .description {
   text-align: left;
-  font-family: "Nunito-Bold"
+  font-family: "Nunito-Bold";
 }
 .weather-loading {
   color: white;
@@ -77,4 +74,8 @@
 
 .unit-selector select option {
   color: black;
+}
+
+.minimized {
+  display: none;
 }
