@@ -411,6 +411,24 @@ app.post('/getDate', async(req, res) => {
 
 });
 
+app.post('/getUser', async(req, res) => {
+  
+  try {
+    const {userId} = req.body;
+
+    const user = await User.findOne({_id: userId});
+
+    if (!user) {
+      res.status(404).json("user not found");
+    }
+
+     res.status(200).json({ userId: userId, name: user.firstName });
+  } catch (error) {
+    res.status(500).json("getUser request failed")
+  }
+  
+});
+
 
 app.post('/verifyOTP', async(req, res) => {
 try{
@@ -1020,10 +1038,10 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       
       await user.save();
 
-      console.log("Time and Kibbles updated!");
+      //console.log("Time and Kibbles updated!");
       res.status(200).json();
     } catch (error) {
-        console.log("error updating time");
+        //console.log("error updating time");
         res.status(500).json({ error: "An error occurred while storing the time spent studying" });
     }
 
@@ -1037,10 +1055,10 @@ app.post('/deleteTodoInHistory', async (req, res) => {
 
     const study_time = user.time;
 
-    console.log("Time updated!");
+    //console.log("Time updated!");
     res.status(200).json({time: study_time});
     } catch (error) {
-      console.log("error fetching time");
+      //console.log("error fetching time");
       res.status(500).json({ error: "An error occurred while fetching the time spent studying" });
 
     }
@@ -1249,16 +1267,16 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       const user = await UserData.findByIdAndUpdate(userId, {timezone: timezone},  { new: true })
 
       if (!user) {
-        console.log("User not found");
+        //console.log("User not found");
         return res.status(404).json({ error: "User not found" });
       }
 
       user.save()
-      console.log('timezone changed in the db!')
+      //console.log('timezone changed in the db!')
 
       res.status(200).json()
     } catch (error) {
-        console.log("error changing timezone");
+        //console.log("error changing timezone");
         res.status(500).json({ error: "An error occurred while changing the timezone" });
     }
   });
@@ -1269,7 +1287,7 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       const user = await UserData.findOne({userId});
 
       if (!user) {
-        console.log("User not found");
+        //console.log("User not found");
         return res.status(404).json({ error: "User not found" });
       }
 

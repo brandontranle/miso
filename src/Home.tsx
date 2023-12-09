@@ -319,7 +319,8 @@ export const Home: React.FC = () => {
           if (
             target.className.includes("custom-volume-slider") ||
             target.className.includes("notebook") ||
-            target.className.includes("item-wrapper")
+            target.className.includes("item-wrapper") ||
+            target.className.includes("volume-control")
           ) {
             return false; // returning false will cancel the drag
           }

@@ -16,10 +16,11 @@ interface WeatherData {
 interface WeatherCardProps {
   weatherData: WeatherData;
   selectedUnit: string;
+  onUnitChange: (unit: string) => void;
 }
 
 
-const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData, selectedUnit }) => {
+const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData, selectedUnit, onUnitChange }) => {
   //Capitalize the description string from weather data
   const capitalizedDescription =
     weatherData.weather[0].description.charAt(0).toUpperCase() +
@@ -42,6 +43,8 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData, selectedUnit }) 
         return `${temp} °C`; // Default to Celsius
     }
   };
+
+  /*
   return (
     <div className="flex">
       <div className="main-weather">
@@ -50,17 +53,43 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData, selectedUnit }) 
           alt="Weather Icon"
           className="icon"
         />
-        {/*@2x scales the icon */}
+        
         <label className="temp">{convertTemperature(weatherData.main.temp)}</label>
       </div>
       <div className="location">
         <div>{capitalizedDescription} in </div>
         <div>{weatherData.name}</div>
       </div>
-      {/*div className = "description">{weatherData.weather[0].description}</div>
-            <p className="location">in {weatherData.name}</p> */}
+     
+    </div>
+  );
+  */
+
+  return (
+    <div className="flex">
+      <div className="main-weather">
+      <img
+          src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
+          alt="Weather Icon"
+          className="icon"
+        />
+        <label className="temp">{convertTemperature(weatherData.main.temp)}</label>
+      </div>
+      <div className="location">
+      <div>{capitalizedDescription} in </div>
+        <div>{weatherData.name}</div>
+      </div>
+      <div className="unit-selector">
+        <select value={selectedUnit} onChange={(e) => onUnitChange(e.target.value)}>
+          <option value="standard">Kelvin</option>
+          <option value="metric">Celsius</option>
+          <option value="imperial">Fahrenheit</option>
+        </select>
+      </div>
     </div>
   );
 };
+
+
 
 export default WeatherCard;

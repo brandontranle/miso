@@ -74,9 +74,9 @@ const Weather: React.FC = () => {
     fetchWeatherData(); //intial fetch
     
   }, [lat, long, apiUrl, apiKey, selectedUnit]);
-
+{/*
   return (
-
+    
     <div className="weather-container">
       {!locationDenied && lat !== null && long !== null && (
       <div className="unit-selector">
@@ -87,11 +87,28 @@ const Weather: React.FC = () => {
         </select>
       </div>
       )}
-      {data ? <WeatherCard weatherData={data} selectedUnit={selectedUnit}/> : <div></div>} {/*shows nothing if location is not allowed*/}
-      {/*We pass props weatherData and selctedunit to WeatherCard component*/}
+
+      {data ? <WeatherCard weatherData={data} selectedUnit={selectedUnit}/> : <div></div>} 
+
     </div>
     
   );
+      */}
+
+  return (
+    
+    <div className="weather-container">
+      {!locationDenied && lat !== null && long !== null && data && (
+        <WeatherCard weatherData={data} selectedUnit={selectedUnit} onUnitChange={setSelectedUnit}/>
+      )}
+      
+      
+    </div>
+    
+  );
+
+
+
 };
 
 export default Weather;
