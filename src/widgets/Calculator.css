@@ -1,3 +1,42 @@
+
+.calculator-container {
+    font-family: "Nunito-Regular";
+}
+.calc-button {
+    border-radius: 8px;
+    font-family: "Nunito-Regular";
+    background-color: gray;
+    color: white;
+    margin-left: 30px;
+
+}
+.calc-border {
+    border-style: solid;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 3px;
+
+}
+.calc-submit {
+    margin-top: 15px;
+} 
+
+.calc-add {
+    border-radius: 8px;
+    font-family: "Nunito-Regular";
+    background-color: lightcoral;
+    color: white;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+.calc-calculate {
+    border-radius: 8px;
+    font-family: "Nunito-Regular";
+    background-color: rgb(123, 218, 123);
+    color: white;
+    margin-left: 10px;
+}
+
 .calculator-title {
     font-family: 'Nunito-Bold';
     font-size: 25px;

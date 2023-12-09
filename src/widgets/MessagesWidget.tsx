@@ -94,6 +94,7 @@ export const MessagesWidget = ({ handleMinimize, isMinimized }) => {
       <div className="widget-content">
 
 
+
         <div className = "container-items">
 
 
