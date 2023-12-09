@@ -51,4 +51,18 @@ Here are three other distinct features for you to see.
 * **Spotify Widget**: This allows you to connect your Spotify premium account to control what music you want to play within Miso! It is catered to support your study habits. This was developed by using the Spotify SDK for the web player and API for authentication. 
 * **Statistics Chart**: While you're studying using our fantastic Pomodoro timer, your time gets logged into our MongoDB database, where we process your data into a bar graph using ChartJS.
 * **Weather/Date/Time**: After you wake up and open Miso, you're incentivized to see what time it is and what the weather is like today! In addition to this, You can specify your timezone within the Settings after you are authenticated; otherwise, you can always hide this feature in the Settings as well. Please note you need to allow access to your location within the browser tab. This was all implemented using the OpenWeather Map WeatherData API and built-in React libraries. 
-  
+
+<h2> FAQs </h2>
+
+**How do I connect to the Spotify Widget?**
+NOTE: This feature is only available to premium Spotify members.
+1. Click the Spotify Widget and press login
+<img width="784" alt="spotify" src="https://github.com/brandontranle/miso/assets/111268644/31ee3198-a15c-4175-a36c-a825ea096209">
+
+2. Press "Agree" 
+<img width="582" alt="image (1)" src="https://github.com/brandontranle/miso/assets/111268644/f40c060b-c423-4b66-8979-c3d726fbd410">
+
+3. Click on the "Miso Spotify Player"
+   ![image (2)](https://github.com/brandontranle/miso/assets/111268644/e3c7f0d5-b542-4c9a-b8c9-141b6a5e5193)
+4. Enjoy your music!
+   <img width="1280" alt="image" src="https://github.com/brandontranle/miso/assets/111268644/6636c601-5161-4e0b-be0e-7e63703c2eab">
