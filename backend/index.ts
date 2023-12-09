@@ -45,7 +45,7 @@ const jwtSecret = process.env.JWT_SECRET;
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({limit: '100mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
@@ -1087,7 +1087,7 @@ app.post('/deleteTodoInHistory', async (req, res) => {
       };
     }
 
-    console.log(user.weeklyTime);
+    //console.log(user.weeklyTime);
 
     res.status(200).json({weeklyTime: user.weeklyTime});
 

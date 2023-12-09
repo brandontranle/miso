@@ -28,8 +28,6 @@
 }
 */
 
-
-
 /*
 .menu-bar::after {
     content: "";
@@ -48,7 +46,6 @@
   text-align: center;
 }
 
-
 .widget-title {
   font-family: Nunito-Bold !important;
 }
@@ -62,55 +59,45 @@
   margin-bottom: 0;
 }
 
-
 .widget-container:hover {
   cursor: pointer;
-  stroke: #D3A380;
+  stroke: #d3a380;
   /*transform: translateY(-2px); */
   color: #d3a380;
 }
 
-.widget-container:hover path{
-  stroke: #D3A380;
-  color: #D3A380;
-  
-
+.widget-container:hover path {
+  stroke: #d3a380;
+  color: #d3a380;
 }
 
 .widget-container:hover .spotify-widget-svg-icon path {
-  fill: #D3A380;
+  fill: #d3a380;
 }
 /* TRYING TO FIX SVG ABOVE */
 
 .widget-container:hover .miso-widget-svg-icon path {
-  fill: #D3A380;
+  fill: #d3a380;
   stroke: none;
 }
 
-.miso-widget-svg-icon:hover path{
-  fill: #D3A380;
-   
+.miso-widget-svg-icon:hover path {
+  fill: #d3a380;
 }
 
 .hubs-widget-svg-icon {
-  stroke: #D3A380
+  stroke: #d3a380;
 }
 .timer-widget-svg-icon {
-  fill: #D3a380;
+  fill: #d3a380;
 }
 
-.sounds-widget-svg-icon  {
-  fill: #D3a380;
-
-  
+.sounds-widget-svg-icon {
+  fill: #d3a380;
 }
 .spotify-widget-svg-icon:hover path {
- 
-  stroke:#D3a380;
-  
+  stroke: #d3a380;
 }
-
-
 
 .widget-window {
   position: absolute; /* or absolute, depending on your layout */

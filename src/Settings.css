@@ -66,6 +66,9 @@
   font-family: "Nunito-Regular";
   margin-bottom: 6%;
 }
+.submit-button:hover {
+  background-color: #ba8f70;
+}
 
 .switch {
   position: relative;
@@ -105,6 +108,10 @@
 
 input:checked + .slider {
   background-color: #d3a380;
+}
+
+input:checked + .slider:hover {
+  background-color: #ba8f70;
 }
 
 input:checked + .slider:before {

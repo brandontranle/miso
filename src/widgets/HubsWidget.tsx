@@ -26,8 +26,6 @@ import pixel3 from "../miso/backgrounds/pixel3.png";
 import pixel4 from "../miso/backgrounds/pixel4.jpg";
 import pixel5 from "../miso/backgrounds/pixel5.jpg";
 
-
-
 import { useUserContext } from "../useUserContext";
 import blossomrain from "../assets/blossomrain.gif";
 import lofi from "../assets/lofi.gif";
@@ -75,7 +73,7 @@ export const HubsWidget = ({
       if (file.type === "image/gif") {
         // Directly use the GIF file without processing
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = function(e) {
           const gifSrc = e.target?.result as string;
           changeBackground(gifSrc);
           saveBackgroundImage(gifSrc);
@@ -84,9 +82,9 @@ export const HubsWidget = ({
       } else {
         const img = new Image();
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = function(e) {
           img.src = e.target?.result as string;
-          img.onload = function () {
+          img.onload = function() {
             // Define the maximum dimensions
             const maxWidth = 800;
             const maxHeight = 800;
@@ -199,7 +197,6 @@ export const HubsWidget = ({
             </div>
 
             <div className="row-selections">
-
               <ImageButton
                 imageUrl={pixelautumn}
                 onClick={() => changeBackground(pixelautumn)}
@@ -214,16 +211,13 @@ export const HubsWidget = ({
                 imageUrl={groundrain}
                 onClick={() => changeBackground(groundrain)}
               />
-
             </div>
-
-
-
-
 
             <div className="left-container">
               <button className="bottom-button">
-                <label htmlFor="file-upload">Choose File</label>
+                <label className="upload-button" htmlFor="file-upload">
+                  Choose File
+                </label>
               </button>
               <input
                 id="file-upload"
@@ -240,7 +234,6 @@ export const HubsWidget = ({
               <label> Miso </label>
             </div>
 
-
             <div className="row-selections">
               <ImageButton
                 imageUrl={pixelBackground1}
@@ -255,7 +248,6 @@ export const HubsWidget = ({
                 onClick={() => changeMisoBackground(background3)}
               />
             </div>
-
 
             <div className="row-selections">
               <ImageButton
