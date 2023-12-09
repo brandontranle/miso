@@ -22,11 +22,20 @@ import greyCatAttackGif from "../miso/grey_cat/cat02_attack_12fps.gif";
 
 import pixelBackground1 from "../miso/backgrounds/pixelbackground1.jpg";
 import pixeBackground2 from "../miso/backgrounds/pixelbackground2.png";
+import pixel3 from "../miso/backgrounds/pixel3.png";
+import pixel4 from "../miso/backgrounds/pixel4.jpg";
+import pixel5 from "../miso/backgrounds/pixel5.jpg";
+
+
 
 import { useUserContext } from "../useUserContext";
 import blossomrain from "../assets/blossomrain.gif";
 import lofi from "../assets/lofi.gif";
 import study1 from "../assets/study1.gif";
+
+import pixelautumn from "../assets/pixelautumn.gif";
+import groundrain from "../assets/groundrain.gif";
+import study2 from "../assets/study2.gif";
 
 interface HubsWidgetProps {
   setBackgroundImage: (image: string) => void;
@@ -189,6 +198,28 @@ export const HubsWidget = ({
               />
             </div>
 
+            <div className="row-selections">
+
+              <ImageButton
+                imageUrl={pixelautumn}
+                onClick={() => changeBackground(pixelautumn)}
+              />
+
+              <ImageButton
+                imageUrl={study2}
+                onClick={() => changeBackground(study2)}
+              />
+
+              <ImageButton
+                imageUrl={groundrain}
+                onClick={() => changeBackground(groundrain)}
+              />
+
+            </div>
+
+
+
+
 
             <div className="left-container">
               <button className="bottom-button">
@@ -208,6 +239,8 @@ export const HubsWidget = ({
             <div className="left-container">
               <label> Miso </label>
             </div>
+
+
             <div className="row-selections">
               <ImageButton
                 imageUrl={pixelBackground1}
@@ -222,6 +255,23 @@ export const HubsWidget = ({
                 onClick={() => changeMisoBackground(background3)}
               />
             </div>
+
+
+            <div className="row-selections">
+              <ImageButton
+                imageUrl={pixel3}
+                onClick={() => changeMisoBackground(pixel3)}
+              />
+              <ImageButton
+                imageUrl={pixel4}
+                onClick={() => changeMisoBackground(pixel4)}
+              />
+              <ImageButton
+                imageUrl={pixel5}
+                onClick={() => changeMisoBackground(pixel5)}
+              />
+            </div>
+
             <div className="row-selections">
               <ImageButton
                 imageUrl={brownCatWalkGif}
